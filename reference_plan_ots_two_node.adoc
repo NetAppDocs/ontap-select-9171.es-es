@@ -1,0 +1,41 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_two_node.html 
+keywords: plan, planning, two nodes, two node clusters 
+summary: 'Implementar un clúster de dos nodos con alta disponibilidad (HA) implica la misma planificación y configuración que otras configuraciones de nodos de clúster. Sin embargo, existen varias diferencias que debe tener en cuenta al crear un clúster de dos nodos.' 
+---
+= ONTAP Select clústeres de dos nodos con alta disponibilidad
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Implementar un clúster de dos nodos con alta disponibilidad (HA) implica la misma planificación y configuración que otras configuraciones de nodos de clúster. Sin embargo, existen varias diferencias que debe tener en cuenta al crear un clúster de dos nodos.
+
+.Entorno objetivo
+El clúster de dos nodos consta de un par de alta disponibilidad y ha sido diseñado específicamente para implementaciones de oficinas remotas y sucursales.
+
+
+NOTE: Si bien está diseñado principalmente para el entorno de oficinas remotas y sucursales, también puede implementar un clúster de dos nodos en el centro de datos si es necesario.
+
+.Licencias
+Puede implementar un clúster de dos nodos con cualquier licencia de VMware vSphere. Sin embargo, las licencias VMware ROBO Standard y Advanced son ideales para implementaciones en sucursales y oficinas remotas.
+
+.Servicio de mediación
+Cuando un clúster consta de dos nodos, no es posible alcanzar el quórum necesario si un nodo falla o pierde la comunicación. Para resolver este tipo de situaciones de división de tareas, cada instancia de la utilidad ONTAP Select Deploy incluye un servicio de mediación. Este servicio se conecta a cada nodo de los clústeres activos de dos nodos para supervisar los pares de alta disponibilidad (HA) y ayudar a gestionar los fallos. El servicio de mediación mantiene la información del estado de alta disponibilidad (HA) en un destino iSCSI dedicado asociado a cada clúster de dos nodos.
+
+
+CAUTION: Si tiene uno o más clústeres de dos nodos activos, la máquina virtual de ONTAP Select Deploy que administra los clústeres debe estar en ejecución permanente. Si la máquina virtual ONTAP Select Deploy se detiene o falla, el servicio de mediación no está disponible y se pierde la capacidad de alta disponibilidad para los clústeres de dos nodos.
+
+.Ubicación del clúster y servicio de mediación
+Debido a que los clústeres de dos nodos se suelen implementar en una oficina remota o sucursal, pueden estar alejados del centro de datos corporativo y de la utilidad ONTAP Select Deploy que proporciona soporte administrativo. Con esta configuración, el tráfico de gestión entre la utilidad ONTAP Select Deploy y el clúster fluye a través de la WAN. Consulte las notas de la versión para obtener más información sobre las limitaciones y restricciones.
+
+.Realizar una copia de seguridad de los datos de configuración de implementación
+Es una buena prácticalink:task_cli_clusters.html["Realizar una copia de seguridad de los datos de configuración de ONTAP Select Deploy"] de forma regular, incluso después de crear un clúster. Esto cobra especial importancia en clústeres de dos nodos, debido a los datos de configuración del mediador incluidos en la copia de seguridad.
+
+.Dirección IP estática asignada a Deploy
+Debe asignar una dirección IP estática a la utilidad de administración ONTAP Select Deploy. Este requisito se aplica a todas las instancias de ONTAP Select Deploy que administran uno o más clústeres de dos nodos de ONTAP Select .

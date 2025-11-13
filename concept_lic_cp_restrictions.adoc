@@ -1,0 +1,38 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_restrictions.html 
+keywords: license, licensing, Capacity Pools, restrictions 
+summary: A continuación se presentan las restricciones que se aplican al utilizar el modelo de licencia de Pool de Capacidad. 
+---
+= Restricciones de implementación para licencias de grupos de capacidad ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+A continuación se presentan las restricciones que se aplican al utilizar el modelo de licencia de Pool de Capacidad.
+
+.Modelo de licencia consistente por clúster
+Todos los nodos de un mismo clúster de ONTAP Select deben usar el mismo modelo de licencias, ya sea por niveles de capacidad o por grupos de capacidad. No se pueden combinar los tipos de licencias para los nodos de un mismo clúster.
+
+.Todos los nodos de un clúster utilizan la misma instancia de License Manager
+Todos los nodos con una licencia de grupo de capacidad en un clúster de ONTAP Select deben usar la misma instancia de License Manager. Dado que cada instancia de Deploy incluye una instancia de License Manager, esta restricción redefine el requisito existente de que todos los nodos de un clúster sean administrados por la misma instancia de Deploy.
+
+.Un pool de capacidad por nodo
+Cada nodo puede arrendar almacenamiento de un solo pool de capacidad. Un nodo no puede usar dos o más pools.
+
+.El mismo grupo de nodos en un par de HA
+Ambos nodos de un mismo par de alta disponibilidad (HA) deben arrendar almacenamiento del mismo pool de capacidad. Sin embargo, diferentes pares de HA dentro del mismo clúster pueden arrendar almacenamiento de distintos pools administrados por el mismo administrador de licencias.
+
+.Duración de la licencia de almacenamiento
+Debe elegir la duración de la licencia al adquirir la licencia de almacenamiento de NetApp. Por ejemplo, una licencia podría tener una validez de un año.
+
+.Duración del arrendamiento de datos agregados
+Cuando un nodo de ONTAP Select solicita una concesión de almacenamiento para un agregado de datos, el Administrador de Licencias proporciona una concesión con una duración específica según la configuración del grupo de capacidad. Puede configurar la duración de la concesión para cada grupo entre una hora y siete días. La duración predeterminada de la concesión es de 24 horas.
+
+.Dirección IP estática asignada a Deploy
+Debe asignar una dirección IP estática a la utilidad de administración de implementación cuando se utilizan licencias de grupos de capacidad.

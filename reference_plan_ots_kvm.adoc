@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_kvm.html 
+keywords: plan, planning, vnas, kvm 
+summary: Hay varias cuestiones de planificación relacionadas con el uso del hipervisor KVM que debes tener en cuenta. 
+---
+= Requisitos de KVM de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede configurar ONTAP Select en el hipervisor KVM con una matriz de almacenamiento externa.
+
+
+
+== Requisitos básicos y restricciones
+
+Si utiliza una matriz externa para los grupos de almacenamiento de ONTAP Select , se aplican las siguientes restricciones de configuración:
+
+* Debe definirlo como el tipo de grupo lógico mediante CLVM.
+* Debe proporcionar un límite de capacidad de almacenamiento.
+* La configuración solo admite los protocolos FC, Fibre Channel over Ethernet (FCoE) e iSCSI.
+* La configuración no reconoce el almacenamiento con aprovisionamiento fino.
+
+
+
+CAUTION: La capacidad de almacenamiento que especifique debe estar dentro de los límites permitidos del almacenamiento externo. Se producirá un error si no proporciona un límite de capacidad o si el almacenamiento externo se queda sin espacio durante la creación del disco.
+
+
+
+== Mejores prácticas
+
+Debes seguir las siguientes recomendaciones:
+
+* Defina puertos de red dedicados, ancho de banda y configuraciones de vSwitch para las redes ONTAP Select y el almacenamiento externo
+* Configure la opción de capacidad para restringir la utilización del almacenamiento (ONTAP Select no puede consumir toda la capacidad de un grupo de almacenamiento externo)
+* Verifique que todas las matrices de almacenamiento externo utilicen las funciones de redundancia y alta disponibilidad (HA) disponibles siempre que sea posible
+

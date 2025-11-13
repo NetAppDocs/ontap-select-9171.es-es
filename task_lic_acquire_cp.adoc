@@ -1,0 +1,37 @@
+---
+sidebar: sidebar 
+permalink: task_lic_acquire_cp.html 
+keywords: license, licensing, acquire, Capacity Pools 
+summary: Debe adquirir un archivo de licencia para cada pool de capacidad utilizado por los nodos de ONTAP Select . Este archivo define la capacidad de almacenamiento y la fecha de caducidad del pool. Se bloquea en el Administrador de licencias mediante una combinación del número de serie de licencia único asignado por NetApp y el ID de bloqueo de licencia asociado a la instancia de implementación. 
+---
+= Adquirir una licencia de ONTAP Select Capacity Pool
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Debe adquirir un archivo de licencia para cada pool de capacidad utilizado por los nodos de ONTAP Select . Este archivo define la capacidad de almacenamiento y la fecha de caducidad del pool. Se bloquea en el Administrador de licencias mediante una combinación del número de serie de licencia único asignado por NetApp y el ID de bloqueo de licencia asociado a la instancia de implementación.
+
+.Antes de empezar
+Debe tener el número de serie de licencia de nueve dígitos asignado al pool de capacidad por NetApp. Antes de intentar adquirir un archivo de licencia, debe esperar al menos veinticuatro horas a partir de la fecha de envío de su pedido de compra.
+
+.Acerca de esta tarea
+Debe realizar esta tarea para cada grupo de capacidad utilizado por los nodos de ONTAP Select .
+
+.Pasos
+. Acceda al sitio de soporte de NetApp mediante un navegador web e inicie sesión.
+. Haga clic en *Sistemas* en la parte superior y luego haga clic en *Licencias de software*.
+. Escriba el número de serie de la licencia para el grupo de capacidad y haga clic en *¡Ir!*.
+. En la página de detalles de la licencia, navegue hasta la columna *Detalles del producto*.
+. Haga clic en *Obtener archivo de licencia de NetApp * en la fila correspondiente.
+. Escriba el ID de bloqueo de licencia para su instancia de ONTAP Select Deploy y haga clic en *Enviar*.
+. Seleccione el método de envío apropiado y haga clic en *Enviar*.
+. Haga clic en *Aceptar* en la ventana de confirmación de entrega.
+
+
+.Después de terminar
+Debe cargar el archivo de licencia en la utilidad de administración de Implementación antes de que un nodo ONTAP Select pueda usar el grupo de capacidad.

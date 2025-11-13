@@ -1,0 +1,97 @@
+---
+sidebar: sidebar 
+permalink: task_cli_upgrade_deploy.html 
+keywords: administer, administering, cli, deploy, upgrade deploy 
+summary: Puede actualizar una máquina virtual de utilidad de implementación existente en el lugar mediante la interfaz de línea de comandos. 
+---
+= Actualizar una instancia de ONTAP Select Deploy
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede actualizar una máquina virtual de la utilidad ONTAP Select Deploy existente en el lugar mediante la CLI de la utilidad ONTAP Select Deploy.
+
+.Antes de empezar
+Asegúrese de que ONTAP Select Deploy no se utilice para realizar ninguna otra tarea durante la actualización. Consulte las notas de la versión actual para obtener información y restricciones sobre la actualización de la utilidad ONTAP Select Deploy.
+
+[NOTE]
+====
+Si tiene instalada una instancia anterior de la utilidad de administración ONTAP Select Deploy, debe actualizarla a la versión actual. El nodo ONTAP Select y el componente ONTAP Select Deploy se actualizan de forma independiente. Verlink:concept_adm_upgrading_nodes.html["Actualizar los nodos ONTAP Select"^] Para obtener más detalles.
+
+Puede actualizar directamente a ONTAP Select Deploy 9.17.1 desde ONTAP Select Deploy 9.16.1 o 9.15.1. Para actualizar desde ONTAP Select Deploy 9.14.1 o una versión anterior, revise las notas de la versión de su versión de ONTAP Select .
+
+====
+
+
+== Paso 1: Descargue el paquete
+
+Para iniciar el proceso de actualización, descargue el archivo de actualización de máquina virtual ONTAP Select Deploy correspondiente desdelink:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^] . El paquete de actualización está en un único archivo comprimido.
+
+.Pasos
+. Acceda alink:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^] Utilice un navegador web y seleccione *Descargas* en el menú Descargas.
+. Desplácese hacia abajo y seleccione * ONTAP Select Deploy Upgrade*.
+. Seleccione la versión deseada del paquete de actualización.
+. Revise el Acuerdo de licencia de usuario final (EULA) y seleccione *Aceptar y continuar*.
+. Seleccione y descargue el paquete apropiado, respondiendo a todas las indicaciones según sea necesario para su entorno.
+
+
+
+
+== Paso 2: Cargue el paquete en la máquina virtual ONTAP Select Deploy
+
+Después de descargar el paquete, debe cargar el archivo en la máquina virtual ONTAP Select Deploy.
+
+.Acerca de esta tarea
+Esta tarea describe un método para cargar el archivo en la máquina virtual ONTAP Select Deploy. Podrían existir otras opciones más adecuadas para su entorno.
+
+.Antes de empezar
+* Verifique que el archivo de actualización esté disponible en su estación de trabajo local.
+* Verifique que tenga la contraseña de la cuenta de usuario administrador.
+
+
+.Pasos
+. En una terminal de comandos de su estación de trabajo local, utilice `scp` (Protocolo de copia segura) utilidad para cargar el archivo de imagen a la máquina virtual ONTAP Select Deploy, como se muestra en el siguiente ejemplo:
++
+....
+scp ONTAPdeploy2.12_upgrade.tar.gz admin@10.228.162.221:/home/admin (provide password when prompted)
+....
+
+
+.Resultado
+El archivo de actualización se almacena en el directorio de inicio del usuario administrador.
+
+
+
+== Paso 3: Aplicar el paquete de actualización
+
+Después de cargar el archivo de actualización en la máquina virtual ONTAP Select Deploy, puede aplicar la actualización.
+
+.Antes de empezar
+* Verifique en qué directorio se ha colocado el archivo de actualización en la máquina virtual de la utilidad ONTAP Select Deploy.
+* Verifique que ONTAP Select Deploy no se utilice para realizar ninguna otra tarea mientras se realiza la actualización.
+
+
+.Pasos
+. Sign in en la CLI de la utilidad ONTAP Select Deploy usando SSH con la cuenta de administrador.
+. Realice la actualización utilizando la ruta de directorio y el nombre de archivo adecuados:
++
+[source, cli]
+----
+deploy upgrade -package-path <file_path>
+----
++
+Ejemplo de comando:
+
++
+....
+deploy upgrade -package-path /home/admin/ONTAPdeploy2.12_upgrade.tar.gz
+....
+
+
+.Después de terminar
+Antes de completar el procedimiento de actualización, se le solicitará que cree una copia de seguridad de la configuración de la máquina virtual ONTAP Select Deploy. Además, debes borrar la memoria caché del navegador para poder ver las páginas de implementación de ONTAP Select recién creadas.

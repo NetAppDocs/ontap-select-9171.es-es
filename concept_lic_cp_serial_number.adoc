@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_serial_number.html 
+keywords: license, licensing, Capacity Pools, node serial numbers 
+summary: Con el modelo de licencias por Niveles de Capacidad, el número de serie de nueve dígitos del nodo coincide con el número de serie de la licencia asignado al nodo. Sin embargo, los números de serie asignados a los nodos que utilizan el modelo de licencias por Grupos de Capacidad tienen un formato diferente. 
+---
+= Números de serie de nodos para el modelo de licencias de ONTAP Select Capacity Pools
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Con el modelo de licencias por Niveles de Capacidad, el número de serie de nueve dígitos del nodo coincide con el número de serie de la licencia asignado al nodo. Sin embargo, los números de serie asignados a los nodos que utilizan el modelo de licencias por Grupos de Capacidad tienen un formato diferente.
+
+El número de serie de un nodo que utiliza licencias de grupos de capacidad tiene el siguiente formato:
+
+`999 ppppppppp nnnnnnnn`
+
+
+NOTE: Se han agregado espacios para mayor claridad, pero no son parte del número de serie real.
+
+Cada sección del número de serie del nodo se describe en la siguiente tabla, de izquierda a derecha.
+
+[cols="15,85"]
+|===
+| Sección | Descripción 
+
+
+| '999' | Valor constante de tres dígitos reservado por NetApp. 
+
+
+| pppppppppp | Número de serie de licencia variable de nueve dígitos asignado al grupo de capacidad por NetApp 
+
+
+| nnnnnnnn | Valor variable de ocho dígitos generado por el Administrador de licencias para cada nodo que utiliza el grupo de capacidad 
+|===
+
+NOTE: Atención: Al abrir un caso con el soporte de NetApp relacionado con un nodo que utiliza una licencia de grupo de capacidad, no puede proporcionar el número de serie completo del nodo (20 dígitos). En su lugar, debe proporcionar el número de serie de la licencia de grupo de capacidad (9 dígitos). Puede obtener el número de serie de la licencia a partir del número de serie del nodo, como se muestra arriba. Omita los tres primeros dígitos del número de serie del nodo ('999') y extraiga los nueve dígitos siguientes (pppppppppp).

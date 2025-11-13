@@ -1,0 +1,84 @@
+---
+sidebar: sidebar 
+permalink: task_cli_clusters.html 
+keywords: administer, administering, cli, clusters 
+summary: Hay varias tareas relacionadas que puede realizar para administrar un clúster de ONTAP Select . 
+---
+= Administre los clústeres de ONTAP Select mediante la CLI.
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Existen varias tareas relacionadas que puede realizar para administrar un clúster ONTAP Select utilizando la CLI.
+
+
+
+== Realice una copia de seguridad de los datos de configuración de ONTAP Select Deploy.
+
+Copia de seguridad de los datos de configuración de ONTAP Select Deploy, por ejemplo, después de implementar un clúster. Los datos se guardan en un único archivo cifrado que puede descargar a su estación de trabajo local.
+
+El archivo de copia de seguridad que creas captura todos los datos de configuración. Estos datos describen aspectos de su entorno de implementación, incluidos los clústeres de ONTAP Select .
+
+.Antes de empezar
+Asegúrese de que Deploy no esté realizando ninguna otra tarea durante la operación de copia de seguridad.
+
+.Pasos
+. Sign in en la CLI de la utilidad ONTAP Select Deploy usando SSH con la cuenta de administrador.
+. Cree una copia de seguridad de los datos de configuración de ONTAP Select Deploy, que se almacenan en un directorio interno del servidor ONTAP Select Deploy:
++
+[source, cli]
+----
+deploy backup create
+----
+. Proporcione una contraseña para la copia de seguridad cuando se le solicite.
++
+El archivo de respaldo está encriptado según la contraseña.
+
+. Mostrar las copias de seguridad disponibles en el sistema:
++
+[source, cli]
+----
+deploy backup show -detailed
+----
+. Seleccione su archivo de respaldo según la fecha en el campo *Creado* y registre el valor *URL de descarga*.
++
+Puede acceder al archivo de respaldo a través de la URL.
+
+. Usando un navegador web o una utilidad como Curl, descargue el archivo de respaldo a su estación de trabajo local con la URL.
+
+
+
+
+== Eliminar un clúster de ONTAP Select
+
+Puede eliminar un clúster de ONTAP Select cuando ya no sea necesario.
+
+.Antes de empezar
+El clúster debe estar en estado fuera de línea.
+
+.Pasos
+. Sign in en la CLI de implementación de máquina virtual utilizando la cuenta de administrador.
+. Mostrar el estado del clúster:
++
+[source, cli]
+----
+cluster show -name <cluster_name>
+----
+. Si el clúster no está fuera de línea, póngalo en estado fuera de línea:
++
+[source, cli]
+----
+cluster offline -name <cluster_name>
+----
+. Tras confirmar que el clúster está en estado fuera de línea, elimine el clúster:
++
+[source, cli]
+----
+cluster delete -name <cluster_name>
+----
+

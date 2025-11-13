@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: concept_api_before_browser.html 
+keywords: rest api, deploy rest api, rest, access browser, before you begin 
+summary: Hay varias cosas que debe tener en cuenta antes de utilizar la página de documentación en línea de Deploy. 
+---
+= Antes de acceder a la API de implementación de ONTAP Select con un navegador
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Hay varias cosas que debe tener en cuenta antes de utilizar la página de documentación en línea de Deploy.
+
+
+
+== Plan de implementación
+
+Si planea realizar llamadas a la API al realizar tareas específicas de implementación o administración, considere crear un plan de implementación. Estos planes pueden ser formales o informales y generalmente contienen sus objetivos y las llamadas a la API que se utilizarán. Consulte Procesos de flujo de trabajo que utilizan la API REST de implementación para obtener más información.
+
+
+
+== Ejemplos JSON y definiciones de parámetros
+
+Cada llamada a la API se describe en la página de documentación con un formato uniforme. El contenido incluye notas de implementación, parámetros de consulta y códigos de estado HTTP. Además, puede mostrar detalles sobre el JSON utilizado con las solicitudes y respuestas de la API, como se indica a continuación:
+
+* Valor de ejemplo: Si hace clic en "Valor de ejemplo" en una llamada API, se mostrará una estructura JSON típica de la llamada. Puede modificar el ejemplo según sea necesario y usarlo como entrada para su solicitud.
+* Modelo Si hace clic en _Modelo_, se muestra una lista completa de los parámetros JSON, con una descripción de cada parámetro.
+
+
+
+
+== Precaución al realizar llamadas API
+
+Todas las operaciones de API que realice mediante la página de documentación de Implementación son operaciones en tiempo real. Tenga cuidado de no crear, actualizar ni eliminar por error la configuración ni otros datos.

@@ -1,0 +1,49 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_physical_switch_config.html 
+keywords: ontap select, upstream physical switch configuration 
+summary: Detalles de configuración del conmutador físico ascendente basados en entornos de conmutador único y de conmutadores múltiples. 
+---
+= Configuración del conmutador físico ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Detalles de configuración del conmutador físico ascendente basados en entornos de conmutador único y de conmutadores múltiples.
+
+Se debe prestar especial atención al tomar decisiones de conectividad desde la capa de conmutación virtual a los conmutadores físicos. La separación del tráfico interno del clúster de los servicios de datos externos debe extenderse a la capa de red física ascendente mediante el aislamiento proporcionado por las VLAN de capa 2.
+
+Los puertos físicos del switch deben configurarse como puertos troncales. El tráfico externo de ONTAP Select puede separarse entre varias redes de capa 2 de dos maneras. Un método consiste en usar puertos virtuales etiquetados con VLAN de ONTAP con un solo grupo de puertos. El otro método consiste en asignar grupos de puertos separados en modo VST al puerto de administración e0a. También debe asignar puertos de datos a e0b y e0c/e0g, según la versión de ONTAP Select y la configuración de un solo nodo o multinodo. Si el tráfico externo se separa entre varias redes de capa 2, los puertos físicos del switch de enlace ascendente deben tener esas VLAN en su lista de VLAN permitidas.
+
+El tráfico de red interna de ONTAP Select se produce mediante interfaces virtuales definidas con direcciones IP locales de enlace. Dado que estas direcciones IP no son enrutables, el tráfico interno entre los nodos del clúster debe fluir a través de una única red de capa 2. No se admiten saltos de ruta entre los nodos del clúster de ONTAP Select .
+
+
+
+== Conmutador físico compartido
+
+La siguiente figura muestra una posible configuración de switch utilizada por un nodo en un clúster multinodo de ONTAP Select . En este ejemplo, las NIC físicas utilizadas por los vSwitches que alojan los grupos de puertos de red internos y externos están conectadas al mismo switch ascendente. El tráfico del switch se mantiene aislado mediante dominios de difusión dentro de VLAN independientes.
+
+
+NOTE: Para la red interna de ONTAP Select , el etiquetado se realiza a nivel de grupo de puertos. Si bien el siguiente ejemplo utiliza VGT para la red externa, tanto VGT como VST son compatibles con ese grupo de puertos.
+
+*Configuración de red mediante conmutador físico compartido*
+
+image:DDN_06.jpg["Configuración de red mediante conmutador físico compartido"]
+
+
+NOTE: En esta configuración, el conmutador compartido se convierte en un único punto de fallo. Si es posible, se deben utilizar varios conmutadores para evitar que un fallo de hardware físico provoque una interrupción de la red del clúster.
+
+
+
+== Múltiples conmutadores físicos
+
+Cuando se necesita redundancia, se deben utilizar varios conmutadores de red físicos. La siguiente figura muestra una configuración recomendada para un nodo en un clúster multinodo de ONTAP Select . Las tarjetas de red (NIC) de los grupos de puertos internos y externos se conectan a diferentes conmutadores físicos, lo que protege al usuario ante un fallo de un único conmutador de hardware. Se configura un canal de puerto virtual entre los conmutadores para evitar problemas de árbol de expansión.
+
+*Configuración de red utilizando múltiples conmutadores físicos*
+
+image:DDN_07.jpg["Configuración de red mediante múltiples conmutadores físicos"]

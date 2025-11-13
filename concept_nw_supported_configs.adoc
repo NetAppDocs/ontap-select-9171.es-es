@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_supported_configs.html 
+keywords: ontap select, supported network configurations 
+summary: Seleccione el mejor hardware y configure su red para optimizar el rendimiento y la resiliencia. 
+---
+= Configuraciones de red compatibles con ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Seleccione el mejor hardware y configure su red para optimizar el rendimiento y la resiliencia.
+
+Los proveedores de servidores comprenden que los clientes tienen necesidades diferentes y que la elección es crucial. Por lo tanto, al comprar un servidor físico, existen numerosas opciones disponibles para la conectividad de red. La mayoría de los sistemas básicos se entregan con diversas opciones de NIC que ofrecen opciones de un solo puerto y multipuerto con diferentes permutaciones de velocidad y rendimiento. Esto incluye compatibilidad con adaptadores NIC de 25 Gb/s y 40 Gb/s con VMware ESX.
+
+Dado que el rendimiento de la VM ONTAP Select está directamente vinculado a las características del hardware subyacente, aumentar el rendimiento de la VM mediante la selección de tarjetas de red (NIC) de mayor velocidad resulta en un clúster de mayor rendimiento y una mejor experiencia de usuario. Se pueden utilizar cuatro tarjetas de red de 10 Gb o dos de mayor velocidad (25/40 Gb/s) para lograr un diseño de red de alto rendimiento. También se admiten otras configuraciones. Para clústeres de dos nodos, se admiten cuatro puertos de 1 Gb o uno de 10 Gb. Para clústeres de un solo nodo, se admiten dos puertos de 1 Gb.
+
+.Configuraciones mínimas y recomendadas de la red
+Hay varias configuraciones de Ethernet compatibles según el tamaño del clúster.
+
+[cols="30,35,35"]
+|===
+| Tamaño del clúster | Requisitos mínimos | Recomendación 
+
+
+| Clúster de un solo nodo | 2 x 1 GbE | 2 x 10 GbE 
+
+
+| Clúster de dos nodos o MetroCluster SDS | 4 x 1 GbE o 1 x 10 GbE | 2 x 10 GbE 
+
+
+| clúster de cuatro, seis u ocho nodos | 2 x 10 GbE | 4 x 10 GbE o 2 x 25/40 GbE 
+|===
+
+NOTE: No se admite la conversión entre topologías de enlace único y de enlaces múltiples en un clúster en ejecución debido a la posible necesidad de convertir entre diferentes configuraciones de equipos de NIC requeridas para cada topología.
+
+.Configuración de red mediante múltiples conmutadores físicos
+Cuando hay suficiente hardware disponible, NetApp recomienda utilizar la configuración multiswitch que se muestra en la siguiente figura, debido a la protección adicional contra fallas físicas del conmutador.
+
+image:BP_02.jpg["Configuración de red mediante múltiples conmutadores físicos"]

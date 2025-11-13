@@ -1,0 +1,233 @@
+---
+sidebar: sidebar 
+permalink: task_cli_deploy_recover_two_node.html 
+keywords: administer, administering, cli, two node cluster, recover, recovering 
+summary: 'Si la utilidad ONTAP Select Deploy falla o deja de estar disponible por algún motivo, perderá la capacidad de administrar los nodos y clústeres de ONTAP Select . Además, todos los clústeres de dos nodos pierden la capacidad de alta disponibilidad (HA) porque el servicio de mediación incluido en Deploy no está disponible. Si se produce un fallo irrecuperable, deberá recuperar la instancia de la utilidad Deploy para restaurar la funcionalidad administrativa y de alta disponibilidad (HA).' 
+---
+= Recupere la utilidad ONTAP Select Deploy para un clúster de dos nodos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Si la utilidad ONTAP Select Deploy falla o deja de estar disponible por algún motivo, perderá la capacidad de administrar los nodos y clústeres de ONTAP Select . Además, todos los clústeres de dos nodos pierden la capacidad de alta disponibilidad (HA) porque el servicio de mediación incluido en Deploy no está disponible. Si se produce un fallo irrecuperable, deberá recuperar la instancia de la utilidad Deploy para restaurar la funcionalidad administrativa y de alta disponibilidad (HA).
+
+
+
+== Prepárese para recuperar la utilidad Deploy
+
+Para garantizar el éxito, debe prepararse antes de intentar recuperar una instancia de la utilidad Deploy. Debes estar familiarizado con varios procedimientos administrativos y disponer de la información necesaria.
+
+.Pasos
+. Verifique que puede instalar una nueva instancia de la utilidad ONTAP Select Deploy en su entorno de hipervisor.
++
+link:task_install_deploy.html["Aprenda cómo instalar la utilidad ONTAP Select Deploy"]
+
+. Verifique que puede iniciar sesión en el clúster ONTAP Select y acceder al shell del clúster ONTAP (CLI).
+. Determine si tiene una copia de seguridad de los datos de configuración de la instancia de la utilidad Deploy que falló y que contiene el clúster de dos nodos de ONTAP Select . Es posible que tenga una copia de seguridad que no contenga el clúster.
+. Verifique que puede restaurar una copia de seguridad de los datos de configuración de Deploy, según el procedimiento de recuperación utilizado.
++
+link:task_cli_migrate_deploy.html#step-3-restore-the-deploy-configuration-data-to-the-new-virtual-machine["Aprenda cómo restaurar los datos de configuración de Deploy en la nueva máquina virtual."]
+
+. Dispones de la dirección IP de la máquina virtual de la utilidad Deploy original que falló.
+. Determine si se utiliza el sistema de licencias de Grupos de Capacidad o de Niveles de Capacidad. Si utiliza licencias de grupos de capacidad, debe reinstalar cada licencia de grupo de capacidad después de recuperar o restaurar la instancia de implementación.
+. Decida qué procedimiento utilizar al recuperar una instancia de la utilidad ONTAP Select Deploy. Su decisión se basa en si tiene una copia de seguridad de los datos de configuración de la utilidad de implementación original fallida que contiene el clúster de dos nodos de ONTAP Select .
++
+[cols="35,65"]
+|===
+| ¿Tiene una copia de seguridad de implementación que contenga el clúster de dos nodos? | Utilice el procedimiento de recuperación... 
+
+
+| Sí | <<restore-deploy-backup,Restaurar una instancia de la utilidad de implementación mediante una copia de seguridad de la configuración>> 
+
+
+| No | <<restore-and-recover-deploy,Reconfigurar y recuperar una instancia de la utilidad de implementación>> 
+|===
+
+
+
+
+== Restaurar una instancia de la utilidad de implementación mediante una copia de seguridad de la configuración
+
+Si tiene una copia de seguridad de la instancia de la utilidad de implementación fallida que contiene el clúster de dos nodos, puede restaurar los datos de configuración en la nueva instancia de la máquina virtual de implementación. A continuación, debe completar la recuperación configurando adicionalmente los dos nodos del clúster de ONTAP Select .
+
+.Antes de empezar
+Realice una copia de seguridad de los datos de configuración de la máquina virtual Deploy original que falló y que contiene el clúster de dos nodos. Debe poder iniciar sesión en la CLI de ONTAP del clúster de dos nodos y conocer los nombres de ONTAP de ambos nodos.
+
+.Acerca de esta tarea
+Dado que la copia de seguridad de la configuración que restaura contiene el clúster de dos nodos, los buzones y destinos iSCSI del mediador se vuelven a crear en la nueva máquina virtual de la utilidad de implementación.
+
+.Pasos
+. Prepare una nueva instancia de la utilidad ONTAP Select Deploy:
++
+.. Instalar una nueva máquina virtual de la utilidad de implementación.
+.. Restaurar la configuración de implementación desde una copia de seguridad anterior a la nueva máquina virtual.
++
+Consulte las tareas relacionadas para obtener información más detallada sobre los procedimientos de instalación y restauración.
+
+
+
+. Sign in en la interfaz de línea de comandos de ONTAP del clúster de dos nodos ONTAP Select .
+. Ingresar al modo de privilegios avanzados:
++
+[source, cli]
+----
+set adv
+----
+. Si la dirección IP de la nueva máquina virtual de implementación es diferente a la de la máquina virtual de implementación original, elimine los destinos iSCSI del mediador antiguo y agregue nuevos destinos:
++
+[source, cli]
+----
+storage iscsi-initiator remove-target -node * -target-type mailbox
+----
++
+[source, cli]
+----
+storage iscsi-initiator add-target -node <node1_name> -label mediator -target-type mailbox -target-portal <ip_address> -target-name <target>
+----
++
+[source, cli]
+----
+storage iscsi-initiator add-target -node <node2_name> -label mediator -target-type mailbox -target-portal <ip_address> -target-name <target>
+----
++
+El `<ip_address>` El parámetro es la dirección IP de la nueva máquina virtual de implementación.
+
++
+Estos comandos permiten que los nodos de ONTAP Select descubran los discos del buzón en la nueva máquina virtual de la utilidad de implementación.
+
+. Determinar los nombres de los discos mediadores:
++
+[source, cli]
+----
+disk show -container-type mediator
+----
+. Asignar los discos del buzón a los dos nodos:
++
+[source, cli]
+----
+disk assign -disk <mediator-disk1-name> -owner <node1-name>
+
+disk assign -disk <mediator-disk2-name> -owner <node2-name>
+----
+. Verifique que la conmutación por error de almacenamiento esté habilitada:
++
+[source, cli]
+----
+storage failover show
+----
+
+
+.Después de terminar
+Si utiliza licencias de Capacity Pools, reinstale cada licencia de Capacity Pool. Verlink:task_adm_licenses.html#reinstall-a-capacity-pool-license["Reinstalar una licencia de Capacity Pool"] Para obtener más detalles.
+
+
+
+== Reconfigurar y recuperar una instancia de la utilidad de implementación
+
+Si no dispone de una copia de seguridad de la instancia de la utilidad Deploy que ha fallado y que contiene el clúster de dos nodos, configure el destino iSCSI del mediador y el buzón de correo en la nueva máquina virtual Deploy. A continuación, se completa la recuperación realizando una configuración adicional de los dos nodos en el clúster ONTAP Select .
+
+.Antes de empezar
+Verifique que dispone del nombre del destino del mediador para la nueva instancia de la utilidad Deploy. Debe poder iniciar sesión en la CLI de ONTAP del clúster de dos nodos y conocer los nombres de ONTAP de ambos nodos.
+
+.Acerca de esta tarea
+Opcionalmente, puede restaurar una copia de seguridad de la configuración en la nueva máquina virtual de Deploy, aunque no contenga el clúster de dos nodos. Dado que el clúster de dos nodos no se recrea con la restauración, debe agregar manualmente el destino iSCSI y el buzón del mediador a la nueva instancia de la utilidad de Deploy a través de la página web de la documentación en línea de ONTAP Select en Deploy. Debe poder iniciar sesión en el clúster de dos nodos y conocer los nombres ONTAP de ambos nodos.
+
+
+NOTE: El objetivo del procedimiento de recuperación es restaurar el clúster de dos nodos a un estado saludable, donde se puedan realizar operaciones normales de adquisición y devolución de HA.
+
+.Pasos
+. Prepare una nueva instancia de la utilidad ONTAP Select Deploy:
++
+.. Instalar una nueva máquina virtual de la utilidad de implementación.
+.. Opcionalmente, restaure la configuración de implementación desde una copia de seguridad anterior a la nueva máquina virtual.
++
+Si restaura una copia de seguridad anterior, la nueva instancia de implementación no contendrá el clúster de dos nodos. Consulte la sección de información relacionada para obtener más información sobre los procedimientos de instalación y restauración.
+
+
+
+. Sign in en la interfaz de línea de comandos de ONTAP del clúster de dos nodos ONTAP Select .
+. Ingrese al modo privilegiado avanzado:
++
+[source, cli]
+----
+set adv
+----
+. Obtener el nombre del objetivo iSCSI del mediador:
++
+[source, cli]
+----
+storage iscsi-initiator show -target-type mailbox
+----
+. Acceda a la página web de documentación en línea en la nueva máquina virtual de la utilidad de implementación e inicie sesión con la cuenta de administrador:
++
+`\http://<ip_address>/api/ui`
+
++
+Debe utilizar la dirección IP de su máquina virtual Deploy.
+
+. Seleccione *Mediador* y luego *GET /mediators*.
+. Seleccione *¡Pruébelo!* para mostrar una lista de mediadores mantenidos por Deploy.
++
+Anote el ID de la instancia del mediador deseado.
+
+. Seleccione *Mediador* y luego *POST*.
+. Proporcione el valor para mediator_id.
+. Seleccione el *Modelo* que aparece junto a `iscsi_target` y complete el valor del nombre.
++
+Utilice el nombre de destino para el parámetro iqn_name.
+
+. Seleccione *¡Pruébelo!* para crear el destino iSCSI del mediador.
++
+Si la solicitud es exitosa, recibirá el código de estado HTTP 200.
+
+. Si la dirección IP de la nueva máquina virtual de implementación es diferente a la de la máquina virtual de implementación original, debe usar la CLI de ONTAP para eliminar los antiguos objetivos iSCSI del mediador y agregar nuevos objetivos:
++
+[source, cli]
+----
+storage iscsi-initiator remove-target -node * -target-type mailbox
+----
++
+[source, cli]
+----
+storage iscsi-initiator add-target -node <node1_name> -label mediator -target-type mailbox -target-portal <ip_address> -target-name <target>
+----
++
+[source, cli]
+----
+storage iscsi-initiator add-target -node <node2_name> -label mediator-target-type mailbox -target-portal <ip_address> -target-name <target>
+----
++
+El `<ip_address>` El parámetro es la dirección IP de la nueva máquina virtual de implementación.
+
++
+Estos comandos permiten que los nodos de ONTAP Select descubran los discos del buzón en la nueva máquina virtual de la utilidad de implementación.
+
+. Determinar los nombres de los discos mediadores:
++
+[source, cli]
+----
+disk show -container-type mediator
+----
+. Asignar los discos del buzón a los dos nodos:
++
+[source, cli]
+----
+disk assign -disk <mediator-disk1-name> -owner <node1-name>
+
+disk assign -disk <mediator-disk2-name> -owner <node2-name>
+----
+. Verifique que la conmutación por error de almacenamiento esté habilitada:
++
+[source, cli]
+----
+storage failover show
+----
+
+
+.Después de terminar
+Si utiliza licencias de Capacity Pools, reinstale cada licencia de Capacity Pool. Verlink:task_adm_licenses.html#reinstall-a-capacity-pool-license["Reinstalar una licencia de Capacity Pool"] Para obtener más detalles.

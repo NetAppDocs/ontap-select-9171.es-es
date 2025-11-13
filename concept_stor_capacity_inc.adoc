@@ -1,0 +1,71 @@
+---
+sidebar: sidebar 
+permalink: concept_stor_capacity_inc.html 
+keywords: ontap select, deploy, increase storage 
+summary: ONTAP Deploy se puede utilizar para agregar y otorgar licencias de almacenamiento adicional para cada nodo en un clúster ONTAP Select . 
+---
+= Aumente la capacidad de almacenamiento de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Deploy se puede utilizar para agregar y otorgar licencias de almacenamiento adicional para cada nodo en un clúster ONTAP Select .
+
+La función de agregar almacenamiento en ONTAP Deploy es la única manera de aumentar el almacenamiento administrado, y no se permite modificar directamente la máquina virtual de ONTAP Select . La siguiente figura muestra el icono "+" que inicia el asistente para agregar almacenamiento.
+
+image:ST_05.jpg["Detalles del clúster y del nodo"]
+
+Las siguientes consideraciones son importantes para el éxito de la operación de expansión de capacidad. Para aumentar la capacidad, la licencia existente debe cubrir la cantidad total de espacio (existente más nuevo). Una operación de ampliación de almacenamiento que haga que el nodo exceda su capacidad de licencia falla. Primero se debe instalar una nueva licencia con capacidad suficiente.
+
+Si se añade capacidad adicional a un agregado de ONTAP Select existente, el nuevo pool de almacenamiento (almacén de datos) debería tener un perfil de rendimiento similar al del pool de almacenamiento (almacén de datos) existente. Tenga en cuenta que no es posible añadir almacenamiento que no sea SSD a un nodo de ONTAP Select instalado con una personalidad similar a AFF(con Flash habilitado). Tampoco se admite la combinación de DAS y almacenamiento externo.
+
+Si se añade almacenamiento local a un sistema para proporcionar grupos de almacenamiento local (DAS) adicionales, se debe crear un grupo RAID y un LUN (o varios) adicional. Al igual que con los sistemas FAS , se debe tener cuidado para asegurar que el rendimiento del nuevo grupo RAID sea similar al del grupo RAID original si se añade espacio al mismo agregado. Si se crea un nuevo agregado, la distribución del nuevo grupo RAID podría ser diferente si se comprenden bien las implicaciones de rendimiento para el nuevo agregado.
+
+El nuevo espacio se puede agregar a ese mismo almacén de datos como una extensión si su tamaño total no supera el tamaño máximo admitido. Agregar una extensión al almacén de datos donde ya está instalado ONTAP Select se puede hacer dinámicamente y no afecta las operaciones del nodo ONTAP Select .
+
+Si el nodo ONTAP Select es parte de un par HA, se deben considerar algunas cuestiones adicionales.
+
+En un par de alta disponibilidad (HA), cada nodo contiene una copia reflejada de los datos de su socio. Añadir espacio al nodo 1 requiere que se añada la misma cantidad de espacio a su socio, el nodo 2, para que todos los datos del nodo 1 se repliquen en el nodo 2. En otras palabras, el espacio añadido al nodo 2 como parte de la operación de aumento de capacidad para el nodo 1 no es visible ni accesible en el nodo 2. El espacio se añade al nodo 2 para que los datos del nodo 1 estén completamente protegidos durante un evento de alta disponibilidad (HA).
+
+Hay una consideración adicional con respecto al rendimiento. Los datos del nodo 1 se replican sincrónicamente al nodo 2. Por lo tanto, el rendimiento del nuevo espacio (almacén de datos) en el nodo 1 debe coincidir con el del nodo 2. En otras palabras, añadir espacio en ambos nodos, pero utilizando diferentes tecnologías de disco o tamaños de grupo RAID diferentes, puede generar problemas de rendimiento. Esto se debe a la operación RAID SyncMirror, que se utiliza para mantener una copia de los datos en el nodo asociado.
+
+Para aumentar la capacidad accesible para el usuario en ambos nodos de un par de alta disponibilidad (HA), se deben realizar dos operaciones de adición de almacenamiento, una para cada nodo. Cada operación de adición de almacenamiento requiere espacio adicional en ambos nodos. El espacio total requerido en cada nodo es igual al espacio requerido en el nodo 1 más el espacio requerido en el nodo 2.
+
+La configuración inicial consta de dos nodos, cada uno con dos almacenes de datos de 30 TB de espacio. ONTAP Deploy crea un clúster de dos nodos, donde cada nodo consume 10 TB de espacio del almacén de datos 1. ONTAP Deploy configura cada nodo con 5 TB de espacio activo por nodo.
+
+La siguiente figura muestra los resultados de una única operación de adición de almacenamiento para el nodo 1. ONTAP Select sigue utilizando la misma cantidad de almacenamiento (15 TB) en cada nodo. Sin embargo, el nodo 1 tiene más almacenamiento activo (10 TB) que el nodo 2 (5 TB). Ambos nodos están completamente protegidos, ya que cada uno aloja una copia de los datos del otro. Queda espacio libre adicional en el almacén de datos 1, y el almacén de datos 2 sigue completamente libre.
+
+*Distribución de capacidad: asignación y espacio libre después de una única operación de adición de almacenamiento*
+
+image:ST_06.jpg["Distribución de capacidad: asignación y espacio libre después de una única operación de adición de almacenamiento"]
+
+Dos operaciones adicionales de adición de almacenamiento en el nodo 1 consumen el resto del almacén de datos 1 y una parte del almacén de datos 2 (utilizando el límite de capacidad). La primera operación de adición de almacenamiento consume los 15 TB de espacio libre restantes en el almacén de datos 1. La siguiente figura muestra el resultado de la segunda operación de adición de almacenamiento. En este punto, el nodo 1 gestiona 50 TB de datos activos, mientras que el nodo 2 tiene los 5 TB originales.
+
+*Distribución de capacidad: asignación y espacio libre después de dos operaciones adicionales de adición de almacenamiento para el nodo 1*
+
+image:ST_07.jpg["Distribución de capacidad: asignación y espacio libre después de dos operaciones de adición de almacenamiento adicionales para el nodo 1"]
+
+El tamaño máximo de VMDK utilizado durante las operaciones de adición de capacidad es de 16 TB. El tamaño máximo de VMDK utilizado durante las operaciones de creación de clústeres sigue siendo de 8 TB. ONTAP Deploy crea VMDK del tamaño correcto según la configuración (clúster de un solo nodo o multinodo) y la cantidad de capacidad que se agregue. Sin embargo, el tamaño máximo de cada VMDK no debe superar los 8 TB durante las operaciones de creación de clústeres ni los 16 TB durante las operaciones de adición de almacenamiento.
+
+
+
+== Aumente la capacidad de ONTAP Select con RAID de software
+
+El asistente para agregar almacenamiento también se puede usar para aumentar la capacidad administrada de los nodos de ONTAP Select mediante RAID por software. El asistente solo muestra las unidades SDD DAS disponibles que se pueden asignar como RDM a la máquina virtual de ONTAP Select .
+
+Si bien es posible aumentar la capacidad de la licencia en un TB, al trabajar con RAID por software, no es posible aumentarla físicamente en un TB. Al igual que al agregar discos a una matriz FAS o AFF , ciertos factores determinan la cantidad mínima de almacenamiento que se puede agregar en una sola operación.
+
+Tenga en cuenta que, en un par de alta disponibilidad (HA), añadir almacenamiento al nodo 1 requiere que el par de HA del nodo (nodo 2) también tenga la misma cantidad de unidades disponibles. Tanto las unidades locales como los discos remotos se utilizan en una sola operación de adición de almacenamiento en el nodo 1. Es decir, las unidades remotas se utilizan para garantizar que el nuevo almacenamiento del nodo 1 se replique y proteja en el nodo 2. Para añadir almacenamiento localmente utilizable en el nodo 2, se requiere una operación de adición de almacenamiento independiente y la misma cantidad de unidades disponibles en ambos nodos.
+
+ONTAP Select particiona cualquier unidad nueva en las mismas particiones raíz, de datos y de datos que las unidades existentes. La operación de particionamiento se lleva a cabo durante la creación de un nuevo agregado o durante la expansión de uno existente. El tamaño de la franja de la partición raíz de cada disco se configura para que coincida con el tamaño de la partición raíz existente en los discos existentes. Por lo tanto, cada uno de los dos tamaños de partición de datos iguales se puede calcular como la capacidad total del disco menos el tamaño de la partición raíz dividido entre dos. El tamaño de la franja de la partición raíz es variable y se calcula durante la configuración inicial del clúster de la siguiente manera. El espacio raíz total requerido (68 GB para un clúster de un solo nodo y 136 GB para pares de alta disponibilidad) se divide entre el número inicial de discos menos las unidades de repuesto y de paridad. El tamaño de la franja de la partición raíz se mantiene constante en todas las unidades que se agregan al sistema.
+
+Si está creando un nuevo agregado, la cantidad mínima de unidades necesarias varía según el tipo de RAID y si el nodo ONTAP Select es parte de un par HA.
+
+Si se añade almacenamiento a un agregado existente, es necesario tener en cuenta algunas consideraciones adicionales. Es posible añadir unidades a un grupo RAID existente, siempre que este no haya alcanzado el límite máximo. Las prácticas recomendadas tradicionales de FAS y AFF para añadir discos a grupos RAID existentes también se aplican en este caso, y la creación de un punto de acceso en el nuevo disco puede ser un problema. Además, solo se pueden añadir unidades con un tamaño de partición de datos igual o superior a un grupo RAID existente. Como se explicó anteriormente, el tamaño de la partición de datos no es el mismo que el tamaño bruto de la unidad. Si las particiones de datos que se añaden son mayores que las particiones existentes, las nuevas unidades tienen el tamaño adecuado. En otras palabras, una parte de la capacidad de cada nueva unidad permanece sin utilizar.
+
+También es posible usar las nuevas unidades para crear un nuevo grupo RAID como parte de un agregado existente. En este caso, el tamaño del grupo RAID debe coincidir con el del grupo RAID existente.

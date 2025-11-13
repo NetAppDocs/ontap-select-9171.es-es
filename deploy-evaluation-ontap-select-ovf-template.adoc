@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: deploy-evaluation-ontap-select-ovf-template.html 
+keywords: ontap, select, ovf, template, deployment, evaluation, license 
+summary: Puede implementar rápidamente una instancia de evaluación de 90 días de un clúster ONTAP Select de un solo nodo usando una plantilla OVF en VMware ESXi. 
+---
+= Implementar una instancia de evaluación de 90 días de un clúster ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede implementar rápidamente una instancia de evaluación de 90 días de un clúster ONTAP Select de un solo nodo usando una plantilla OVF en VMware ESXi.
+
+.Acerca de esta tarea
+* No es necesario obtener un número de serie ni una licencia de capacidad de almacenamiento de NetApp.
+* Puede asignar la misma cantidad de almacenamiento para los datos del usuario que una licencia adquirida.
+* No es posible actualizar el nodo de una licencia de evaluación a una licencia comprada.
+* Solo se puede usar una cuenta de vCenter para implementar la plantilla OVF. Actualmente no se admite la instalación directa en un host ESXi.
+* Debe instalar la plantilla OVF (incluida en un archivo ova) mediante el cliente independiente de vSphere o el cliente web de vSphere (la única opción para ESXi 6.5 y versiones posteriores). No utilice la utilidad de administración ONTAP Select Deploy.
+
+
+
+
+== Preparar el host del clúster ONTAP Select
+
+Utilice los siguientes requisitos para preparar el host ESXi donde se implementa el clúster ONTAP Select . La descripción de la plataforma se basa en la configuración de instancia estándar o pequeña con almacenamiento de conexión directa (DAS) local formateado con el sistema de archivos VMFS-5 o VMFS-6.
+
+image:prepare_ESXi_host_requirements.png["Requisitos para preparar el host ESXi"]
+
+Para obtener información adicional sobre las opciones de configuración del host, consulte lalink:esxi-host-configuration-and-preparation-checklist.html["Documentación de instalación de ONTAP Select"] .
+
+
+
+== Implementar un clúster ONTAP Select de un solo nodo utilizando una plantilla OVF
+
+Complete los siguientes pasos en un servidor host ESXi de 64 bits compatible.
+
+.Pasos
+. Vaya a la página del Programa de productos de evaluación de NetApp y seleccione * ONTAP Select* para descargar la plantilla OVF de ONTAP Select a su estación de trabajo local.
+. Sign in en el cliente web VMware vSphere utilizando una cuenta con privilegios administrativos.
+. Seleccione el host utilizando una de las siguientes opciones:
++
+** Seleccione *Archivo* > *Implementar plantilla OVF*.
+** Seleccione *Centro de datos*. Luego, haga clic derecho y seleccione *Implementar plantilla OVF*.
+
+
+. Seleccione el archivo OVA de origen de ONTAP Select en su estación de trabajo local, luego seleccione *Siguiente*.
+. Revise los detalles de la plantilla OVF y seleccione *Siguiente*.
+. Revise los detalles del EULA y seleccione *Aceptar*. Luego, seleccione *Siguiente*.
+. Escriba el nombre de la nueva máquina virtual y seleccione *Siguiente*.
+. Si hay más de un almacén de datos disponible, seleccione el almacén de datos y seleccione *Siguiente*.
+. Seleccione *Thick Provision Lazy Zeroed* y luego seleccione *Siguiente*.
+. Seleccione las redes de datos y administración, luego seleccione *Siguiente*.
+. En la página *Propiedades*, proporcione todos los valores requeridos y seleccione *Siguiente*.
+. Revise los detalles de la implementación y seleccione *Encender después de la implementación*.
+. Seleccione *Finalizar* para comenzar el proceso de implementación.
+. Una vez implementado el clúster de ONTAP Select , puede configurarlo mediante el Administrador del Sistema o la interfaz CLI. Debe asignar el disco mediante la operación estándar de ONTAP *disk assignment*.
+
+
+.Información relacionada
+link:http://mysupport.netapp.com/matrix["Herramienta de matriz de interoperabilidad"^]

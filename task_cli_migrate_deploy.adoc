@@ -1,0 +1,119 @@
+---
+sidebar: sidebar 
+permalink: task_cli_migrate_deploy.html 
+keywords: administer, administering, cli, deploy, deploy instance, migrate 
+summary: Puede migrar una instancia existente de la utilidad de administración Deploy a una nueva máquina virtual mediante la interfaz de línea de comandos. 
+---
+= Migrar una instancia de ONTAP Select Deploy a una nueva máquina virtual
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede migrar una instancia existente de la utilidad de administración Deploy a una nueva máquina virtual mediante la interfaz de línea de comandos.
+
+Este procedimiento se basa en la creación de una nueva máquina virtual que utiliza los datos de configuración de la máquina virtual original. Las máquinas virtuales nueva y original deben ejecutar la misma versión de la utilidad de implementación. No es posible migrar a una versión diferente de la utilidad de implementación.
+
+
+
+== Paso 1: Realizar una copia de seguridad de los datos de configuración de implementación
+
+Debe crear una copia de seguridad de los datos de configuración de Deploy como parte de la migración de la máquina virtual. También debe crear una copia de seguridad después de implementar un clúster de ONTAP Select . Los datos se guardan en un único archivo cifrado que puede descargar a su estación de trabajo local.
+
+.Antes de empezar
+* Asegúrese de que Deploy no esté realizando ninguna otra tarea durante la operación de copia de seguridad.
+* Guarde la imagen de la máquina virtual de implementación original.
++
+
+CAUTION: La imagen de máquina virtual de implementación original será necesaria más adelante en este procedimiento cuando restaure los datos de configuración de implementación de la máquina virtual original a la nueva.
+
+
+
+.Acerca de esta tarea
+El archivo de copia de seguridad que cree captura todos los datos de configuración de la máquina virtual. Estos datos describen aspectos de su entorno de implementación, incluidos los clústeres de ONTAP Select .
+
+.Pasos
+. Sign in en la CLI de la utilidad de implementación mediante SSH con la cuenta de administrador.
+. Cree una copia de seguridad de los datos de configuración de implementación, que se almacenan en un directorio interno en el servidor de implementación:
++
+[source, cli]
+----
+deploy backup create
+----
+. Proporcione una contraseña para la copia de seguridad cuando se le solicite.
++
+El archivo de respaldo está encriptado según la contraseña.
+
+. Mostrar las copias de seguridad disponibles en el sistema:
++
+[source, cli]
+----
+deploy backup show -detailed
+----
+. Seleccione su archivo de respaldo según la fecha en el campo *Creado* y registre el valor *URL de descarga*.
++
+Puede acceder al archivo de respaldo a través de la URL.
+
+. Usando un navegador web o una utilidad como Curl, descargue el archivo de respaldo a su estación de trabajo local con la URL.
+
+
+
+
+== Paso 2: Instalar una nueva instancia de la máquina virtual de implementación
+
+Debe crear una nueva instancia de la máquina virtual Deploy que pueda actualizar con los datos de configuración de la máquina virtual original.
+
+.Antes de empezar
+Debe estar familiarizado con los procedimientos utilizados para descargar e implementar la máquina virtual ONTAP Select Deploy en un entorno VMware.
+
+.Acerca de esta tarea
+Esta tarea se describe a un alto nivel.
+
+.Pasos
+. Cree una nueva instancia de la máquina virtual Deploy:
++
+.. Descargue la imagen de la máquina virtual.
+.. Implemente la máquina virtual y configure la interfaz de red.
+.. Acceda a la utilidad de implementación mediante SSH.
+
+
+
+
+.Información relacionada
+link:task_install_deploy.html["Instalar ONTAP Select Implementar"]
+
+
+
+== Paso 3: Restaurar los datos de configuración de implementación en la nueva máquina virtual
+
+Debe restaurar los datos de configuración de la máquina virtual original de la utilidad de implementación a la nueva máquina virtual. Los datos se encuentran en un solo archivo que debe cargar desde su estación de trabajo local.
+
+.Antes de empezar
+Debe tener los datos de configuración de una copia de seguridad anterior. Los datos se encuentran en un solo archivo y deben estar disponibles en su estación de trabajo local.
+
+.Pasos
+. En una terminal de comandos de su estación de trabajo local, utilice la utilidad sftp para cargar el archivo de copia de seguridad a la máquina virtual de implementación, como se muestra en el siguiente ejemplo:
++
+....
+sftp admin@10.234.81.101 (provide password when prompted)
+put deploy_backup_20190601162151.tar.gz
+exit
+....
+. Sign in en la CLI de la utilidad de implementación mediante SSH con la cuenta de administrador.
+. Restaurar los datos de configuración:
++
+[source, cli]
+----
+deploy backup restore -path <path_name> -filename <file_name>
+----
++
+Comando de ejemplo
+
++
+`deploy backup restore -path /home/admin -filename deploy_backup_20180601162151.tar.gz`
+
+

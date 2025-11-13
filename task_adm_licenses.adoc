@@ -1,0 +1,189 @@
+---
+sidebar: sidebar 
+permalink: task_adm_licenses.html 
+keywords: administer, administering, web, licenses 
+summary: Hay varias tareas relacionadas que puede realizar como parte de la administración de las licencias de ONTAP Select . 
+---
+= Administrar licencias de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Hay varias tareas relacionadas que puede realizar como parte de la administración de las licencias de ONTAP Select .
+
+
+
+== Administrar las licencias de nivel de capacidad
+
+Puede agregar, editar y eliminar licencias de nivel de capacidad ONTAP Select según sea necesario.
+
+.Pasos
+. Sign in en la utilidad de implementación a través de la interfaz web utilizando la cuenta de administrador.
+. Seleccione la pestaña *Administración* en la parte superior de la página.
+. Seleccione *Licencias* y seleccione *Nivel de capacidad*.
+. Opcionalmente, seleccione *Filtro* para limitar las licencias mostradas.
+. Para reemplazar una licencia existente; seleccione una licencia, seleccioneimage:icon_kebab.gif["Opciones"] y seleccione *Actualizar*.
+. Para agregar una nueva licencia, seleccione *Agregar* en la parte superior de la página y luego seleccione *Cargar licencia(s)* y seleccione un archivo de licencia de su estación de trabajo local.
+
+
+
+
+== Administrar las licencias del pool de capacidad
+
+Puede agregar, editar y eliminar licencias de ONTAP Select Capacity Pool según sea necesario.
+
+.Pasos
+. Sign in en la utilidad de implementación a través de la interfaz web utilizando la cuenta de administrador.
+. Seleccione la pestaña *Administración* en la parte superior de la página.
+. Seleccione *Licencias* y seleccione *Grupos de capacidad*.
+. Opcionalmente, seleccione *Filtro* para limitar las licencias mostradas.
+. Opcionalmente, seleccione una licencia y seleccioneimage:icon_kebab.gif["Opciones"] para gestionar una licencia existente.
+. Agregar una nueva licencia o renovar una licencia existente:
++
+[role="tabbed-block"]
+====
+.Agregar nueva licencia
+--
+Para agregar una nueva licencia, seleccione *Agregar* en la parte superior de la página.
+
+--
+.Renovar la licencia existente
+--
+Para renovar una licencia existente:
+
+.. Seleccionarimage:icon_kebab.gif["Opciones"] con una licencia existente.
+.. Seleccione *Cargar licencia(s)*.
+.. Seleccione un archivo de licencia de su estación de trabajo local.
+
+
+--
+====
+. Para ver una lista de los grupos de capacidad:
++
+.. Seleccione *Resumen*.
+.. Seleccione y expanda un grupo para ver los clústeres y nodos que alquilan almacenamiento del grupo.
+.. Vea el estado actual de la licencia en *Información de la licencia*.
+.. Puede cambiar la duración de los contratos de arrendamiento emitidos para la piscina en Vencimiento del contrato de arrendamiento.
+
+
+. Para ver una lista de los clústeres:
++
+.. Seleccione *Detalles*.
+.. Seleccione y expanda el clúster para ver la utilización del almacenamiento.
+
+
+
+
+
+
+== Reinstalar una licencia de Capacity Pool
+
+Cada licencia activa de Capacity Pool está vinculada a una instancia específica de License Manager, que se encuentra dentro de una instancia de la utilidad de administración de Deploy. Si utiliza una licencia de Capacity Pool y luego restaura o recupera la instancia de Deploy, la licencia original dejará de ser válida. Debe generar un nuevo archivo de licencia de capacidad e instalarla en la nueva instancia de Deploy.
+
+.Antes de empezar
+* Determinar todas las licencias de grupo de capacidad utilizadas por la instancia de implementación original.
+* Si restaura una copia de seguridad como parte de la creación de la nueva instancia de implementación, determine si la copia de seguridad está actual y actualizada.
+* Ubique los nodos de ONTAP Select que fueron creados más recientemente por la instancia de implementación original (solo si no se restaura una copia de seguridad actualizada de la instancia de implementación original en la nueva instancia de implementación).
+* Restaurar o recrear la instancia de implementación
+
+
+.Acerca de esta tarea
+En general, esta tarea consta de tres partes. Debe regenerar e instalar todas las licencias de grupo de capacidad utilizadas por la instancia de Deploy. Una vez reinstaladas todas las licencias en la nueva instancia de Deploy, puede restablecer el número de secuencia de serie si es necesario. Finalmente, si la dirección IP de Deploy ha cambiado, debe actualizar todos los nodos de ONTAP Select que utilicen una licencia de grupo de capacidad.
+
+.Pasos
+. Comuníquese con el soporte de NetApp y desvincule y desregistre todas las licencias de Capacity Pool para la instancia de implementación original.
+. Adquirir y descargar un nuevo archivo de licencia para cada una de las licencias del Capacity Pool.
++
+Verlink:task_lic_acquire_cp.html["Adquirir una licencia de Pool de Capacidad"] Para más información.
+
+. Instalar las licencias del grupo de capacidad en la nueva instancia de implementación:
++
+.. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+.. Seleccione la pestaña *Administración* en la parte superior de la página.
+.. Seleccione *Licencias* y luego seleccione *Grupo de capacidad*.
+.. Seleccione *Agregar* y luego *Cargar licencia(s)* para seleccionar y cargar las licencias.
+
+
+. Si creó la nueva instancia de Implementación sin restaurar una copia de seguridad o utilizó una copia de seguridad que no estaba actualizada, debe actualizar el número de secuencia de serie:
++
+.. Sign in en la interfaz de línea de comandos de la utilidad de implementación utilizando la cuenta de administrador.
+.. Mostrar el número de serie de un nodo creado más recientemente por la instancia de implementación original:
++
+`node show -cluster-name CLUSTER_NAME -name NODE_NAME -detailed`
+
+.. Extraiga los últimos ocho dígitos del número de serie del nodo de veinte dígitos para obtener el último número de secuencia de serie utilizado por la instancia de implementación original.
+.. Agregue 20 al número de secuencia de serie para crear el nuevo número de secuencia de serie.
+.. Establezca el número de secuencia de serie para la nueva instancia de implementación:
++
+`license-manager modify -serial-sequence SEQ_NUMBER`
+
+
+
+. Si la dirección IP asignada a la nueva instancia de implementación es diferente a la dirección IP de la instancia de implementación original, debe actualizar la dirección IP en cada nodo de ONTAP Select que use una licencia de grupos de capacidad:
++
+.. Sign in en la interfaz de línea de comandos de ONTAP del nodo de ONTAP Select .
+.. Ingresar al modo de privilegios avanzados:
++
+`set adv`
+
+.. Mostrar la configuración actual:
++
+`system license license-manager show`
+
+.. Establezca la dirección IP del Administrador de licencias (Implementación) utilizada por el nodo:
++
+`system license license-manager modify -host NEW_IP_ADDRESS`
+
+
+
+
+
+
+
+== Convertir una licencia de evaluación en una licencia de producción
+
+Puede actualizar un clúster de evaluación de ONTAP Select para usar una licencia de nivel de capacidad de producción con la utilidad de administración de implementación.
+
+.Antes de empezar
+* Cada nodo debe tener suficiente almacenamiento asignado para soportar el mínimo requerido para una licencia de producción.
+* Debe tener licencias de nivel de capacidad para cada nodo en el clúster de evaluación.
+
+
+.Acerca de esta tarea
+Modificar la licencia de un clúster de un solo nodo es disruptivo. Sin embargo, esto no ocurre con un clúster de varios nodos, ya que el proceso de conversión reinicia cada nodo uno a uno para aplicar la licencia.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clústeres* en la parte superior de la página y seleccione el clúster deseado.
+. En la parte superior de la página de detalles del clúster, seleccione *Haga clic aquí* para modificar la licencia del clúster.
++
+También puede seleccionar *Modificar* junto a la licencia de evaluación en la sección *Detalles del clúster*.
+
+. Seleccione una licencia de producción disponible para cada nodo o cargue licencias adicionales según sea necesario.
+. Proporcione las credenciales de ONTAP y seleccione *Modificar*.
++
+La actualización de la licencia del clúster puede tardar varios minutos. Espere a que el proceso se complete antes de salir de la página o realizar cualquier otro cambio.
+
+
+
+.Después de terminar
+Los números de serie de nodo de veinte dígitos asignados originalmente a cada nodo para la implementación de evaluación se reemplazan por los números de serie de nueve dígitos de las licencias de producción utilizadas para la actualización.
+
+
+
+== Administrar una licencia de grupo de capacidad vencida
+
+Generalmente, cuando una licencia vence, no ocurre nada. Sin embargo, no se puede instalar una licencia diferente porque los nodos están asociados a la licencia vencida. Hasta que no renueve la licencia, no debe realizar ninguna acción que desconecte el agregado, como reiniciar o realizar una conmutación por error. Se recomienda acelerar la renovación de la licencia.
+
+Para obtener más información sobre ONTAP Select y la renovación de licencias, consulte la sección Licencias, instalación, actualizaciones y reversiones en el documentolink:https://docs.netapp.com/us-en/ontap-select/reference_faq.html#licenses-installation-upgrades-and-reverts["Preguntas frecuentes"] .
+
+
+
+== Administrar licencias complementarias
+
+Para el producto ONTAP Select , las licencias complementarias se aplican directamente dentro de ONTAP y no se administran a través de ONTAP Select Deploy. Verlink:https://docs.netapp.com/us-en/ontap/system-admin/manage-licenses-concept.html["Descripción general de administración de licencias (solo administradores de clúster)"^] ylink:https://docs.netapp.com/us-en/ontap/task_admin_enable_new_features.html["Habilite nuevas funciones agregando claves de licencia"^] Para obtener más información.

@@ -1,0 +1,45 @@
+---
+indexpage:
+  title: Documentación de ONTAP Select
+  lead: NetApp ONTAP Select es un dispositivo de almacenamiento definido por software
+    que puede implementarse en diversos servidores de hardware estándar que ejecutan
+    VMware ESXi o un hipervisor de máquina virtual basada en kernel (KVM). Proporciona
+    la agilidad necesaria para construir una infraestructura de nube privada flexible
+    y escalable. Este sitio contiene la documentación de ONTAP Select 9.17.1.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Notas de la versión
+      url: https://library.netapp.com/ecm/ecm_download_file/ECMLP3351669
+    - title: Qué hay de nuevo
+      url: "/reference_new_ots.html"
+    - title: Obtenga más información sobre ONTAP Select
+      url: "/concept_ots_overview.html"
+    - title: Licencias
+      url: "/concept_lic_production.html"
+    - title: Preguntas frecuentes
+      url: "/reference_faq.html"
+  - title: Instalar y administrar
+    links:
+    - title: Planifique su implementación
+      url: "/concept_workflow_deploy.html"
+    - title: Instalar
+      url: "/task_install_deploy.html"
+    - title: Administra tus clústeres
+      url: "/concept_adm_before.html"
+    - title: Utilice la API REST
+      url: "/concept_api_how_access.html"
+    - title: Implementar una instancia de evaluación de 90 días de un clúster
+      url: "/deploy-evaluation-ontap-select-ovf-template.html"
+  - title: Más recursos
+    links:
+    - title: Biblioteca de productos ONTAP Select
+      url: https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=62293
+    - title: Documentación de ONTAP 9
+      url: https://docs.netapp.com/us-en/ontap/
+    - title: Blogs ONTAP Select
+      url: https://blog.netapp.com/tag/ontap-select/
+    - title: Comunidad ONTAP Select
+      url: https://community.netapp.com/t5/forums/filteredbylabelpage/board-id/data-ontap-discussions/label-name/ontap%20select
+    - title: Matriz de interoperabilidad
+      url: https://mysupport.netapp.com/matrix/

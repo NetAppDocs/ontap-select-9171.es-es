@@ -1,0 +1,119 @@
+---
+sidebar: sidebar 
+permalink: task_adm_clusters.html 
+keywords: administer, administering, web, clusters 
+summary: Hay varias tareas relacionadas que puede realizar para administrar un clúster de ONTAP Select . 
+---
+= Administrar clústeres de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Hay varias tareas relacionadas que puede realizar para administrar un clúster de ONTAP Select .
+
+
+
+== Mover un clúster de ONTAP Select en línea y fuera de línea
+
+Después de crear un clúster, puedes ponerlo en línea y fuera de línea según sea necesario.
+
+.Antes de empezar
+Una vez creado un clúster, inicialmente se encuentra en estado en línea.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Haga clic en la pestaña *Clústeres* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. Hacer clicimage:icon_kebab.gif["Opciones"] a la derecha del grupo y seleccione *Desconectar*.
++
+Si la opción sin conexión no está disponible, el clúster ya está en estado sin conexión.
+
+. Haga clic en *Sí* en la ventana emergente para confirmar la solicitud.
+. Haga clic en *Actualizar* ocasionalmente para confirmar que el clúster esté fuera de línea.
+. Para volver a conectar el clúster, haga clic enimage:icon_kebab.gif["Opciones"] y seleccione *Conectar*.
+. Haga clic en *Actualizar* ocasionalmente para confirmar que el clúster esté en línea.
+
+
+
+
+== Eliminar un clúster de ONTAP Select
+
+Puede eliminar un clúster de ONTAP Select cuando ya no sea necesario.
+
+.Antes de empezar
+El clúster debe estar en estado fuera de línea.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Haga clic en la pestaña *Clústeres* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. Hacer clicimage:icon_kebab.gif["Opciones"] a la derecha del grupo y seleccione *Eliminar*.
++
+Si la opción de eliminar no está disponible, entonces el clúster no está en estado fuera de línea.
+
+. Haga clic en *Actualizar* ocasionalmente para confirmar que el clúster se haya eliminado de la lista.
+
+
+
+
+== Actualizar la configuración del clúster de implementación
+
+Después de crear un clúster de ONTAP Select , puede modificar la configuración del clúster o de la máquina virtual fuera de la utilidad de implementación mediante las herramientas de administración de ONTAP o del hipervisor. La configuración de una máquina virtual también puede cambiar después de migrarla.
+
+Cuando se producen estos cambios en el clúster o la máquina virtual, la base de datos de configuración de la utilidad de implementación no se actualiza automáticamente y puede desincronizarse con el estado del clúster. Debe actualizar el clúster en estas y otras situaciones para actualizar la base de datos de implementación según el estado actual del clúster.
+
+.Antes de empezar
+Información requerida:: Debe tener la información de configuración actual del clúster, incluyendo:
++
+--
+* Credenciales de administrador de ONTAP
+* Dirección IP de administración del clúster
+* Nombres de los nodos del clúster
+
+
+--
+Estado de clúster estable:: El clúster debe estar en un estado estable. No se puede actualizar un clúster cuando se está creando o eliminando, ni cuando se encuentra en estado _create_failed_ o _delete_failed_.
+Después de una migración de máquina virtual:: Después de migrar una máquina virtual que ejecuta ONTAP Select , debe crear un nuevo host mediante la utilidad Implementar antes de realizar una actualización del clúster.
+
+
+.Acerca de esta tarea
+Puede realizar una actualización del clúster para actualizar la base de datos de configuración de implementación mediante la interfaz de usuario web.
+
+
+NOTE: En lugar de utilizar la UI de implementación, puede utilizar el comando de actualización de clúster en el shell CLI de implementación para actualizar un clúster.
+
+Configuración de clústeres y máquinas virtuales:: Algunos de los valores de configuración que pueden cambiar y provocar que la base de datos de implementación deje de estar sincronizada incluyen:
++
+--
+* Nombres de clústeres y nodos
+* Configuración de red de ONTAP
+* Versión de ONTAP (después de una actualización)
+* Nombres de máquinas virtuales
+* Nombres de red de host
+* Nombres de grupos de almacenamiento
+
+
+--
+Estados de clústeres y nodos:: Un clúster o nodo de ONTAP Select puede encontrarse en un estado que le impide funcionar correctamente. Debe actualizar el clúster para corregir las siguientes condiciones:
++
+--
+* Nodo en estado _desconocido_ Un nodo de ONTAP Select puede estar en _estado desconocido_ por varios motivos, entre ellos, que no se encuentre el nodo.
+* Clúster en estado _degradado_. Si un nodo está apagado, podría aparecer en línea en la utilidad de implementación. En este caso, el clúster se encuentra en estado _degradado_.
+
+
+--
+
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Haga clic en la pestaña *Clústeres* en la parte superior izquierda de la página y seleccione el clúster deseado de la lista.
+. Hacer clicimage:icon_kebab.gif["Opciones"] En el lado derecho de la página, seleccione *Actualización de clúster*.
+. En *Credenciales del clúster*, proporcione la contraseña de administrador de ONTAP para el clúster.
+. Haga clic en *Actualizar*.
+
+
+.Después de terminar
+Si la operación se realiza correctamente, se actualiza el campo _Última actualización_. Debe realizar una copia de seguridad de los datos de configuración de implementación una vez finalizada la actualización del clúster.

@@ -1,0 +1,291 @@
+---
+sidebar: sidebar 
+permalink: task_adm_replace_drives_swraid.html 
+keywords: administer, administering, web, software raid, replace drive 
+summary: 'Cuando falla una unidad al usar RAID por software, ONTAP Select usa una unidad de repuesto (si hay alguna disponible) e inicia el proceso de reconstrucción automáticamente. Esto es similar a cómo funciona ONTAP en FAS y AFF . Sin embargo, si no hay ninguna unidad de repuesto disponible, deberá agregar una al nodo ONTAP Select .' 
+---
+= Reemplace las unidades RAID de software fallidas para ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Cuando falla una unidad con RAID por software, ONTAP Select asigna una unidad de repuesto, si hay alguna disponible, e inicia el proceso de reconstrucción automáticamente. Esto es similar a cómo funciona ONTAP en FAS y AFF. Sin embargo, si no hay ninguna unidad de repuesto disponible, deberá agregar una al nodo ONTAP Select .
+
+
+NOTE: Tanto la extracción de la unidad defectuosa como la adición de una nueva (marcada como de repuesto) deben realizarse mediante ONTAP Select Deploy. No se permite conectar una unidad a la máquina virtual ONTAP Select mediante vSphere.
+
+
+
+== Identificar la unidad defectuosa
+
+Cuando falla una unidad, debe utilizar la CLI de ONTAP para identificar el disco fallado.
+
+[role="tabbed-block"]
+====
+.KVM
+--
+.Antes de empezar
+Debe tener el ID de VM de la máquina virtual ONTAP Select , así como las credenciales de cuenta de administrador de ONTAP Select y ONTAP Select Deploy.
+
+.Acerca de esta tarea
+Solo debe utilizar este procedimiento cuando el nodo ONTAP Select se esté ejecutando en KVM y esté configurado para usar RAID de software.
+
+.Pasos
+. En la CLI de ONTAP Select , identifique el disco que se reemplazará:
++
+.. Identifique el disco por número de serie, UUID o dirección de destino en la máquina virtual.
++
+[listing]
+----
+disk show -fields serial,vmdisk-target-address,uuid
+----
+.. Opcionalmente, muestra una lista completa de la capacidad del disco de repuesto con los discos particionados. storage added show-spare-disks
+
+
+. En la interfaz de línea de comandos de Linux, localice el disco.
++
+.. Examine los dispositivos del sistema, buscando el número de serie del disco o UUID (nombre del disco):
++
+[listing]
+----
+find /dev/disk/by-id/<SN|ID>
+----
+.. Examine la configuración de la máquina virtual y busque la dirección de destino:
++
+[listing]
+----
+virsh dumpxml VMID
+----
+
+
+
+
+--
+.ESXi
+--
+.Pasos
+. Sign in en la CLI de ONTAP utilizando la cuenta de administrador.
+. Identifique la unidad de disco que falló.
++
+[listing]
+----
+<cluster name>::> storage disk show -container-type broken
+Usable Disk Container Container
+Disk Size Shelf Bay Type Type Name Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+NET-1.4 893.3GB - - SSD broken - sti-rx2540-346a'
+----
+
+
+--
+====
+
+
+== Retire la unidad defectuosa
+
+Después de identificar la unidad que falló, retire el disco.
+
+[role="tabbed-block"]
+====
+.KVM usando Implementar
+--
+Puede desconectar un disco de un host KVM como parte del reemplazo del disco o cuando ya no sea necesario.
+
+.Antes de empezar
+Debe tener las credenciales de cuenta de administrador de ONTAP Select y ONTAP Select Deploy.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clústeres* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. Seleccione *+* junto al par o nodo HA deseado.
++
+Si la opción está deshabilitada, Deploy actualmente está actualizando la información de almacenamiento.
+
+. Seleccione *Editar almacenamiento* en la página *Editar almacenamiento de nodo*.
+. Anule la selección de los discos que se separarán del nodo, ingrese las credenciales de administrador de ONTAP y seleccione *Editar almacenamiento* para aplicar los cambios.
+. Seleccione *Sí* para confirmar la advertencia en la ventana emergente.
+. Seleccione la pestaña *Eventos* del clúster para monitorear y confirmar la operación de separación.
++
+Puede quitar el disco físico del host si ya no es necesario.
+
+
+
+--
+.KVM usando CLI
+--
+Después de identificar el disco, siga los pasos a continuación.
+
+.Pasos
+. Desconecte el disco de la máquina virtual:
++
+.. Volcar la configuración.
++
+[listing]
+----
+virsh dumpxml VMNAME > /PATH/disk.xml
+----
+.. Edite el archivo y elimine todo excepto el disco que se separará de la máquina virtual.
++
+La dirección de destino del disco debe corresponder al campo vmdisk-target-address en ONTAP.
+
++
+[listing]
+----
+<disk type='block' device='lun'>
+  <driver name='qemu' type='raw' cache='directsync'/>
+  <source dev='/dev/disk/by-id/ata- Micron_5100_MTFDDAK960TCC_171616D35277'/>
+  <backingStore/>
+  <target dev='sde' bus='scsi'/>
+  <alias name='scsi0-0-0-4'/>
+  <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+</disk>
+----
+.. Desconecte el disco.
++
+[listing]
+----
+virsh detach-disk --persistent /PATH/disk.xml
+----
+
+
+. Reemplazar el disco físico:
++
+Puedes utilizar una utilidad como `ledctl locate=` para localizar el disco físico si fuera necesario.
+
++
+.. Retire el disco del host.
+.. Seleccione un nuevo disco e instálelo en el host si es necesario.
+
+
+. Edite el archivo de configuración del disco original y agregue el nuevo disco.
++
+Debe actualizar la ruta del disco y cualquier otra información de configuración según sea necesario.
+
++
+[listing]
+----
+<disk type='block' device='lun'>
+  <driver name='qemu' type='raw' cache='directsync'/>
+  <source dev='/dev/disk/by-id/ata-Micron_5100_MTFDDAK960TCC_171616D35277'/>
+  <backingStore/>
+  <target dev='sde' bus='scsi'/>
+  <alias name='scsi0-0-0-4'/>
+  <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+</disk>
+----
+
+
+--
+.ESXi
+--
+.Pasos
+. Sign in en la interfaz de usuario web de Deploy utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clústeres* y seleccione el clúster correspondiente.
++
+image:ST_22.jpg["Detalles del nodo"]
+
+. Seleccione *+* para expandir la vista de almacenamiento.
++
+image:ST_23.jpg["Editar almacenamiento de nodos"]
+
+. Seleccione *Editar* para realizar cambios en los discos conectados y desmarcar la unidad fallida.
++
+image:ST_24.jpg["Detalles del disco de almacenamiento"]
+
+. Proporcione las credenciales del clúster y seleccione *Editar almacenamiento*.
++
+image:ST_25.jpg["Credenciales de ONTAP"]
+
+. Confirmar la operación.
++
+image:ST_26.jpg["Advertencia"]
+
+
+
+--
+====
+
+
+== Agregar la nueva unidad de repuesto
+
+Después de quitar la unidad defectuosa, agregue el disco de repuesto.
+
+[role="tabbed-block"]
+====
+.KVM usando Implementar
+--
+.Conectar un disco mediante Implementar
+Puede conectar un disco a un host KVM como parte del reemplazo de un disco o para agregar más capacidad de almacenamiento.
+
+.Antes de empezar
+Debe tener las credenciales de cuenta de administrador de ONTAP Select y ONTAP Select Deploy.
+
+El nuevo disco debe estar instalado físicamente en el host KVM Linux.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clústeres* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. Seleccione *+* junto al par o nodo HA deseado.
++
+Si la opción está deshabilitada, Deploy actualmente está actualizando la información de almacenamiento.
+
+. Seleccione *Editar almacenamiento* en la página *Editar almacenamiento de nodo*.
+. Seleccione los discos que se conectarán al nodo, ingrese las credenciales de administrador de ONTAP y seleccione *Editar almacenamiento* para aplicar los cambios.
+. Seleccione la pestaña *Eventos* para supervisar y confirmar la operación de conexión.
+. Examine la configuración de almacenamiento del nodo para confirmar que el disco esté conectado.
+
+
+--
+.KVM usando CLI
+--
+Después de identificar y quitar la unidad defectuosa, puede conectar una unidad nueva.
+
+.Pasos
+. Conecte el nuevo disco a la máquina virtual.
++
+[listing]
+----
+virsh attach-disk --persistent /PATH/disk.xml
+----
+
+
+.Resultados
+El disco está asignado como repuesto y está disponible para ONTAP Select. Puede tardar un minuto o más en estar disponible.
+
+.Después de terminar
+Debido a que la configuración del nodo ha cambiado, debe realizar una operación de actualización del clúster mediante la utilidad de administración de implementación.
+
+--
+.ESXi
+--
+.Pasos
+. Sign in en la interfaz de usuario web de Deploy utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clústeres* y seleccione el clúster correspondiente.
++
+image:ST_27.jpg["par HA"]
+
+. Seleccione *+* para expandir la vista de almacenamiento.
++
+image:ST_28.jpg["Editar almacenamiento de nodos"]
+
+. Seleccione *Editar* y confirme que la nueva unidad esté disponible y selecciónela.
++
+image:ST_29.jpg["Detalles del disco de almacenamiento"]
+
+. Proporcione las credenciales del clúster y seleccione *Editar almacenamiento*.
++
+image:ST_30.jpg["Detalles del disco de almacenamiento"]
+
+. Confirmar la operación.
++
+image:ST_31.jpg["Detalles del disco de almacenamiento"]
+
+
+
+--
+====

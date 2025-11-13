@@ -1,0 +1,84 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_mirroring.html 
+keywords: ontap select, ha, high availability, synchronous replication, mirrored aggregates, write path, raid syncmirror, rsm 
+summary: 'Evite la pérdida de datos utilizando RAID SyncMirror (RSM), agregados reflejados y la ruta de escritura.' 
+---
+= ONTAP Select HA RSM y agregados reflejados
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Evite la pérdida de datos utilizando RAID SyncMirror (RSM), agregados reflejados y la ruta de escritura.
+
+
+
+== Replicación sincrónica
+
+El modelo de alta disponibilidad (HA) de ONTAP se basa en el concepto de socios de alta disponibilidad (HA). ONTAP Select extiende esta arquitectura al mundo de los servidores básicos no compartidos mediante la funcionalidad RAID SyncMirror (RSM) presente en ONTAP para replicar bloques de datos entre nodos del clúster, proporcionando dos copias de los datos de usuario distribuidas en un par de HA.
+
+Un clúster de dos nodos con un mediador puede abarcar dos centros de datos. Para obtener más información, consulte la secciónlink:reference_plan_best_practices.html#two-node-stretched-ha-metrocluster-sds-best-practices["Mejores prácticas para HA extendida de dos nodos (MetroCluster SDS)"] .
+
+
+
+== Agregados reflejados
+
+Un clúster de ONTAP Select se compone de dos a ocho nodos. Cada par de alta disponibilidad (HA) contiene dos copias de los datos del usuario, replicados sincrónicamente entre los nodos a través de una red IP. Esta replicación es transparente para el usuario y es una propiedad del agregado de datos, que se configura automáticamente durante el proceso de creación.
+
+Todos los agregados de un clúster ONTAP Select deben estar reflejados para garantizar la disponibilidad de los datos en caso de una conmutación por error de un nodo y para evitar un SPOF en caso de fallo de hardware. Los agregados de un clúster ONTAP Select se crean a partir de discos virtuales proporcionados por cada nodo del par de alta disponibilidad (HA) y utilizan los siguientes discos:
+
+* Un conjunto local de discos (contribuido por el nodo de ONTAP Select actual)
+* Un conjunto reflejado de discos (contribuido por el socio de alta disponibilidad del nodo actual)
+
+
+
+NOTE: Los discos local y espejo utilizados para crear un agregado reflejado deben tener el mismo tamaño. Estos agregados se denominan plex 0 y plex 1 (para indicar los pares de espejos local y remoto, respectivamente). La cantidad real de plex puede variar en su instalación.
+
+Este enfoque es fundamentalmente diferente del funcionamiento de los clústeres estándar de ONTAP . Esto se aplica a todos los discos raíz y de datos dentro del clúster ONTAP Select . El agregado contiene copias de datos locales y reflejadas. Por lo tanto, un agregado que contiene N discos virtuales ofrece el equivalente a N/2 discos de almacenamiento único, ya que la segunda copia de datos reside en sus propios discos únicos.
+
+La siguiente figura muestra un par de alta disponibilidad (HA) dentro de un clúster ONTAP Select de cuatro nodos. Dentro de este clúster hay un único agregado (de prueba) que utiliza el almacenamiento de ambos socios de alta disponibilidad (HA). Este agregado de datos se compone de dos conjuntos de discos virtuales: un conjunto local, aportado por el nodo del clúster propietario de ONTAP Select (Plex 0), y un conjunto remoto, aportado por el socio de conmutación por error (Plex 1).
+
+Plex 0 es el contenedor que contiene todos los discos locales. Plex 1 es el contenedor que contiene los discos espejo, o discos responsables de almacenar una segunda copia replicada de los datos del usuario. El nodo propietario del agregado aporta discos a Plex 0, y el socio de alta disponibilidad de ese nodo aporta discos a Plex 1.
+
+En la siguiente figura, se muestra un agregado reflejado con dos discos. El contenido de este agregado se refleja en nuestros dos nodos del clúster: el disco local NET-1.1 se ubica en el contenedor Plex 0 y el disco remoto NET-2.1 en el contenedor Plex 1. En este ejemplo, la prueba del agregado pertenece al nodo del clúster de la izquierda y utiliza el disco local NET-1.1 y el disco reflejado del socio de alta disponibilidad NET-2.1.
+
+* Agregado reflejado de ONTAP Select *image:DDHA_03.jpg["Agregado reflejado ONTAP Select"]
+
+
+NOTE: Al implementar un clúster de ONTAP Select , todos los discos virtuales presentes en el sistema se asignan automáticamente al plex correcto, sin necesidad de que el usuario realice ninguna acción adicional. Esto evita la asignación accidental de discos a un plex incorrecto y proporciona una configuración óptima de los discos reflejados.
+
+
+
+== Ruta de escritura
+
+La duplicación síncrona de bloques de datos entre nodos del clúster y el requisito de que no se pierdan datos ante un fallo del sistema tienen un impacto significativo en la ruta que sigue una escritura entrante al propagarse a través de un clúster de ONTAP Select . Este proceso consta de dos etapas:
+
+* Reconocimiento
+* Desescenario
+
+
+Las escrituras en un volumen de destino se realizan a través de un LIF de datos y se asignan a la partición NVRAM virtualizada, presente en un disco de sistema del nodo ONTAP Select , antes de ser confirmadas por el cliente. En una configuración de alta disponibilidad (HA), se realiza un paso adicional, ya que estas escrituras en NVRAM se replican inmediatamente en el socio de alta disponibilidad (HA) del propietario del volumen de destino antes de ser confirmadas. Este proceso garantiza la consistencia del sistema de archivos en el nodo del socio de alta disponibilidad (HA) en caso de un fallo de hardware en el nodo original.
+
+Una vez confirmada la escritura en la NVRAM, ONTAP mueve periódicamente el contenido de esta partición al disco virtual correspondiente, un proceso conocido como desensamblaje. Este proceso solo ocurre una vez, en el nodo del clúster que posee el volumen de destino, y no en el socio de alta disponibilidad.
+
+La siguiente figura muestra la ruta de escritura de una solicitud de escritura entrante a un nodo ONTAP Select .
+
+* Flujo de trabajo de ruta de escritura de ONTAP Select *image:DDHA_04.jpg["Flujo de trabajo de ONTAP Select"]
+
+El acuse de recibo de escritura entrante incluye los siguientes pasos:
+
+* Las escrituras ingresan al sistema a través de una interfaz lógica propiedad del nodo A de ONTAP Select.
+* Las escrituras se confirman en la NVRAM del nodo A y se reflejan en el socio de HA, el nodo B.
+* Una vez que la solicitud de E/S está presente en ambos nodos de HA, se reconoce la solicitud nuevamente en el cliente.
+
+
+La desconexión de ONTAP Select desde NVRAM al agregado de datos (ONTAP CP) incluye los siguientes pasos:
+
+* Las escrituras se desvían de la NVRAM virtual al agregado de datos virtuales.
+* El motor de espejo replica bloques sincrónicamente en ambos plexos.
+

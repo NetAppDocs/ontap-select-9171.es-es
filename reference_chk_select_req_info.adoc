@@ -1,0 +1,70 @@
+---
+sidebar: sidebar 
+permalink: reference_chk_select_req_info.html 
+keywords: ontap select, pre-installation, vmware 
+summary: Como parte de la preparación para implementar un clúster ONTAP Select en un entorno VMware, recopile la información necesaria al utilizar la utilidad de administración ONTAP Select Deploy para implementar y configurar el clúster. 
+---
+= Información necesaria para la instalación de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Como parte de la preparación para implementar un clúster ONTAP Select en un entorno VMware, recopile la información necesaria al utilizar la utilidad de administración ONTAP Select Deploy para implementar y configurar el clúster.
+
+Parte de la información que recopila se aplica al clúster en sí, mientras que otra información se aplica a los nodos individuales del clúster.
+
+
+
+== Información a nivel de clúster
+
+Debe recopilar información relacionada con el clúster ONTAP Select .
+
+[cols="35,65"]
+|===
+| Información del clúster | Descripción 
+
+
+| Nombre del cluster | Identificador único del cluster. 
+
+
+| Modo de licencia | Evaluación o licencia adquirida. 
+
+
+| Configuración de IP para el clúster | Configuración de IP para los clústeres y nodos, incluyendo: * Dirección IP de administración del clúster * Máscara de subred * Puerta de enlace predeterminada 
+|===
+
+
+== Información a nivel de host
+
+Debe recopilar información relacionada con cada uno de los nodos del clúster ONTAP Select .
+
+[cols="35,65"]
+|===
+| Información del clúster | Descripción 
+
+
+| Nombre del anfitrión | Identificador único del host. 
+
+
+| Nombre de dominio del host | Nombre de dominio completo del host. 
+
+
+| Configuración de IP para los nodos | Dirección IP de administración para cada nodo del clúster. 
+
+
+| Nodo espejo | Nombre del nodo asociado en el par HA (solo clústeres de varios nodos). 
+
+
+| Pool de almacenamiento | Nombre del grupo de almacenamiento que se utiliza. 
+
+
+| Discos de almacenamiento | Lista de discos si se utiliza RAID de software. 
+
+
+| Número de serie | Si está realizando la implementación con una licencia comprada, el número de serie único de nueve dígitos proporcionado por NetApp. 
+|===

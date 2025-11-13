@@ -1,0 +1,191 @@
+---
+sidebar: sidebar 
+permalink: concept_api_transaction.html 
+keywords: rest api, deploy rest api, rest, transaction, request, response, headers, input, output 
+summary: Cada llamada a la API de Deploy se realiza como una solicitud HTTP a la máquina virtual de Deploy, la cual genera una respuesta asociada para el cliente. Este par de solicitud/respuesta se considera una transacción de API. Antes de usar la API de Deploy, debe familiarizarse con las variables de entrada disponibles para controlar una solicitud y el contenido de la salida de la respuesta. 
+---
+= Transacción de API de solicitud y respuesta para ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Cada llamada a la API de Deploy se realiza como una solicitud HTTP a la máquina virtual de Deploy, la cual genera una respuesta asociada para el cliente. Este par de solicitud/respuesta se considera una transacción de API. Antes de usar la API de Deploy, debe familiarizarse con las variables de entrada disponibles para controlar una solicitud y el contenido de la salida de la respuesta.
+
+
+
+== Variables de entrada que controlan una solicitud de API
+
+Puede controlar cómo se procesa una llamada API a través de parámetros establecidos en la solicitud HTTP.
+
+
+
+=== Encabezados de solicitud
+
+Debe incluir varios encabezados en la solicitud HTTP, incluidos:
+
+* content-type Si el cuerpo de la solicitud incluye JSON, este encabezado debe establecerse en application/json.
+* aceptar Si el cuerpo de la respuesta incluirá JSON, este encabezado debe configurarse como application/json.
+* La autenticación básica debe configurarse con el nombre de usuario y la contraseña codificados en una cadena base64.
+
+
+
+
+=== Cuerpo de la solicitud
+
+El contenido del cuerpo de la solicitud varía según la llamada específica. El cuerpo de la solicitud HTTP consta de uno de los siguientes elementos:
+
+* Objeto JSON con variables de entrada (por ejemplo, el nombre de un nuevo clúster)
+* Vacío
+
+
+
+
+=== Filtrar objetos
+
+Al ejecutar una llamada a la API que usa GET, puede limitar o filtrar los objetos devueltos según cualquier atributo. Por ejemplo, puede especificar un valor exacto para que coincida:
+
+`<field>=<query value>`
+
+Además de la coincidencia exacta, existen otros operadores disponibles para devolver un conjunto de objetos en un rango de valores. ONTAP Select admite los operadores de filtrado que se muestran a continuación.
+
+[cols="30,70"]
+|===
+| Operador | Descripción 
+
+
+| = | Igual a 
+
+
+| < | Menos que 
+
+
+| > | Más que 
+
+
+| <= | Menor o igual a 
+
+
+| >= | Mayor o igual que 
+
+
+|  | O 
+
+
+| ! | No es igual a 
+
+
+| * | Comodín codicioso 
+|===
+También puede devolver un conjunto de objetos en función de si un campo específico está configurado o no utilizando la palabra clave null o su negación (!null) como parte de la consulta.
+
+
+
+=== Selección de campos de objeto
+
+De forma predeterminada, al ejecutar una llamada a la API mediante GET, solo se devuelven los atributos que identifican de forma única el objeto o los objetos. Este conjunto mínimo de campos actúa como clave para cada objeto y varía según el tipo de objeto. Puede seleccionar propiedades adicionales del objeto mediante el parámetro de consulta "campos" de las siguientes maneras:
+
+* Campos económicos Especificar `fields=*` para recuperar los campos del objeto que se mantienen en la memoria local del servidor o que requieren poco procesamiento para acceder a ellos.
+* Campos costosos Especificar `fields=**` para recuperar todos los campos del objeto, incluidos aquellos que requieren procesamiento adicional del servidor para acceder a ellos.
+* Selección de campo personalizado Usar `fields=FIELDNAME` para especificar el campo exacto que desea. Al solicitar varios campos, los valores deben separarse con comas y sin espacios.
+
+
+
+TIP: Como práctica recomendada, siempre debe identificar los campos específicos que desea. Solo debe recuperar el conjunto de campos económicos o costosos cuando sea necesario. NetApp determina la clasificación de económicos y costosos basándose en un análisis interno de rendimiento. La clasificación de un campo determinado puede cambiar en cualquier momento.
+
+
+
+=== Ordenar objetos en el conjunto de salida
+
+Los registros de una colección de recursos se devuelven en el orden predeterminado definido por el objeto. Puedes cambiar el orden utilizando el parámetro de consulta order_by con el nombre del campo y la dirección de ordenación de la siguiente manera:
+`order_by=<field name> asc|desc`
+
+Por ejemplo, puede ordenar el campo "tipo" en orden descendente seguido del campo "id" en orden ascendente:
+`order_by=type desc, id asc`
+
+Al incluir varios parámetros, debe separar los campos con una coma.
+
+
+
+=== Paginación
+
+Al ejecutar una llamada a la API mediante GET para acceder a una colección de objetos del mismo tipo, se devuelven todos los objetos coincidentes por defecto. Si es necesario, se puede limitar el número de registros devueltos mediante el parámetro de consulta max_records con la solicitud. Por ejemplo:
+`max_records=20`
+
+Si es necesario, puede combinar este parámetro con otros parámetros de consulta para limitar el conjunto de resultados. Por ejemplo, el siguiente comando devuelve hasta 10 eventos del sistema generados después del tiempo especificado:
+`time=> 2019-04-04T15:41:29.140265Z&max_records=10`
+
+Puedes emitir varias solicitudes para navegar por los eventos (o cualquier tipo de objeto). Cada llamada a la API posterior debe usar un nuevo valor de tiempo basado en el último evento del último conjunto de resultados.
+
+
+
+== Interpretar una respuesta de API
+
+Cada solicitud de API genera una respuesta para el cliente. Puede examinarla para determinar si se realizó correctamente y recuperar datos adicionales según sea necesario.
+
+
+
+=== Código de estado HTTP
+
+A continuación se describen los códigos de estado HTTP utilizados por la API REST de implementación.
+
+[cols="15,20,65"]
+|===
+| Código | Significado | Descripción 
+
+
+| 200 | DE ACUERDO | Indica éxito para llamadas que no crean un nuevo objeto. 
+
+
+| 201 | Creado | Se ha creado correctamente un objeto; el encabezado de respuesta de ubicación incluye el identificador único del objeto. 
+
+
+| 202 | Aceptado | Se ha iniciado un trabajo en segundo plano de larga ejecución para ejecutar la solicitud, pero la operación aún no se ha completado. 
+
+
+| 400 | Solicitud incorrecta | La entrada solicitada no se reconoce o es inadecuada. 
+
+
+| 403 | Prohibido | Se deniega el acceso debido a un error de autorización. 
+
+
+| 404 | Extraviado | El recurso al que se refiere la solicitud no existe. 
+
+
+| 405 | Método no permitido | El verbo HTTP en la solicitud no es compatible con el recurso. 
+
+
+| 409 | Conflicto | Se produjo un error al intentar crear un objeto porque el objeto ya existe. 
+
+
+| 500 | Error interno | Se produjo un error interno general en el servidor. 
+
+
+| 501 | No implementado | Se conoce el URI pero no es capaz de realizar la solicitud. 
+|===
+
+
+=== Encabezados de respuesta
+
+Se incluyen varios encabezados en la respuesta HTTP generada por el servidor de implementación, incluidos:
+
+* request-id A cada solicitud de API exitosa se le asigna un identificador de solicitud único.
+* Ubicación Cuando se crea un objeto, el encabezado de ubicación incluye la URL completa del nuevo objeto, incluido el identificador de objeto único.
+
+
+
+
+=== Cuerpo de la respuesta
+
+El contenido de la respuesta asociada a una solicitud de API varía según el objeto, el tipo de procesamiento y si la solicitud se ha realizado correctamente o no. El cuerpo de la respuesta se representa en JSON.
+
+* Objeto único. Se puede devolver un objeto único con un conjunto de campos según la solicitud. Por ejemplo, se puede usar GET para recuperar propiedades seleccionadas de un clúster mediante el identificador único.
+* Múltiples objetos Se pueden devolver varios objetos de una colección de recursos. En todos los casos se utiliza un formato consistente, con `num_records` indicando el número de registros y registros que contienen una matriz de instancias de objetos. Por ejemplo, puede recuperar todos los nodos definidos en un clúster específico.
+* Objeto de trabajo. Si una llamada a la API se procesa asincrónicamente, se devuelve un objeto de trabajo que ancla la tarea en segundo plano. Por ejemplo, la solicitud POST utilizada para implementar un clúster se procesa asincrónicamente y devuelve un objeto de trabajo.
+* Objeto de error. Si se produce un error, siempre se devuelve un objeto de error. Por ejemplo, recibirá un error al intentar crear un clúster con un nombre ya existente.
+* Vacío. En ciertos casos, no se devuelven datos y el cuerpo de la respuesta está vacío. Por ejemplo, el cuerpo de la respuesta está vacío después de usar DELETE para eliminar un host existente.
+

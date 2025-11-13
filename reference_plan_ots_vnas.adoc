@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_vnas.html 
+keywords: plan, planning, vnas, vmware esxi, 
+summary: Hay varias cuestiones de planificación relacionadas con el uso de VMware ESXi que debes tener en cuenta. 
+---
+= Requisitos de VMware ESXi de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select vNAS es una solución que permite que los almacenes de datos de ONTAP Select sean externos al host de hipervisor ESXi donde se ejecuta la máquina virtual ONTAP Select . Se puede acceder a estos almacenes de datos remotos a través de VMware vSAN o una matriz de almacenamiento externa genérica.
+
+
+
+== Requisitos básicos y restricciones
+
+La solución ONTAP Select vNAS se puede utilizar con un clúster ONTAP Select de cualquier tamaño.
+
+Todos los componentes de almacenamiento relacionados, incluidos los requisitos de hardware, software y funciones, deben cumplir los requisitos descritos en el documento.link:https://mysupport.netapp.com/matrix/["Herramienta de matriz de interoperabilidad"^] . Además, ONTAP Select es compatible con todas las matrices de almacenamiento externas descritas en la documentación de compatibilidad de VMware Storage/SAN, incluyendo iSCSI, NAS (NFSv3), Fibre Channel y Fibre Channel over Ethernet. compatibilidad con matrices externas está limitada por la versión de ESXi compatible con ONTAP Select.
+
+Las siguientes funciones de VMware son compatibles al implementar un clúster con ONTAP Select vNAS:
+
+* VMotion
+* Alta disponibilidad (HA)
+* Programador de recursos distribuidos (DRS)
+
+
+
+NOTE: Estas funciones de VMware son compatibles con clústeres de ONTAP Select de uno o varios nodos. Al implementar un clúster de varios nodos, asegúrese de que dos o más nodos del mismo clúster no se ejecuten en el mismo host de hipervisor.
+
+Las siguientes funciones de VMware no son compatibles:
+
+* Tolerancia a fallos (FT)
+* Almacén de datos virtual (VVOL)
+
+
+
+
+== Requisitos de configuración
+
+Si planea usar un almacén de datos VMFS en una matriz de almacenamiento externa (iSCSI, Fibre Channel, Fibre Channel over Ethernet), debe crear un pool de almacenamiento VMFS antes de configurar ONTAP Select para usar el almacenamiento. Si usa un almacén de datos NFS, no es necesario crear un almacén de datos VMFS independiente. Todos los almacenes de datos de vSAN deben estar definidos dentro del mismo clúster ESXi.
+
+
+CAUTION: Debe proporcionar un límite de capacidad para cada almacén de datos en VMware vSAN o una matriz de almacenamiento externo al configurar un host o al agregar almacenamiento. La capacidad que especifique debe estar dentro de los límites de almacenamiento permitidos del almacenamiento externo. Se producirá un error si no proporciona un límite de capacidad o si el almacenamiento externo se queda sin espacio durante la creación del disco.
+
+
+
+== Mejores prácticas
+
+Consulte la documentación de VMware disponible y siga las prácticas recomendadas aplicables para hosts ESXi. Además:
+
+* Defina puertos de red dedicados, ancho de banda y configuraciones de vSwitch para las redes ONTAP Select y el almacenamiento externo (VMware vSAN y tráfico de matriz de almacenamiento genérico cuando se usa iSCSI o NFS)
+* Configure la opción de capacidad para restringir la utilización del almacenamiento (ONTAP Select no puede consumir toda la capacidad de un almacén de datos vNAS externo)
+* Asegúrese de que todas las matrices de almacenamiento externo genérico utilicen las funciones de redundancia y alta disponibilidad disponibles siempre que sea posible
+

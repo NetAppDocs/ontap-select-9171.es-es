@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_other.html 
+keywords: ontap select, ha, high availability, disk heartbeating, heartbeating, mailbox, failover, giveback 
+summary: El control de latidos del disco HA, el buzón HA, el control de latidos HA, la conmutación por error HA y la devolución funcionan para mejorar la protección de datos. 
+---
+= ONTAP Select HA mejora la protección de datos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+El control de disco de alta disponibilidad (HA), el buzón de HA, el control de disco de alta disponibilidad (HA), la conmutación por error de HA y la devolución funcionan para mejorar la protección de datos.
+
+
+
+== Latidos del disco
+
+Aunque la arquitectura ONTAP Select HA aprovecha muchas de las rutas de código utilizadas por las matrices FAS tradicionales, existen algunas excepciones. Una de estas excepciones reside en la implementación del latido basado en disco, un método de comunicación no basado en red que utilizan los nodos del clúster para evitar que el aislamiento de la red provoque un comportamiento de cerebro dividido. Este escenario es el resultado de la partición del clúster, generalmente causada por fallos de red, donde cada lado cree que el otro está inactivo e intenta apoderarse de los recursos del clúster.
+
+Las implementaciones de alta disponibilidad (HA) de clase empresarial deben gestionar este tipo de escenario con fluidez. ONTAP lo consigue mediante un método personalizado de latidos basado en disco. Esta función la realiza el buzón de alta disponibilidad (HA), una ubicación en el almacenamiento físico que utilizan los nodos del clúster para enviar mensajes de latidos. Esto ayuda al clúster a determinar la conectividad y, por lo tanto, a definir el quórum en caso de conmutación por error.
+
+En las matrices FAS , que utilizan una arquitectura de alta disponibilidad de almacenamiento compartido, ONTAP resuelve los problemas de cerebro dividido de las siguientes maneras:
+
+* Reservas persistentes de SCSI
+* Metadatos de alta disponibilidad persistentes
+* Estado de HA enviado a través de la interconexión de HA
+
+
+Sin embargo, en la arquitectura de almacenamiento compartido de un clúster ONTAP Select , un nodo solo puede acceder a su propio almacenamiento local y no al del socio de alta disponibilidad (HA). Por lo tanto, cuando la partición de red aísla cada lado de un par de HA, los métodos anteriores para determinar el quórum del clúster y el comportamiento de conmutación por error no están disponibles.
+
+Aunque el método actual de detección y prevención de cerebro dividido no puede utilizarse, se requiere un método de mediación que se ajuste a las limitaciones de un entorno sin recursos compartidos. ONTAP Select amplía la infraestructura de buzones existente, lo que le permite actuar como método de mediación en caso de particionamiento de la red. Dado que el almacenamiento compartido no está disponible, la mediación se realiza mediante el acceso a los discos de los buzones a través de NAS. Estos discos están distribuidos por todo el clúster, incluido el mediador en un clúster de dos nodos, mediante el protocolo iSCSI. Por lo tanto, un nodo del clúster puede tomar decisiones inteligentes de conmutación por error basándose en el acceso a estos discos. Si un nodo puede acceder a los discos de los buzones de otros nodos fuera de su socio de alta disponibilidad, es probable que esté operativo y en buen estado.
+
+
+NOTE: La arquitectura del buzón y el método de latidos basado en disco para resolver problemas de quórum y de cerebro dividido del clúster son las razones por las que la variante multinodo de ONTAP Select requiere cuatro nodos separados o un mediador para un clúster de dos nodos.
+
+
+
+== Publicación en el buzón de HA
+
+La arquitectura del buzón de alta disponibilidad utiliza un modelo de envío de mensajes. A intervalos regulares, los nodos del clúster envían mensajes a todos los demás discos del buzón, incluido el mediador, indicando que el nodo está en funcionamiento. Dentro de un clúster en buen estado, en cualquier momento, un solo disco del buzón de un nodo del clúster recibe mensajes enviados desde todos los demás nodos del clúster.
+
+Cada nodo del clúster Select tiene conectado un disco virtual que se utiliza específicamente para el acceso compartido al buzón. Este disco se denomina disco de buzón mediador, ya que su función principal es actuar como método de mediación del clúster en caso de fallos de nodos o particionamiento de la red. Este disco de buzón contiene particiones para cada nodo del clúster y se monta en una red iSCSI mediante otros nodos del clúster Select. Periódicamente, estos nodos publican el estado de salud en la partición correspondiente del disco de buzón. El uso de discos de buzón accesibles desde la red distribuidos por todo el clúster permite inferir el estado de salud del nodo mediante una matriz de accesibilidad. Por ejemplo, los nodos del clúster A y B pueden publicar en el buzón del nodo D, pero no en el del nodo C. Además, el nodo D no puede publicar en el buzón del nodo C, por lo que es probable que el nodo C esté inactivo o aislado de la red y deba ser controlado.
+
+
+
+== HA latidos del corazón
+
+Al igual que con las plataformas NetApp FAS , ONTAP Select envía periódicamente mensajes de latido de alta disponibilidad (HA) a través de la interconexión de HA. Dentro del clúster de ONTAP Select , esto se realiza mediante una conexión de red TCP/IP entre los socios de HA. Además, los mensajes de latido basados en disco se envían a todos los discos de buzón de HA, incluidos los discos de buzón de mediador. Estos mensajes se envían cada pocos segundos y se leen periódicamente. La frecuencia con la que se envían y reciben permite que el clúster de ONTAP Select detecte eventos de fallo de HA en aproximadamente 15 segundos, el mismo plazo disponible en las plataformas FAS . Cuando ya no se leen los mensajes de latido, se activa un evento de conmutación por error.
+
+La siguiente figura muestra el proceso de envío y recepción de mensajes de latido a través de la interconexión de HA y los discos mediadores desde la perspectiva de un solo nodo del clúster ONTAP Select , el nodo C.
+
+
+NOTE: Los latidos de red se envían a través de la interconexión de HA al socio de HA, el nodo D, mientras que los latidos de disco utilizan discos de buzón en todos los nodos del clúster, A, B, C y D.
+
+*Latido cardíaco HA en un grupo de cuatro nodos: estado estable*image:DDHA_05.jpg["Latidos de HA en un clúster de cuatro nodos: estado estable"]
+
+
+
+== Conmutación por error y devolución de HA
+
+Durante una conmutación por error, el nodo superviviente asume la responsabilidad de servir los datos de su nodo par utilizando la copia local de los datos de su socio de alta disponibilidad (HA). La E/S del cliente puede continuar sin interrupciones, pero los cambios en estos datos deben replicarse antes de que se pueda devolver. Tenga en cuenta que ONTAP Select no admite la devolución forzada, ya que esto provoca la pérdida de los cambios almacenados en el nodo superviviente.
+
+La sincronización de retorno se activa automáticamente cuando el nodo reiniciado se reincorpora al clúster. El tiempo necesario para la sincronización de retorno depende de varios factores, como la cantidad de cambios que deben replicarse, la latencia de red entre los nodos y la velocidad de los subsistemas de disco en cada nodo. Es posible que el tiempo necesario para la sincronización de retorno supere el plazo de devolución automática de 10 minutos. En este caso, se requiere una devolución manual después de la sincronización de retorno. El progreso de la sincronización de retorno se puede supervisar con el siguiente comando:
+
+[listing]
+----
+storage aggregate status -r -aggregate <aggregate name>
+----

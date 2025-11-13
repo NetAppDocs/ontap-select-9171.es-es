@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_production.html 
+keywords: license, licensing, production, purchased, standard, premium, premium xl 
+summary: Una vez que determine que ONTAP Select es adecuado para su organización, puede adquirir las licencias necesarias para una implementación de producción. Debe elegir el modelo de licencia por niveles de capacidad o por grupos de capacidad, así como la capacidad de almacenamiento para cada implementación. 
+---
+= ONTAP Select adquirió licencias para implementaciones de producción
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Una vez que determine que ONTAP Select es adecuado para su organización, puede adquirir las licencias necesarias para una implementación de producción. Debe elegir el modelo de licencia por niveles de capacidad o por grupos de capacidad, así como la capacidad de almacenamiento para cada implementación.
+
+
+
+== Características comunes de las licencias
+
+Los modelos de licencias de _Niveles de Capacidad_ y _Grupos de Capacidad_ difieren en varios aspectos. Sin embargo, ambos comparten varias características comunes, entre ellas:
+
+* Debe comprar una o más licencias según sea necesario al implementar ONTAP Select en un entorno de producción.
+* La capacidad de almacenamiento de una licencia se asigna en incrementos de 1 TB.
+* La capacidad de almacenamiento identifica la capacidad bruta y corresponde al tamaño total permitido de los discos de datos disponibles para la máquina virtual ONTAP Select .
+* Se admiten todas las ofertas de licencias de plataforma (estándar, premium, premium XL).
+* Debe comunicarse con su equipo de cuenta o socio de NetApp para obtener ayuda según sea necesario para adquirir las licencias necesarias.
+* Debe cargar los archivos de licencia en la utilidad de administración de Implementación, que luego aplica las licencias según el modelo de licencias.
+* Después de instalar y aplicar una licencia, puede agregar capacidad adicional comunicándose con su equipo de cuenta de NetApp o su socio para obtener una licencia actualizada.
+* Ambos nodos de un par HA deben tener la misma capacidad de almacenamiento y licencia.
+* Un nodo ONTAP Select que se implementa inicialmente con una licencia comprada no se puede convertir a una licencia de evaluación.
+
+
+
+
+== Modelo de licencias por niveles de capacidad
+
+Hay varias características exclusivas del modelo de licencias de niveles de capacidad, entre ellas:
+
+* Debe comprar una licencia para cada nodo ONTAP Select .
+* La cantidad mínima que puedes comprar es 1 TB.
+* Cada licencia de nivel de capacidad tiene una capacidad de almacenamiento y está bloqueada a un nodo específico.
+* NetApp genera un número de serie de licencia de nueve dígitos para cada nodo ONTAP Select .
+* El almacenamiento asignado a un nodo es perpetuo (no requiere renovación).
+* El número de serie del nodo tiene nueve dígitos y es igual al número de serie de la licencia.
+* Puede aplicar el archivo de licencia durante la implementación del clúster o dentro de los 30 días posteriores a la creación de un clúster.
+
+
+
+
+== Modelo de licencias de pools de capacidad
+
+El modelo de licencias de grupos de capacidad tiene varias características exclusivas, entre ellas:
+
+* Debes comprar una licencia para cada grupo de capacidad compartido.
+* La cantidad mínima que puedes comprar es 2 TB.
+* Cada licencia de Capacity Pool tiene una capacidad de almacenamiento y está bloqueada en una instancia específica de License Manager.
+* NetApp genera un número de serie de licencia de nueve dígitos para cada grupo de capacidad.
+* El almacenamiento asignado a un Pool de Capacidad es válido solo por un tiempo específico en función de la compra (se requiere renovación).
+* El número de serie del nodo tiene veinte dígitos y lo genera el Administrador de licencias en función del número de serie de la licencia del grupo de capacidad.
+* Cada nodo alquila automáticamente capacidad de almacenamiento para sus agregados de datos locales desde un fondo de capacidad compartido.
+
+
+Para obtener más detalles sobre el modelo de licencias de grupos de capacidad, consulte _Modelo de licencias de grupos de capacidad_ para obtener más información.

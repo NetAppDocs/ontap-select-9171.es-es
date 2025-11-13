@@ -1,0 +1,141 @@
+---
+sidebar: sidebar 
+permalink: concept_perf_premium_ha_direct_ssd_96.html 
+keywords: ontap select, performance 
+summary: 'Información sobre el rendimiento de ONTAP Select 9.6: almacenamiento SSD de conexión directa HA premium.' 
+---
+= Rendimiento de ONTAP Select 9.6: Almacenamiento SSD de conexión directa HA premium
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Información de rendimiento para la plataforma de referencia.
+
+
+
+== Plataforma de referencia
+
+Hardware ONTAP Select (Premium XL) (por nodo)
+
+* FUJITSU PRIMERGY RX2540 M4:
++
+** CPU Intel® Xeon® Gold 6142b a 2,6 GHz
+** 32 núcleos físicos (16 x 2 sockets), 64 lógicos
+** 256 GB de RAM
+** Unidades por host: 24 SSD de 960 GB
+** ESX 6.5U1
+
+
+
+
+Hardware del cliente
+
+* 5 clientes NFSv3 IBM 3550m4
+
+
+Información de configuración
+
+* SW RAID 1 x 9 + 2 RAID-DP (11 unidades)
+* 22+1 RAID-5 (RAID-0 en ONTAP) / NVRAM de caché RAID
+* No se utilizan funciones de eficiencia de almacenamiento (compresión, deduplicación, copias instantáneas, SnapMirror, etc.)
+
+
+La siguiente tabla muestra el rendimiento medido con cargas de trabajo de lectura/escritura en un par de nodos de alta disponibilidad (HA) de ONTAP Select , utilizando RAID de software y RAID de hardware. Las mediciones de rendimiento se realizaron con la herramienta de generación de carga SIO.
+
+
+NOTE: Estos números de rendimiento se basan en ONTAP Select 9.6.
+
+*Resultados de rendimiento para un solo nodo (parte de una instancia mediana de cuatro nodos) de un clúster ONTAP Select en un SSD de almacenamiento conectado directamente (DAS), con RAID de software y RAID de hardware*
+
+[cols="6*"]
+|===
+| Descripción | Lectura secuencial 64 KiB | Escritura secuencial 64 KiB | Lectura aleatoria 8 KiB | Escritura aleatoria de 8 KiB | WR/RD aleatorio (50/50) 8 KiB 
+
+
+| ONTAP Select instancia grande con RAID de software DAS (SSD) | 2171 MiBps | 559 MiBps | 954 MiBps | 394 MiBps | 564 MiBps 
+
+
+| Instancia mediana ONTAP Select con RAID de software DAS (SSD) | 2090 MiBps | 592 MiBps | 677 MiBps | 335 MiBps | 441 3 MiBps 
+
+
+| Instancia mediana de ONTAP Select con RAID de hardware DAS (SSD) | 2038 MiBps | 520 MiBps | 578 MiBps | 325 MiBps | 399 MiBps 
+|===
+
+
+=== Lectura secuencial de 64K
+
+Detalles:
+
+* E/S directa SIO habilitada
+* 2 nodos
+* 2 NIC de datos por nodo
+* 1 agregado de datos por nodo (RAID de hardware de 2 TB), (RAID de software de 8 TB)
+* 64 procesos SIO, 1 hilo por proceso
+* 32 volúmenes por nodo
+* 1 archivo por proceso; los archivos pesan 12000 MB cada uno
+
+
+
+
+=== Escritura secuencial de 64K
+
+Detalles:
+
+* E/S directa SIO habilitada
+* 2 nodos
+* 2 tarjetas de interfaz de red de datos (NIC) por nodo
+* 1 agregado de datos por nodo (RAID de hardware de 2 TB), (RAID de software de 4 TB)
+* 128 procesos SIO, 1 hilo por proceso
+* Volúmenes por nodo: 32 (RAID de hardware), 16 (RAID de software)
+* 1 archivo por proceso; los archivos pesan 30720 MB cada uno
+
+
+
+
+=== Lectura aleatoria de 8K
+
+Detalles:
+
+* E/S directa SIO habilitada
+* 2 nodos
+* 2 NIC de datos por nodo
+* 1 agregado de datos por nodo (RAID de hardware de 2 TB), (RAID de software de 4 TB)
+* 64 procesos SIO, 8 subprocesos por proceso
+* Volúmenes por nodo: 32
+* 1 archivo por proceso; los archivos pesan 12228 MB cada uno
+
+
+
+
+=== Escritura aleatoria de 8K
+
+Detalles:
+
+* E/S directa SIO habilitada
+* 2 nodos
+* 2 NIC de datos por nodo
+* 1 agregado de datos por nodo (RAID de hardware de 2 TB), (RAID de software de 4 TB)
+* 64 procesos SIO, 8 subprocesos por proceso
+* Volúmenes por nodo: 32
+* 1 archivo por proceso; los archivos pesan 8192 MB cada uno
+
+
+
+
+=== 8K aleatorio 50% escritura 50% lectura
+
+Detalles:
+
+* E/S directa SIO habilitada
+* 2 nodos
+* 2 NIC de datos por nodo
+* 1 agregado de datos por nodo (RAID de hardware de 2 TB), (RAID de software de 4 TB)
+* 64 procesos SIO, 208 subprocesos por proceso
+* Volúmenes por nodo: 32
+* 1 archivo por proceso; los archivos pesan 12228 MB cada uno
+

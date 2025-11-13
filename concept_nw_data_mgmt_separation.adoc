@@ -1,0 +1,46 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_data_mgmt_separation.html 
+keywords: ontap select, traffic separation 
+summary: Aísle el tráfico de datos y el tráfico de gestión en redes de capa 2 separadas. 
+---
+= Separación del tráfico de datos y gestión de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Aísle el tráfico de datos y el tráfico de gestión en redes de capa 2 separadas.
+
+El tráfico de red externo de ONTAP Select se define como tráfico de datos (CIFS, NFS e iSCSI), administración y replicación (SnapMirror). Dentro de un clúster de ONTAP , cada tipo de tráfico utiliza una interfaz lógica independiente que debe alojarse en un puerto de red virtual. En la configuración multinodo de ONTAP Select, estos se designan como puertos e0a y e0b/e0g. En la configuración de un solo nodo, se designan como e0a y e0b/e0c, mientras que los puertos restantes se reservan para los servicios internos del clúster.
+
+NetApp recomienda aislar el tráfico de datos y el de administración en redes de capa 2 independientes. En el entorno de ONTAP Select , esto se realiza mediante etiquetas VLAN. Esto se puede lograr asignando un grupo de puertos con etiquetas VLAN al adaptador de red 1 (puerto e0a) para el tráfico de administración. Posteriormente, puede asignar grupos de puertos independientes a los puertos e0b y e0c (clústeres de un solo nodo) y e0b y e0g (clústeres multinodo) para el tráfico de datos.
+
+Si la solución VST descrita anteriormente en este documento no es suficiente, podría ser necesario ubicar los LIF de datos y de administración en el mismo puerto virtual. Para ello, utilice un proceso conocido como VGT, en el que la máquina virtual realiza el etiquetado de VLAN.
+
+
+NOTE: La separación de datos y la red de administración mediante VGT no está disponible al usar la utilidad ONTAP Deploy. Este proceso debe realizarse una vez finalizada la configuración del clúster.
+
+Existe una advertencia adicional al usar VGT y clústeres de dos nodos. En configuraciones de clúster de dos nodos, la dirección IP de administración del nodo se utiliza para establecer la conectividad con el mediador antes de que ONTAP esté completamente disponible. Por lo tanto, solo se admite el etiquetado EST y VST en el grupo de puertos asignado al LIF de administración del nodo (puerto e0a). Además, si tanto el tráfico de administración como el de datos utilizan el mismo grupo de puertos, solo se admite EST/VST para todo el clúster de dos nodos.
+
+Se admiten ambas opciones de configuración, VST y VGT. La siguiente figura muestra el primer escenario, VST, en el que el tráfico se etiqueta en la capa de vSwitch a través del grupo de puertos asignado. En esta configuración, los LIF de administración de clústeres y nodos se asignan al puerto e0a de ONTAP y se etiquetan con el ID de VLAN 10 a través del grupo de puertos asignado. Los LIF de datos se asignan al puerto e0b y e0c o e0g, y se les asigna el ID de VLAN 20 mediante un segundo grupo de puertos. Los puertos del clúster utilizan un tercer grupo de puertos y están en el ID de VLAN 30.
+
+*Separación de datos y gestión mediante VST*
+
+image:DDN_04.jpg["Separación de datos y gestión mediante VST"]
+
+La siguiente figura muestra el segundo escenario, VGT, en el que la máquina virtual de ONTAP etiqueta el tráfico mediante puertos VLAN ubicados en dominios de difusión separados. En este ejemplo, los puertos virtuales e0a-10/e0b-10/(e0c o e0g)-10 y e0a-20/e0b-20 se ubican sobre los puertos e0a y e0b de la máquina virtual. Esta configuración permite que el etiquetado de red se realice directamente en ONTAP, en lugar de en la capa de vSwitch. Los LIF de administración y datos se ubican en estos puertos virtuales, lo que permite una mayor subdivisión de capa 2 dentro de un solo puerto de máquina virtual. La VLAN del clúster (ID de VLAN 30) sigue etiquetada en el grupo de puertos.
+
+*Notas:*
+
+* Este estilo de configuración es especialmente recomendable al utilizar múltiples espacios IP. Agrupe los puertos VLAN en espacios IP personalizados independientes si desea mayor aislamiento lógico y multiusuario.
+* Para admitir VGT, los adaptadores de red del host ESXi/ESX deben estar conectados a los puertos troncales del conmutador físico. Los grupos de puertos conectados al conmutador virtual deben tener su ID de VLAN configurado en 4095 para habilitar el enlace troncal en el grupo de puertos.
+
+
+*Separación de datos y gestión mediante VGT*
+
+image:DDN_05.jpg["Separación de datos y gestión mediante VGT"]

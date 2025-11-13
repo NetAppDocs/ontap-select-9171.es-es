@@ -1,0 +1,60 @@
+---
+sidebar: sidebar 
+permalink: task_cli_connectivity.html 
+keywords: administer, administering, cli, connectivity, network connectivity, network checker 
+summary: Puede probar la conectividad de red entre dos o más nodos de ONTAP Select en la red interna del clúster. Normalmente, esta prueba se ejecuta antes de implementar un clúster multinodo para detectar problemas que podrían provocar un fallo en la operación. 
+---
+= Confirmar la conectividad de red entre los nodos de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede probar la conectividad de red entre dos o más nodos de ONTAP Select en la red interna del clúster. Normalmente, esta prueba se ejecuta antes de implementar un clúster multinodo para detectar problemas que podrían provocar un fallo en la operación.
+
+.Antes de empezar
+Todos los nodos ONTAP Select incluidos en la prueba deben estar configurados y encendidos.
+
+.Acerca de esta tarea
+Cada vez que se inicia una prueba, se crea una nueva ejecución de proceso en segundo plano y se le asigna un identificador de ejecución único. Solo puede haber una ejecución activa a la vez.
+
+La prueba tiene dos modos que controlan su funcionamiento:
+
+* Rápido: Este modo realiza una prueba básica sin interrupciones. Se realiza una prueba de ping, junto con una prueba del tamaño de la MTU de la red y del vSwitch.
+* Extendido: Este modo realiza una prueba más exhaustiva en todas las rutas de red redundantes. Si se ejecuta en un clúster de ONTAP Select activo, el rendimiento del clúster puede verse afectado.
+
+
+
+NOTE: Se recomienda realizar siempre una prueba rápida antes de crear un clúster multinodo. Una vez realizada correctamente, puede realizar una prueba extendida según sus requisitos de producción.
+
+.Pasos
+. Sign in en la CLI de la utilidad de implementación utilizando la cuenta de administrador.
+. Muestra las ejecuciones actuales del verificador de conectividad de red y verifica que no haya ejecuciones activas:
++
+`network connectivity-check show`
+
+. Inicie el verificador de conectividad de red y anote el identificador de ejecución en la salida del comando:
++
+`network connectivity-check start -host-names HOSTNAMES -vswitch-type VSWITCH_TYPE-mode MODE`
+
++
+Ejemplo
+
++
+[listing]
+----
+network connectivity-check start -host-names 10.234.81.14
+10.234.81.15 -vswitch-type StandardVSwitch -mode quick
+----
+. Supervise el progreso del verificador de conectividad de red en función del identificador de ejecución:
++
+`network connectivity-check show -run-id RUN_ID`
+
+
+
+.Después de terminar
+El verificador de conectividad de red normalmente realiza la limpieza eliminando los puertos temporales y las direcciones IP agregadas al grupo de puertos ONTAP-Internal. Sin embargo, si el comprobador de conectividad no elimina los puertos temporales, deberá realizar una limpieza manual volviendo a ejecutar el comando CLI con la opción `-mode cleanup` . Si no elimina los puertos temporales del grupo de puertos internos de ONTAP, es posible que la máquina virtual ONTAP Select no se cree correctamente

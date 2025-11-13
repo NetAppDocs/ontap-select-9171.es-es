@@ -1,0 +1,24 @@
+---
+sidebar: sidebar 
+permalink: concept_perf_general.html 
+keywords: ontap select, performance 
+summary: El rendimiento de un clúster ONTAP Select puede variar según la configuración del hardware. 
+---
+= Descripción general del rendimiento de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+El rendimiento de un clúster de ONTAP Select puede variar considerablemente según las características del hardware y la configuración subyacentes. La configuración específica del hardware es el factor más importante en el rendimiento de una instancia de ONTAP Select . Estos son algunos de los factores que afectan el rendimiento de una instancia específica de ONTAP Select :
+
+* *Frecuencia central*. En general, es preferible una frecuencia más alta.
+* *Un solo socket versus multisocket*. ONTAP Select no utiliza funciones multisocket, pero la sobrecarga del hipervisor para admitir configuraciones multisocket explica cierta desviación en el rendimiento total.
+* Configuración de la tarjeta RAID y controlador del hipervisor asociado. Es posible que sea necesario reemplazar el controlador predeterminado del hipervisor por el controlador del proveedor del hardware.
+* *Tipo de unidad y número de unidades en los grupos RAID*.
+* *Versión de hipervisor y nivel de parche*.
+

@@ -1,0 +1,54 @@
+---
+sidebar: sidebar 
+permalink: reference_initial_state.html 
+keywords: install, installing, initial state, cluster initial state 
+summary: Debe conocer el estado inicial de un clúster después de su implementación y configurarlo según sea necesario para su entorno. 
+---
+= Estado inicial del clúster ONTAP Select después de la implementación
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Debe conocer el estado inicial de un clúster después de su implementación y configurarlo según sea necesario para su entorno.
+
+Un clúster de ONTAP Select tiene varias características después de su creación.
+
+
+NOTE: Restringir roles y permisos para la cuenta de administrador de ONTAP puede limitar la capacidad de ONTAP Select Deploy para administrar el clúster. Para obtener más información, consulte el artículo de la base de conocimientos.link:https://kb.netapp.com/onprem/ontap/ONTAP_Select/OTS_Deploy_cluster_refresh_fails_with_error%3A_ONTAPSelectSysCLIVersionFailed_zapi_returned_bad_status_0%3A_None["La actualización del clúster de implementación de OTS falla con un error"^] .
+
+.LIF
+Se asignan dos tipos de LIF especificados por el cliente:
+
+* Gestión de clústeres (uno por clúster)
+* Gestión de nodos (uno por nodo)
+
+
+
+NOTE: Un clúster de múltiples nodos tiene una red interna con LIF generados automáticamente.
+
+.SVM
+Hay tres SVM activos:
+
+* Administrador SVM
+* Nodo SVM
+* SVM del sistema (clúster)
+
+
+
+NOTE: Las SVM de datos no se crean durante la implementación del clúster de ONTAP Select . El administrador del clúster debe crearlas después de la implementación. Para obtener más información, consulte https://docs.netapp.com/us-en/ontap/nfs-config/create-svms-data-access-task.html["Crear un SVM"^] .
+
+.Agregados
+Se crea el agregado raíz.
+
+.Funciones
+Todas las funciones tienen licencia y están disponibles. Tanto SnapLock como FabricPool requieren licencias independientes.
+
+.Información relacionada
+* link:https://docs.netapp.com/us-en/ontap/system-admin/types-svms-concept.html["Tipos de SVM contenidos en un clúster"^]
+* link:reference_lic_ontap_features.html["Funciones de ONTAP habilitadas de forma predeterminada"]
+

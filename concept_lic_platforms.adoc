@@ -1,0 +1,177 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_platforms.html 
+keywords: license, licensing, platform license offerings, license offerings, standard, premium, premium xl 
+summary: Puede adquirir una licencia de nivel de capacidad o de grupo de capacidad de ONTAP Select en uno de los tres niveles de capacidad de la plataforma. Estas licencias determinan las capacidades de los hosts donde implementa ONTAP Select. 
+---
+= Obtenga más información sobre las ofertas de licencias de plataforma para ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede adquirir una licencia de nivel de capacidad o grupo de capacidad de ONTAP Select en los niveles estándar, premium o premium XL. Estas licencias determinan las capacidades de los hosts donde implementa ONTAP Select.
+
+
+
+== Qué ofrece una oferta de licencia de plataforma
+
+Una oferta de licencia específica determina las capacidades del host del hipervisor en dos áreas:
+
+* Tipo de instancia (CPU, memoria)
+* Características adicionales
+
+
+Las ofertas de licencias se organizan en orden ascendente de capacidades, desde estándar hasta premium XL. En general, la opción de licencia que elija le otorga las capacidades de ese nivel y de todos los niveles inferiores. Por ejemplo, el nivel premium ofrece las capacidades tanto del premium como del estándar.
+
+La siguiente tabla compara las capacidades de las ofertas de licencia estándar, premium y premium XL.
+
+[cols="25,25,25,25,25"]
+|===
+2+| La licencia admite... | Estándar | De primera calidad | Premium XL 
+
+
+2+| Tipo de instancia | Pequeño solamente | Pequeño o mediano | Pequeño, mediano o grande 
+
+
+.2+| Unidades de disco duro (HDD) en un... | Configuración RAID por hardware | Sí | Sí | Sí 
+
+
+| Configuración de vNAS | Sí | Sí | Sí 
+
+
+.3+| Unidades de estado sólido (SSD) en un... | Configuración RAID por hardware | No | Sí | Sí 
+
+
+| Configuración RAID por software | No | Sí | Sí 
+
+
+| Configuración de vNAS | Sí | Sí | Sí 
+
+
+.3+| Unidades NVMe en un... | Configuración RAID por hardware | No | No | Sí 
+
+
+| Configuración RAID por software | No | No | Sí 
+
+
+| Configuración de vNAS | Sí | Sí | Sí 
+
+
+2+| SDS de MetroCluster | No | Sí | Sí 
+|===
+
+NOTE: Las máquinas virtuales basadas en kernel (KVM) no admiten el tipo de instancia grande.
+
+
+
+== Compare la compatibilidad de hardware para las ofertas de licencias de plataforma
+
+Las licencias estándar, premium y premium XL son compatibles con una amplia gama de hardware y software. Para obtener información actualizada sobre las versiones de hardware y software, consulte lalink:https://mysupport.netapp.com/matrix/["Herramienta de matriz de interoperabilidad"^] .
+
+[role="tabbed-block"]
+====
+.Artículo principal
+--
+[cols="5"30"]
+|===
+
+
+2+| Tipo de elemento principal 3+| Descripción 
+
+
+2+| Protocolos de host 3+| NFS, SMB/CIFS, iSCSI y NVMe sobre TCP 
+
+
+2+| Opciones de implementación 3+| Nodo único Clúster de dos nodos (par HA) Clúster de cuatro, seis u ocho nodos 
+
+
+2+| Capacidad admitida (por nodo) 3+| Hasta 400 TB de datos sin procesar (ESXi y KVM) 
+|===
+--
+.Hardware
+--
+[cols="5"30"]
+|===
+
+
+2+| Tipo de hardware 3+| Descripción 
+
+
+2+| Tamaño de la instancia | Pequeño | Medio | Grande 
+
+
+2+| Familia de CPU | Intel Xeon E5-26xx v3 (Haswell) o posterior | Intel Xeon E5-26xx v3 (Haswell) o posterior | Intel Xeon E5-26xx v3 (Haswell) o posterior 
+
+
+2+| ONTAP Select CPU/memoria | 4 CPU virtuales (vCPU) / 16 GB de RAM | 8 vCPU / 64 GB de RAM | 16 vCPU / 128 GB de RAM 
+
+
+2+| Requisitos mínimos de CPU/memoria del host ^1^ | 6 núcleos / 24 GB de RAM | 10 núcleos / 72 GB de RAM | 18 núcleos / 136 GB de RAM 
+
+
+2+| Red (por nodo) 3+| Mínimo de dos puertos 1 GbE para un clúster de un solo nodo Mínimo de cuatro puertos 1 GbE para un clúster de dos nodos (par HA) Mínimo de dos puertos 10 GbE para un clúster de cuatro, seis u ocho nodos 
+|===
+^1^ Supone dos núcleos y 8 GB de RAM para el hipervisor.
+
+--
+.Tipo de almacenamiento
+--
+La siguiente tabla proporciona el tipo de licencia mínimo requerido para el almacenamiento especificado. 
+
+[cols="5"30"]
+|===
+
+
+2+| Tipo de almacenamiento 3+| Descripción 
+
+
+2+| Tipo de licencia | Estándar | De primera calidad | Premium XL 
+
+
+2+| Tamaño de la instancia | Pequeño | Pequeñas y medianas | Pequeño, mediano y grande 
+
+
+2+| DAS local con controlador RAID de hardware | 8 - 60 unidades | 8 - 60 unidades | 8 - 60 unidades 
+
+
+2+| Disco duro (SAS, NL-SAS, SATA) | No aplicable | 4 – 60 unidades | 4 – 60 unidades 
+
+
+2+| Unidad de estado sólido (SAS) | No aplicable | 4 – 60 unidades (solo SSD) | 4 – 60 unidades (solo SSD) 
+
+
+2+| DAS local con RAID de software | No aplicable | Aplicable | 4 - 14 unidades (solo NVMe) 
+
+
+2+| Matrices externas ^1^ 3+| Los almacenes de datos alojados en matrices externas se conectan mediante FC, FCoE, iSCSI y NFS (NFS no es compatible con KVM). Estos almacenes de datos ofrecen alta disponibilidad y resiliencia. 
+|===
+^1^ La compatibilidad del protocolo de matriz externa refleja la conectividad de almacenamiento en red.
+
+--
+.Software
+--
+[cols="5"30"]
+|===
+
+
+2+| Tipo de software 3+| Descripción 
+
+
+2+| Compatibilidad con hipervisor (VMware) 3+| VMware vSphere 9.0, VMware vSphere 8.0GA y actualizaciones 1 a 3, VMware vSphere 7.0GA y actualizaciones 1 a 3C. 
+
+
+2+| Compatibilidad con hipervisor (KVM) 3+| Red Hat Enterprise Linux de 64 bits (KVM) 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.8, 8.7 y 8.6 Rocky Linux (KVM) 9.6 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.9, 8.8, 8.7 y 8.6 
+
+
+2+| Software de gestión 3+| Suite de gestión NetApp Active IQ Unified Manager Utilidad de implementación ONTAP Select SnapCenter (opcional) 
+|===
+--
+====
+.Información relacionada
+* link:concept_lic_production.html["Obtenga información sobre los tipos de licencias de nivel de capacidad y grupo de capacidad"]
+

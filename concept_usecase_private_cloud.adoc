@@ -1,0 +1,27 @@
+---
+sidebar: sidebar 
+permalink: concept_usecase_private_cloud.html 
+keywords: ontap select, private cloud 
+summary: ONTAP Select es ideal para soportar una o más nubes privadas dentro de su organización. Un caso de uso común es proporcionar servicios de almacenamiento para nubes privadas basadas en servidores de consumo. 
+---
+= Soporte de ONTAP Select para nubes privadas y centros de datos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select es ideal para soportar una o más nubes privadas dentro de su organización. Un caso de uso común es proporcionar servicios de almacenamiento para nubes privadas basadas en servidores de consumo.
+
+Al igual que la nube pública, una nube privada ofrece flexibilidad y una rápida configuración y desinstalación. Además, ofrece mayor seguridad y control.
+
+La siguiente figura muestra cómo una granja de almacenamiento proporciona computación y almacenamiento local a las máquinas virtuales ONTAP Select , que proporcionan servicios de almacenamiento en sentido ascendente a una pila de aplicaciones. Todo el flujo de trabajo, desde el aprovisionamiento de las máquinas virtuales de servicio (SVM) hasta la implementación y configuración de las máquinas virtuales de aplicaciones, se automatiza mediante un marco de orquestación de nube privada.
+
+Este es un modelo de nube privada orientado a servicios. El uso de la versión de alta disponibilidad (HA) de ONTAP Select ofrece la misma experiencia de ONTAP que se esperaría en matrices FAS de mayor costo. Los recursos del servidor de almacenamiento son consumidos exclusivamente por la máquina virtual (VM) de ONTAP Select , mientras que las VM de aplicaciones se alojan en una infraestructura física independiente.
+
+*Nube privada construida sobre DAS*
+
+image:PrivateCloud_01.jpg["Nube privada construida sobre DAS"]

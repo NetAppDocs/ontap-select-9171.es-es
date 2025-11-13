@@ -1,0 +1,37 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_benefits.html 
+keywords: license, licensing, Capacity Pools, benefits 
+summary: Existen varios beneficios al utilizar el modelo de licencia de grupos de capacidad en lugar del modelo de licencia de niveles de capacidad. 
+---
+= Resumen de beneficios para la concesión de licencias de ONTAP Select Capacity Pools
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Existen varios beneficios al utilizar el modelo de licencia de grupos de capacidad en lugar del modelo de licencia de niveles de capacidad.
+
+
+
+== Uso más eficiente de la capacidad de almacenamiento
+
+Al usar licencias por niveles de capacidad, se asigna una capacidad de almacenamiento fija a cada nodo. El espacio no utilizado no se puede compartir con los demás nodos y se desperdicia. Con las licencias por grupos de capacidad, cada nodo solo consume la capacidad que necesita, según el tamaño de los agregados de datos.
+
+Y como la capacidad está anclada en un grupo central, se puede compartir entre muchos nodos de su organización.
+
+
+
+== Gastos administrativos significativamente reducidos, lo que se traduce en menores costos
+
+Si utiliza licencias por niveles de capacidad, debe obtener e instalar una licencia para cada nodo. Al utilizar grupos de capacidad, hay una licencia para cada grupo compartido. Esto puede reducir drásticamente la carga administrativa y los costos.
+
+
+
+== Métricas de uso mejoradas
+
+La interfaz web de Deploy proporciona información de uso mejorada para los pools de capacidad. Puede determinar rápidamente cuánto almacenamiento se utiliza y está disponible en un pool de capacidad, qué nodos utilizan el almacenamiento de un pool y a qué pools está asignando capacidad un clúster.

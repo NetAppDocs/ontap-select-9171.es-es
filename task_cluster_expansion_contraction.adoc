@@ -1,0 +1,174 @@
+---
+sidebar: sidebar 
+permalink: task_cluster_expansion_contraction.html 
+keywords: cluster, expand, expansion, contract, contraction, six, eight, node deployment workflow, workflow, deployment steps 
+summary: A partir de ONTAP Select 9.15.1, puede aumentar o disminuir el tamaño de un clúster existente. 
+---
+= Expandir o contraer un clúster ONTAP Select en un host ESXi o KVM
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puede aumentar el tamaño del clúster de un clúster ONTAP Select existente para hosts de hipervisor ESXi y KVM. Para los hosts KVM, puede aumentar el tamaño del clúster de seis a ocho nodos y disminuir el tamaño de ocho a seis nodos. Para los hosts ESXi, puede aumentar y disminuir el tamaño del clúster en incrementos de entre seis y doce nodos.
+
+Las siguientes expansiones y contracciones de clúster no son compatibles con los hosts ESXi y KVM:
+
+* Expansiones de clústeres de uno, dos o cuatro nodos a clústeres de seis u ocho nodos.
+* Contracciones de grupos de seis u ocho nodos a grupos de uno, dos o cuatro nodos.
+
+
+[NOTE]
+====
+Para cambiar la cantidad de nodos de un clúster a un tamaño que no sea compatible con la expansión o contracción del clúster, debe realizar las siguientes tareas:
+
+. Implemente un nuevo clúster de varios nodos utilizando ellink:task_cli_deploy_cluster.html["CLI"] o ellink:task_deploy_cluster.html["interfaz de usuario web"] proporcionado con la utilidad de administración ONTAP Select Deploy.
+. Si procede, migre los datos al nuevo clúster utilizandolink:https://docs.netapp.com/us-en/ontap/data-protection/snapmirror-disaster-recovery-concept.html["Replicación de SnapMirror"^] .
+
+
+====
+Puede iniciar los procedimientos de expansión y contracción del clúster desde ONTAP Select Deploy mediante la CLI, la API o la interfaz web.
+
+
+
+== Consideraciones sobre hardware y almacenamiento
+
+La función de expansión y contracción del clúster es compatible con los siguientes hosts de hipervisor KVM y ESXi.
+
+[role="tabbed-block"]
+====
+.ESXi
+--
+A partir de ONTAP Select 9.15.1, la expansión y contracción de clústeres se admite en los hosts de hipervisor ESXi.
+
+La expansión y contracción del clúster es compatible con las siguientes versiones de hipervisor ESXi:
+
+* ESXi 9.0
+* ESXi 8.0 U3
+* ESXi 8.0 U2
+* ESXi 8.0 U1
+* ESXi 8.0 GA
+* ESXi 7.0 U3
+* ESXi 7.0
+
+
+--
+.KVM
+--
+A partir de ONTAP Select 9.17.1, la expansión y contracción de clústeres se admite en los hosts de hipervisor KVM.
+
+La expansión y contracción del clúster es compatible con las siguientes versiones de hipervisor KVM:
+
+* Red Hat Enterprise Linux de 64 bits 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.8, 8.7 y 8.6
+* Rocky Linux 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.9, 8.8, 8.7 y 8.6
+
+
+--
+====
+
+
+== Ampliar el clúster
+
+Utilice la función de expansión de clúster para aumentar el tamaño de un clúster ESXi o KVM existente.
+
+[role="tabbed-block"]
+====
+.ESXi
+--
+Puede aumentar el tamaño de un clúster ESXi existente en los siguientes incrementos:
+
+* De seis nodos a ocho, diez o doce nodos
+* De ocho nodos a diez o doce nodos
+* De diez a doce nodos
+
+
+--
+.KVM
+--
+Puede aumentar el tamaño de un clúster KVM existente de seis a ocho nodos.
+
+--
+====
+.Acerca de esta tarea
+Para preparar la expansión del clúster, se añaden nuevos hosts ESXi y KVM al inventario y se asignan los detalles de los nuevos nodos. Antes de iniciar el proceso de expansión del clúster, se realiza una comprobación previa de la red para verificar la red interna seleccionada.
+
+.Antes de empezar
+* Al implementar un clúster multinodo, debe familiarizarse con el verificador de conectividad de red. Puedes ejecutar el comprobador de conectividad de red usando ellink:task_adm_connectivity.html["interfaz de usuario web"] o ellink:task_cli_connectivity.html["CLI"] .
+* Verifique que tenga los detalles de la licencia para los nuevos nodos.
+
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clúster* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. En la página de detalles del clúster, seleccione el ícono de engranaje a la derecha de la página y seleccione *Expandir clúster*.
+. Vaya a la sección *HA Pair 4*.
+. Elija los siguientes detalles de configuración de par de alta disponibilidad (HA) para el cuarto par de HA:
++
+** Tipo de instancia
+** Nombres de nodos
+** Hosts de hipervisor asociados
+** Direcciones IP de nodos
+** Licencias
+** Configuración de red
+** Configuración de almacenamiento (tipo RAID y grupos de almacenamiento)
+
+
+. Seleccione *Guardar par HA* para guardar los detalles de configuración.
+. Proporcione las credenciales de ONTAP y seleccione *Expandir clúster*.
+. Seleccione *Siguiente* y ejecute la comprobación previa de la red seleccionando *Ejecutar*.
++
+La verificación previa de la red valida que la red interna seleccionada para el tráfico del clúster ONTAP esté funcionando correctamente.
+
+. Seleccione *Expandir clúster* para comenzar el proceso de expansión del clúster y luego seleccione *Aceptar* en el cuadro de diálogo.
++
+La expansión del clúster puede tardar hasta 45 minutos.
+
+. Supervise el proceso de expansión del clúster de varios pasos para confirmar que el clúster se expandió correctamente.
+. Consulte la pestaña *Eventos* para obtener actualizaciones periódicas sobre el progreso de la operación. La página se actualiza automáticamente a intervalos regulares.
+
+
+.Después de terminar
+link:task_cli_clusters.html["Realice una copia de seguridad de los datos de configuración de ONTAP Select Deploy."].
+
+
+
+== Contraer el cluster
+
+Utilice la función de contracción del clúster para reducir el tamaño de un clúster ESXi o KVM existente.
+
+[role="tabbed-block"]
+====
+.ESXi
+--
+Puede reducir el tamaño de un clúster ESXi existente en los siguientes incrementos:
+
+* De doce nodos a diez, ocho o seis nodos
+* De diez nodos a ocho o seis nodos
+* De ocho a seis nodos
+
+
+--
+.KVM
+--
+Puede reducir el tamaño de un clúster existente de ocho a seis nodos.
+
+--
+====
+.Acerca de esta tarea
+Se selecciona el par de nodos HA deseado en el clúster para prepararlo para la contracción del clúster durante el procedimiento.
+
+.Pasos
+. Sign in en la interfaz de usuario web de la utilidad de implementación utilizando la cuenta de administrador.
+. Seleccione la pestaña *Clúster* en la parte superior de la página y seleccione el clúster deseado de la lista.
+. En la página de detalles del clúster, seleccione el ícono de engranaje a la derecha de la página, luego seleccione *Contratar clúster*.
+. Seleccione los detalles de configuración del par HA para cualquier par HA que desee eliminar y proporcione las credenciales de ONTAP , luego seleccione *Clúster de contrato*.
++
+La contracción del clúster puede tardar hasta 30 minutos.
+
+. Supervise el proceso de contracción del clúster de varios pasos para confirmar que el clúster se contrajo correctamente.
+. Consulte la pestaña *Eventos* para obtener actualizaciones periódicas sobre el progreso de la operación. La página se actualiza automáticamente a intervalos regulares.
+

@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_compare_ct.html 
+keywords: license, licensing, Capacity Pools, Capacity Tiers, comparing 
+summary: Existen varias diferencias entre los modelos de licencias de grupos de capacidad y niveles de capacidad. 
+---
+= Compare las licencias de los grupos de capacidad y niveles de capacidad de ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+La siguiente tabla compara los dos modelos de licencia de producción compatibles con ONTAP Select.
+
+[cols="20,40,40"]
+|===
+|  | Niveles de capacidad | Pools de Capacidad 
+
+
+| Número de serie de la licencia | Nueve dígitos generados por NetApp y asignados a un nodo | Nueve dígitos generados por NetApp y asignados a un grupo de capacidad 
+
+
+| Bloqueo de licencia | Bloqueado en el nodo de ONTAP Select | Bloqueado en la instancia del Administrador de licencias 
+
+
+| Duración de la licencia | Perpetuo (no requiere renovación) | Duración fija según la compra (se requiere renovación) 
+
+
+| Duración del arrendamiento del agregado de datos | No aplicable | De una hora a siete días 
+
+
+| Número de serie del nodo | Nueve dígitos e igual al número de serie de la licencia | Veinte dígitos y generado por License Manager 
+
+
+| Soporte | Complemento y por tiempo limitado | Incluido y co-denominado 
+
+
+| Tipos de licencia | Estándar, premium, premium XL | Estándar, premium, premium XL 
+
+
+| Licencia de evaluación disponible | Sí | Sí 
+
+
+| Evaluación para actualización de producción | Sí | No 
+
+
+| Cambiar el tamaño de la máquina virtual ONTAP Select (pequeña a mediana, mediana a grande) | Sí | Sí 
+
+
+| Cumplimiento: licencia vencida | N/A | Sí (sin período de gracia) 
+|===

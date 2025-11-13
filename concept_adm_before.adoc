@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_before.html 
+keywords: administer, administering, web, before you begin 
+summary: Tras crear un clúster de ONTAP Select , puede facilitar la implementación realizando diversas tareas administrativas. Hay algunas consideraciones generales que debe tener en cuenta. 
+---
+= Antes de comenzar a administrar ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Tras crear un clúster de ONTAP Select , puede facilitar la implementación realizando diversas tareas administrativas. Hay algunas consideraciones generales que debe tener en cuenta.
+
+En general, los procedimientos que puede realizar utilizando la interfaz web de Implementación se dividen en tres categorías.
+
+.Implementar un clúster ONTAP Select
+Puede implementar un clúster de un solo nodo o de varios nodos. Verlink:task_deploy_cluster.html["Implementar un clúster ONTAP Select"] Para más información.
+
+.Realizar un procedimiento con un clúster ONTAP Select existente
+Los procedimientos administrativos están organizados en varias categorías, como _Seguridad_ y _Clústeres_.
+
+.Realizar un procedimiento en la utilidad Implementar
+Hay varios procedimientos específicos de Deploy (como cambiar la contraseña del administrador).
+
+
+
+== Administrar ONTAP Select
+
+Existen diversos procedimientos administrativos disponibles para el soporte de ONTAP Select. Además, existen procedimientos específicos de la utilidad administrativa Deploy. Los más importantes se presentan a continuación. En general, todos utilizan la interfaz web de Deploy.
+
+
+NOTE: También puedeslink:https://docs.netapp.com/us-en/ontap-select/task_cli_signing_in.html["utilizar la interfaz de línea de comandos"] para administrar ONTAP Select.
+
+
+
+== Realizar configuración adicional de ONTAP
+
+Tras implementar un clúster de ONTAP Select , puede configurarlo y administrarlo como si fuera un sistema ONTAP basado en hardware. Por ejemplo, puede usar el Administrador del sistema de ONTAP o la CLI de ONTAP para configurar el clúster de ONTAP Select .
+
+.Software cliente de NetApp
+Puede conectarse a ONTAP Select mediante el siguiente software de cliente NetApp compatible:
+
+* Administrador del sistema ONTAP
+* Active IQ Unified Manager
+* OnCommand Insight
+* OnCommand Workflow Automation
+* SnapCenter
+* Consola de almacenamiento virtual para VMware vSphere
+
+
+Para identificar las versiones compatibles del software cliente, revise lalink:https://mysupport.netapp.com/matrix/["Herramienta de matriz de interoperabilidad"^] . el software del cliente es compatible con ONTAP 9, la misma versión también será compatible con ONTAP Select.
+
+
+NOTE: El uso de SnapCenter y sus complementos correspondientes requiere licencias de servidor. Las licencias del sistema de almacenamiento de los complementos de SnapCenter no son compatibles actualmente con ONTAP Select.
+
+Cualquier otro software de cliente de NetApp que no esté incluido en la lista no es compatible con ONTAP Select.
+
+.Posibles opciones de configuración
+Hay varias opciones disponibles al configurar el clúster, incluidas las siguientes:
+
+* Creación de la configuración de red
+* Disposición de sus agregados
+* Creación de las máquinas virtuales de almacenamiento de datos (SVM)
+
+
+.Licencias adquiridas con capacidad de almacenamiento
+Si decidió no instalar los archivos de licencia con capacidad de almacenamiento como parte de la implementación del clúster ONTAP Select , debe adquirir e instalar los archivos de licencia antes de que expire el período de gracia para los clústeres que se ejecutan con una licencia comprada.
+
+.Agregados reflejados
+La utilidad de administración de implementación crea discos de repuesto de datos en cada nodo de ONTAP Select a partir del espacio utilizable del almacén de datos (como Pool0 y Pool1). Para implementar alta disponibilidad para sus datos en un clúster multinodo, debe crear un agregado reflejado con estos discos de repuesto.
+
+
+NOTE: La toma de control de alta disponibilidad solo se admite cuando los agregados de datos se configuran como reflejados.
