@@ -1,34 +1,43 @@
-= Paso 1: descarga el paquete de actualización
+---
+sidebar: sidebar 
+permalink: task_cli_upgrade_deploy.html 
+keywords: administer, administering, cli, deploy, upgrade deploy 
+summary: Puedes actualizar una máquina virtual existente de la utilidad Deploy in situ usando la línea de comandos. 
+---
+= Actualiza una instancia de ONTAP Select Deploy
+:hardbreaks:
 :allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
 
-
-sidebar: sidebar permalink: task_cli_upgrade_deploy.html keywords: administrar, administrar, cli, desplegar, actualizar desplegar resumen: Puedes actualizar una máquina virtual existente de la utilidad Deploy in situ usando la interfaz de línea de comandos. --- = Actualizar una instancia de ONTAP Select Deploy :hardbreaks: :nofooter: :icons: font :linkattrs: :imagesdir: ./media/
 
 [role="lead"]
-Actualiza una máquina virtual existente de la utilidad ONTAP Select Deploy in situ usando la CLI de la utilidad ONTAP Select Deploy.
+Puedes actualizar una máquina virtual existente de la utilidad ONTAP Select Deploy in situ usando la CLI de la utilidad ONTAP Select Deploy.
 
 .Antes de empezar
-Verifica que ONTAP Select Deploy no se use para realizar ninguna otra tarea durante la actualización. Consulta la link:reference_release_notes.html["notas de la versión"] para información y restricciones sobre la actualización de la utilidad ONTAP Select Deploy.
+Asegúrate de que ONTAP Select Deploy no se use para realizar ninguna otra tarea durante la actualización. Consulta las notas de la versión actual para información y restricciones sobre la actualización de la utilidad ONTAP Select Deploy.
 
 [NOTE]
 ====
 Si tiene instalada una instancia anterior de la utilidad de administración ONTAP Select Deploy, debe actualizarla a la versión actual. El nodo ONTAP Select y el componente ONTAP Select Deploy se actualizan de forma independiente. Verlink:concept_adm_upgrading_nodes.html["Actualizar los nodos ONTAP Select"^] Para obtener más detalles.
 
-Puedes actualizar directamente a ONTAP Select Deploy 9.18.1 desde ONTAP Select Deploy 9.17.1 o 9.16.1. Para actualizar desde ONTAP Select Deploy 9.15.1 o anterior, revisa las notas de la versión para tu versión de ONTAP Select.
+Puedes actualizar directamente a ONTAP Select Deploy 9.17.1 desde ONTAP Select Deploy 9.16.1 o 9.15.1. Para actualizar desde ONTAP Select Deploy 9.14.1 o anterior, revisa las notas de la versión para tu versión de ONTAP Select.
 
 ====
 
 
-== Paso 1: descarga el paquete de actualización
+== Paso 1: descarga el paquete
 
-Para comenzar el proceso de actualización, descarga el archivo de actualización de ONTAP Select Deploy desde el sitio de soporte de NetApp. El paquete de actualización está formateado como un solo archivo comprimido.
+Para comenzar el proceso de actualización, descarga el archivo de actualización de la máquina virtual ONTAP Select Deploy correspondiente desde el link:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^]. El paquete de actualización está formateado como un único archivo comprimido.
 
 .Pasos
-. Accede a la página link:https://mysupport.netapp.com/site/downloads/["NetApp Support Site descargas"^].
-. Desplázate hacia abajo y selecciona *ONTAP Select Deploy*.
-. Selecciona la versión de ONTAP Select que quieras.
+. Accede a link:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^] usando un navegador web y elige *Descargas* en el menú Descargas.
+. Desplázate hacia abajo y selecciona *ONTAP Select Deploy Upgrade*.
+. Selecciona la versión deseada del paquete de actualización.
 . Revise el Acuerdo de licencia de usuario final (EULA) y seleccione *Aceptar y continuar*.
-. Selecciona y descarga el paquete *ONTAP Select Deploy Upgrade* adecuado. Responde a todas las preguntas según sea necesario.
+. Selecciona y descarga el paquete adecuado, respondiendo a todas las indicaciones necesarias para tu entorno.
 
 
 
