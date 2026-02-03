@@ -2,7 +2,7 @@
 sidebar: sidebar 
 permalink: task_cli_deploy_image_add.html 
 keywords: administer, administering, cli, deploy, ontap select image, add 
-summary: Puede agregar una imagen de ONTAP Select a su instancia de la utilidad de administración Deploy. Una vez instalada, podrá usarla al implementar un clúster de ONTAP Select . 
+summary: Agrega una imagen de ONTAP Select a tu instancia de la utilidad de administración Deploy. Después de la instalación, puedes usarla al desplegar un clúster ONTAP Select. 
 ---
 = Agregar una imagen de ONTAP Select para implementar
 :hardbreaks:
@@ -14,7 +14,7 @@ summary: Puede agregar una imagen de ONTAP Select a su instancia de la utilidad 
 
 
 [role="lead"]
-Puede agregar una imagen de ONTAP Select a su instancia de la utilidad de administración Deploy. Una vez instalada, podrá usarla al implementar un clúster de ONTAP Select .
+Agrega una imagen de ONTAP Select a tu instancia de la utilidad de administración Deploy. Después de que la imagen se haya instalado, puedes usarla al desplegar un clúster ONTAP Select.
 
 .Antes de empezar
 Antes de agregar nuevas imágenes de ONTAP Select para implementar, primero debe eliminar cualquier imagen innecesaria.
@@ -29,14 +29,11 @@ NOTE: Solo debe agregar una imagen de ONTAP Select con una versión anterior a l
 Para comenzar a agregar una imagen de ONTAP Select a una instancia de la utilidad de implementación, debe descargar la imagen de instalación del sitio de soporte de NetApp . La imagen de instalación de ONTAP Select está formateada como un único archivo comprimido.
 
 .Pasos
-. Acceda al sitio de soporte de NetApp utilizando un navegador web y seleccione *Enlaces rápidos de soporte*.
-. Seleccione *Descargar software* en *Tareas principales* e inicie sesión en el sitio.
-. Seleccione *Encuentre su producto*.
-. Desplácese hacia abajo y seleccione * ONTAP Select*.
-. En *Otro software disponible*, seleccione *Actualización de implementación, Actualización de nodo, Instalación de imagen*.
-. Seleccione la versión deseada del paquete de actualización.
-. Revise el Acuerdo de licencia de usuario final (EULA) y haga clic en *Aceptar y continuar*.
-. Seleccione y descargue el paquete apropiado, respondiendo a todas las indicaciones según sea necesario para su entorno.
+. Accede a la página link:https://mysupport.netapp.com/site/downloads/["NetApp Support Site descargas"^].
+. Desplázate hacia abajo y selecciona *ONTAP Select Image*.
+. Selecciona la versión que quieres de la imagen de instalación.
+. Revise el Acuerdo de licencia de usuario final (EULA) y seleccione *Aceptar y continuar*.
+. Selecciona y descarga el paquete *ONTAP Select Image Install* adecuado. Responde a todas las preguntas según sea necesario.
 
 
 
@@ -46,7 +43,7 @@ Para comenzar a agregar una imagen de ONTAP Select a una instancia de la utilida
 Después de adquirir la imagen de instalación de ONTAP Select , debe cargar el archivo en la máquina virtual de implementación.
 
 .Antes de empezar
-Debe tener el archivo de imagen de instalación disponible en su estación de trabajo local. También debe tener la contraseña de la cuenta de administrador de Deploy.
+Verifica que tienes el archivo de imagen de instalación disponible en tu estación de trabajo local. También debes tener la contraseña de la cuenta de usuario administrador de Deploy.
 
 .Acerca de esta tarea
 Esta tarea describe un método para cargar el archivo a la máquina virtual de implementación. Es posible que existan otras opciones más adecuadas para su entorno.
@@ -80,9 +77,8 @@ Debe saber en qué directorio se encuentra el archivo de imagen de instalación 
 .Pasos
 . Sign in en la CLI de la utilidad de implementación usando SSH con la cuenta de administrador (admin).
 . Inicie el shell Bash:
-
-
-[listing]
++
+[source, cli]
 ----
 shell bash
 ----
