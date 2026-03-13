@@ -38,6 +38,10 @@ Las siguientes funciones de ONTAP son compatibles con ONTAP Select y tienen lice
 * Capacidad multiinquilino de ONTAP
 * ONTAP S3
 * SnapMirror S3
+* SnapLock Select
++
+SnapLock Select es la implementación de ONTAP SnapLock diseñada para ONTAP Select e incluye SnapLock Enterprise. No incluye SnapLock Compliance. Para más información, consulta el link:https://docs.netapp.com/us-en/ontap/snaplock/index.html["Documentación de ONTAP SnapLock"^].
+
 * SnapMirror
 * Nube SnapMirror
 * SnapRestore
@@ -61,7 +65,7 @@ Necesitas adquirir una licencia independiente para cualquier función de ONTAP q
 
 [NOTE]
 ====
-* Para ONTAP Select 9.16.1 y versiones anteriores, SnapLock Select Enterprise (que incluye el bloqueo de instantáneas a prueba de manipulaciones) está disponible enlink:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^] .
+* Para ONTAP Select 9.16.1 y versiones anteriores, SnapLock Select (incluido el bloqueo de instantáneas a prueba de manipulaciones) está disponible desde el link:https://mysupport.netapp.com/site/["Sitio de soporte de NetApp"^].
 * La SnapLock Compliance no es compatible con ONTAP Select.
 * No necesita una licencia de FabricPool al utilizar StorageGRID.
 
