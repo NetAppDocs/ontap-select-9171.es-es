@@ -63,7 +63,7 @@ Es posible extender un clúster de alta disponibilidad (HA) de dos nodos, activo
 
 Un clúster de dos nodos se define como un clúster en el que ambos nodos se encuentran en el mismo centro de datos a una distancia de 300 m. Generalmente, ambos nodos tienen enlaces ascendentes al mismo conmutador de red o conjunto de conmutadores de red de enlace entre conmutadores (ISL).
 
-Un SDS MetroCluster de dos nodos se define como un clúster cuyos nodos están separados físicamente (salas, edificios y centros de datos distintos) por más de 300 m. Además, las conexiones de enlace ascendente de cada nodo están conectadas a conmutadores de red independientes. El SDS MetroCluster no requiere hardware dedicado. Sin embargo, el entorno debe cumplir con los requisitos de latencia (un máximo de 5 ms para RTT y 5 ms para jitter, para un total de 10 ms) y distancia física (un máximo de 10 km).
+El SDS de dos nodos MetroCluster se define como un clúster con nodos que están separados físicamente (diferentes habitaciones, diferentes edificios y diferentes centros de datos) por más de 300m. Además, las conexiones de enlace ascendente de cada nodo están conectadas a conmutadores de red independientes. El SDS MetroCluster no requiere hardware dedicado. Sin embargo, el entorno debe cumplir los requisitos de latencia (un máximo de 5ms para RTT y 5ms para jitter, para un total de 10ms).
 
 MetroCluster SDS es una función premium y requiere una licencia Premium o Premium XL. La licencia Premium permite la creación de máquinas virtuales pequeñas y medianas, así como discos duros y SSD. La licencia Premium XL también permite la creación de unidades NVMe.
 
