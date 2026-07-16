@@ -21,6 +21,7 @@ NOTE: Las funciones de ONTAP que tienen dependencias específicas del hardware g
 
 
 
+[[ontap-features-automatically-enabled-by-default]]
 == Funciones de ONTAP habilitadas automáticamente de forma predeterminada
 
 Las siguientes funciones de ONTAP son compatibles con ONTAP Select y tienen licencia predeterminada:
@@ -60,6 +61,7 @@ NOTE: ONTAP Select admite SVM DR como origen y destino, con un máximo de 16 rel
 
 
 
+[[ontap-features-that-are-separately-licensed]]
 == Funciones de ONTAP que tienen licencia independiente
 
 Necesitas adquirir una licencia independiente para cualquier función de ONTAP que no esté habilitada de forma predeterminada, incluyendo:

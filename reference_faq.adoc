@@ -23,6 +23,7 @@ A partir de ONTAP Select 9.14.1, se ha restablecido la compatibilidad con el hip
 ====
 
 
+[[general]]
 == General
 
 Hay varias preguntas y respuestas generales.
@@ -55,6 +56,7 @@ Contactolink:mailto:ng-ses-ontap-select@netapp.com["ng-ses-ontap-select@netapp.c
 
 
 
+[[licenses-installation-upgrades-and-reverts]]
 == Licencias, instalación, actualizaciones y reversiones
 
 Hay varias preguntas y respuestas relacionadas con licencias, instalación, actualizaciones y reversiones.
@@ -125,6 +127,7 @@ Si caduca una suscripción a un grupo de capacidad, el sistema le avisa primero,
 
 
 
+[[storage]]
 == Almacenamiento
 
 Hay varias preguntas y respuestas relacionadas con el almacenamiento.
@@ -216,6 +219,7 @@ Debe instalar y ejecutar los componentes CLVM y Pacemaker (PCS) de código abier
 
 
 
+[[vcenter]]
 == vCenter
 
 Hay varias preguntas y respuestas relacionadas con VMware vCenter.
@@ -239,6 +243,7 @@ La lista de permisos de vCenter necesarios está disponible aquí:link:reference
 
 
 
+[[ha-and-clusters]]
 == HA y clústeres
 
 Hay varias preguntas y respuestas relacionadas con pares y clústeres de HA.
@@ -299,6 +304,7 @@ Segregar el tráfico de alta disponibilidad (HA) en una infraestructura física 
 
 
 
+[[mediator-service]]
 == Servicio de mediación
 
 Hay varias preguntas y respuestas relacionadas con el servicio de mediación.

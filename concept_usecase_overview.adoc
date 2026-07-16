@@ -18,42 +18,49 @@ ONTAP Select es adecuado para varios tipos diferentes de aplicaciones gracias a 
 
 
 
+[[deployment]]
 == Despliegue
 
 Desde un nivel alto, puede implementar ONTAP Select de dos maneras diferentes con respecto a la carga de trabajo en los servidores host del hipervisor.
 
 
 
+[[dedicated-deployment]]
 === Implementación dedicada
 
 Con el modelo de implementación dedicado, una sola instancia de ONTAP Select se ejecuta en el servidor host. Ningún otro procesamiento significativo se ejecuta en el mismo host de hipervisor.
 
 
 
+[[collocated-deployment]]
 === Despliegue en ubicación conjunta
 
 Con el modelo de implementación coubicada, ONTAP Select comparte el host con otras cargas de trabajo. En concreto, existen máquinas virtuales adicionales, cada una de las cuales suele ejecutar aplicaciones computacionales. Estas cargas de trabajo computacionales son locales en el clúster de ONTAP Select . Este modelo admite requisitos de aplicación e implementación especializados. Al igual que con el modelo de implementación dedicado, cada máquina virtual de ONTAP Select debe ejecutarse en un host de hipervisor independiente y dedicado.
 
 
 
+[[storage]]
 == Almacenamiento
 
 ONTAP Select se puede utilizar como almacenamiento principal o secundario, según las necesidades de su negocio.
 
 
 
+[[primary-storage]]
 === Almacenamiento primario
 
 En algunos casos, puede optar por implementar ONTAP Select como su plataforma de almacenamiento principal. Este tipo de implementación varía y depende de las características de la carga de trabajo de las aplicaciones, así como de sus objetivos comerciales.
 
 
 
+[[disaster-recovery-and-secondary-storage]]
 === Recuperación ante desastres y almacenamiento secundario
 
 Puede usar ONTAP Select para implementar almacenamiento adicional que complemente sus capacidades de almacenamiento principal. Este almacenamiento adicional puede utilizarse para respaldar los esfuerzos de recuperación ante desastres y los planes de respaldo de datos de su organización.
 
 
 
+[[development-and-testing]]
 == Desarrollo y pruebas
 
 Al implementar diversas aplicaciones en su organización, puede usar ONTAP Select como parte integral del proceso general de desarrollo y pruebas de aplicaciones. Por ejemplo, podría necesitar almacenamiento temporal para guardar datos de entrada o salida de pruebas. La duración de este tipo de implementaciones puede variar según las características y requisitos de la aplicación.

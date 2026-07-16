@@ -18,6 +18,7 @@ Características de ONTAP Select redes internas y externas.
 
 
 
+[[ontap-select-internal-network]]
 == Red interna de ONTAP Select
 
 La red interna de ONTAP Select , disponible únicamente en la versión multinodo del producto, se encarga de proporcionar al clúster de ONTAP Select comunicación de clúster, interconexión de alta disponibilidad (HA) y servicios de replicación síncrona. Esta red incluye los siguientes puertos e interfaces:
@@ -49,6 +50,7 @@ Un clúster de dos nodos puede usar cuatro puertos de 1 GB para el tráfico inte
 
 
 
+[[internal-network-validation-and-troubleshooting]]
 === Validación y resolución de problemas de la red interna
 
 La red interna de un clúster multinodo se puede validar mediante la función de verificación de conectividad de red. Esta función se puede invocar desde la CLI de Deploy que se ejecuta en `network connectivity-check start` dominio.
@@ -67,6 +69,7 @@ A partir de ONTAP Deploy 2.10, el tamaño de MTU utilizado por la red interna se
 
 
 
+[[ontap-select-external-network]]
 == ONTAP Select
 
 La red externa de ONTAP Select gestiona todas las comunicaciones salientes del clúster y, por lo tanto, está presente tanto en configuraciones de un solo nodo como de varios. Si bien esta red no tiene los requisitos de rendimiento tan estrictos de la red interna, el administrador debe tener cuidado de no crear cuellos de botella entre el cliente y la máquina virtual de ONTAP , ya que los problemas de rendimiento podrían confundirse con problemas de ONTAP Select .
@@ -99,12 +102,14 @@ La siguiente tabla destaca las principales diferencias entre las redes internas 
 |===
 
 
+[[nic-teaming]]
 === Equipos de NIC
 
 Para garantizar que las redes internas y externas cuenten con el ancho de banda y la resiliencia necesarios para ofrecer un alto rendimiento y tolerancia a fallos, se recomienda la agrupación de adaptadores de red físicos. Se admiten configuraciones de clúster de dos nodos con un solo enlace de 10 Gb. Sin embargo, la práctica recomendada de NetApp es utilizar la agrupación de NIC tanto en las redes internas como en las externas del clúster ONTAP Select .
 
 
 
+[[mac-address-generation]]
 === Generación de direcciones MAC
 
 Las direcciones MAC asignadas a todos los puertos de red de ONTAP Select se generan automáticamente mediante la utilidad de implementación incluida. Esta utilidad utiliza un identificador único organizativo (OUI) específico de la plataforma y propio de NetApp para garantizar que no haya conflictos con los sistemas FAS . Una copia de esta dirección se almacena en una base de datos interna dentro de la máquina virtual de instalación de ONTAP Select (ONTAP Deploy) para evitar reasignaciones accidentales durante futuras implementaciones de nodos. El administrador no debe modificar en ningún momento la dirección MAC asignada a un puerto de red.

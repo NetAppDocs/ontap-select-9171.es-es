@@ -18,6 +18,7 @@ Debe prepararse para revisar y utilizar los procesos de flujo de trabajo.
 
 
 
+[[understand-the-api-calls-used-in-the-workflows]]
 == Comprender las llamadas API utilizadas en los flujos de trabajo
 
 La página de documentación en línea de ONTAP Select incluye los detalles de cada llamada a la API REST. En lugar de repetir estos detalles aquí, cada llamada a la API utilizada en los ejemplos de flujo de trabajo incluye solo la información necesaria para localizarla en la página de documentación. Después de localizar una llamada a la API específica, puede revisar todos sus detalles, incluyendo los parámetros de entrada, los formatos de salida, los códigos de estado HTTP y el tipo de procesamiento de la solicitud.
@@ -31,6 +32,7 @@ La siguiente información se incluye para cada llamada API dentro de un flujo de
 
 
 
+[[construct-a-url-to-directly-access-the-rest-api]]
 == Construya una URL para acceder directamente a la API REST
 
 Además de la página de documentación de ONTAP Select , también puede acceder a la API REST de Deploy directamente mediante un lenguaje de programación como Python. En este caso, la URL principal es ligeramente diferente a la URL utilizada para acceder a la página de documentación en línea. Para acceder directamente a la API, debe añadir "/api" a la cadena de dominio y puerto. Por ejemplo:

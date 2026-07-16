@@ -18,12 +18,14 @@ Hay varias cosas que debe tener en cuenta antes de utilizar la página de docume
 
 
 
+[[deployment-plan]]
 == Plan de implementación
 
 Si planea realizar llamadas a la API al realizar tareas específicas de implementación o administración, considere crear un plan de implementación. Estos planes pueden ser formales o informales y generalmente contienen sus objetivos y las llamadas a la API que se utilizarán. Consulte Procesos de flujo de trabajo que utilizan la API REST de implementación para obtener más información.
 
 
 
+[[json-examples-and-parameter-definitions]]
 == Ejemplos JSON y definiciones de parámetros
 
 Cada llamada a la API se describe en la página de documentación con un formato uniforme. El contenido incluye notas de implementación, parámetros de consulta y códigos de estado HTTP. Además, puede mostrar detalles sobre el JSON utilizado con las solicitudes y respuestas de la API, como se indica a continuación:
@@ -34,6 +36,7 @@ Cada llamada a la API se describe en la página de documentación con un formato
 
 
 
+[[caution-when-issuing-api-calls]]
 == Precaución al realizar llamadas API
 
 Todas las operaciones de API que realice mediante la página de documentación de Implementación son operaciones en tiempo real. Tenga cuidado de no crear, actualizar ni eliminar por error la configuración ni otros datos.

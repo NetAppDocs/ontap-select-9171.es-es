@@ -38,6 +38,7 @@ NOTE: ONTAP Select admite un máximo de cuatro VMNIC.
 
 
 
+[[standard-or-distributed-vswitch-and-four-physical-ports-per-node]]
 == vSwitch estándar o distribuido y cuatro puertos físicos por nodo
 
 Se pueden asignar cuatro grupos de puertos a cada nodo de un clúster multinodo. Cada grupo de puertos tiene un único puerto físico activo y tres puertos físicos en espera, como se muestra en la siguiente figura.
@@ -106,6 +107,7 @@ Para facilitar la lectura, las asignaciones son las siguientes:
 |===
 
 
+[[standard-or-distributed-vswitch-and-two-physical-ports-per-node]]
 == vSwitch estándar o distribuido y dos puertos físicos por nodo
 
 Al utilizar dos tarjetas de red de alta velocidad (25/40 GB), la configuración recomendada del grupo de puertos es conceptualmente muy similar a la configuración con cuatro adaptadores de 10 GB. Se deben utilizar cuatro grupos de puertos incluso cuando solo se utilizan dos adaptadores físicos. Las asignaciones de los grupos de puertos son las siguientes:
@@ -134,6 +136,7 @@ image:DDN_13.jpg["vSwitch con dos puertos físicos por nodo"]
 
 
 
+[[distributed-vswitch-with-lacp]]
 == vSwitch distribuido con LACP
 
 Al utilizar vSwitches distribuidos en su configuración, se puede usar LACP (aunque no es la práctica recomendada) para simplificar la configuración de red. La única configuración LACP compatible requiere que todas las VMNIC estén en un único LAG. El switch físico de enlace ascendente debe admitir un tamaño de MTU de entre 7500 y 9000 en todos los puertos del canal. Las redes internas y externas de ONTAP Select deben estar aisladas a nivel de grupo de puertos. La red interna debe usar una VLAN no enrutable (aislada). La red externa puede usar VST, EST o VGT.

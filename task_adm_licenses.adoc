@@ -18,6 +18,7 @@ Hay varias tareas relacionadas que puede realizar como parte de la administraci�
 
 
 
+[[manage-the-capacity-tier-licenses]]
 == Administrar las licencias de nivel de capacidad
 
 Puede agregar, editar y eliminar licencias de nivel de capacidad ONTAP Select según sea necesario.
@@ -33,6 +34,7 @@ Puede agregar, editar y eliminar licencias de nivel de capacidad ONTAP Select se
 
 
 
+[[manage-the-capacity-pool-licenses]]
 == Administrar las licencias del pool de capacidad
 
 Puede agregar, editar y eliminar licencias de ONTAP Select Capacity Pool según sea necesario.
@@ -81,6 +83,7 @@ Para renovar una licencia existente:
 
 
 
+[[reinstall-a-capacity-pool-license]]
 == Reinstalar una licencia de Capacity Pool
 
 Cada licencia activa de Capacity Pool está vinculada a una instancia específica de License Manager, que se encuentra dentro de una instancia de la utilidad de administración de Deploy. Si utiliza una licencia de Capacity Pool y luego restaura o recupera la instancia de Deploy, la licencia original dejará de ser válida. Debe generar un nuevo archivo de licencia de capacidad e instalarla en la nueva instancia de Deploy.
@@ -145,6 +148,7 @@ Verlink:task_lic_acquire_cp.html["Adquirir una licencia de Pool de Capacidad"] P
 
 
 
+[[convert-an-evaluation-license-to-a-production-license]]
 == Convertir una licencia de evaluación en una licencia de producción
 
 Puede actualizar un clúster de evaluación de ONTAP Select para usar una licencia de nivel de capacidad de producción con la utilidad de administración de implementación.
@@ -176,6 +180,7 @@ Los números de serie de nodo de veinte dígitos asignados originalmente a cada 
 
 
 
+[[manage-an-expired-capacity-pool-license]]
 == Administrar una licencia de grupo de capacidad vencida
 
 Generalmente, cuando una licencia vence, no ocurre nada. Sin embargo, no se puede instalar una licencia diferente porque los nodos están asociados a la licencia vencida. Hasta que no renueve la licencia, no debe realizar ninguna acción que desconecte el agregado, como reiniciar o realizar una conmutación por error. Se recomienda acelerar la renovación de la licencia.
@@ -184,6 +189,7 @@ Para obtener más información sobre ONTAP Select y la renovación de licencias,
 
 
 
+[[manage-add-on-licenses]]
 == Administrar licencias complementarias
 
 Para el producto ONTAP Select , las licencias complementarias se aplican directamente dentro de ONTAP y no se administran a través de ONTAP Select Deploy. Verlink:https://docs.netapp.com/us-en/ontap/system-admin/manage-licenses-concept.html["Descripción general de administración de licencias (solo administradores de clúster)"^] ylink:https://docs.netapp.com/us-en/ontap/task_admin_enable_new_features.html["Habilite nuevas funciones agregando claves de licencia"^] Para obtener más información.

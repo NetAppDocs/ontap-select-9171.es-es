@@ -21,6 +21,7 @@ NOTE: La información sobre compatibilidad con almacenamiento externo se detalla
 
 
 
+[[hardware-raid-controller-requirements]]
 == Requisitos del controlador RAID de hardware
 
 El controlador RAID en el host de hipervisor donde implementa ONTAP Select debe cumplir varios requisitos.
@@ -53,12 +54,14 @@ Los requisitos mínimos para el controlador RAID incluyen:
 
 
 
+[[software-raid-requirements]]
 == Requisitos de RAID de software
 
 Al implementar un clúster de ONTAP Select en el hipervisor, puede utilizar la función RAID por software que ofrece ONTAP Select en lugar de un controlador RAID de hardware local. Existen varios requisitos y restricciones que debe tener en cuenta antes de implementar un clúster con RAID por software.
 
 
 
+[[general-requirements]]
 === Requisitos generales
 
 El entorno para una implementación de RAID de software debe cumplir los siguientes requisitos básicos:
@@ -75,6 +78,7 @@ NOTE: Si hay un controlador RAID por hardware presente, consulte lalink:concept_
 
 
 
+[[esxi-specific-requirements]]
 === Requisitos específicos de ESXi
 
 * VMware ESXi 7.0 GA (compilación 15843807) o posterior
@@ -84,6 +88,7 @@ NOTE: Si hay un controlador RAID por hardware presente, consulte lalink:concept_
 
 
 
+[[kvm-specific-requirements]]
 === Requisitos específicos de KVM
 
 También existen requisitos específicos de configuración del paquete de software. Ver ellink:https://docs.netapp.com/us-en/ontap-select/kvm-host-configuration-and-preparation-checklist.html#prepare-linux-server["preparación del servidor Linux"] Paso para obtener más información.
@@ -120,6 +125,7 @@ Este es un conjunto de unidades SSD SAS o SATA para la gestión de datos. Los di
 
 
 
+[[ontap-select-node-configuration]]
 === Configuración del nodo de ONTAP Select
 
 Debe configurar cada nodo ONTAP Select y cada host de hipervisor de la siguiente manera para separar los discos del sistema de la raíz y los agregados de datos:
@@ -130,6 +136,7 @@ Debe configurar cada nodo ONTAP Select y cada host de hipervisor de la siguiente
 
 
 
+[[storage-capacity-restrictions]]
 == Restricciones de capacidad de almacenamiento
 
 Como parte de la planificación de una implementación de ONTAP Select , debe tener en cuenta las restricciones relacionadas con la asignación y el uso del almacenamiento.
@@ -141,12 +148,14 @@ TIP: ONTAP Select aplica varias restricciones relacionadas con la asignación y 
 
 
 
+[[calculate-raw-storage-capacity]]
 === Calcular la capacidad de almacenamiento sin procesar
 
 La capacidad de almacenamiento de ONTAP Select corresponde al tamaño total permitido de los datos virtuales y los discos raíz conectados a la máquina virtual de ONTAP Select . Debe tener esto en cuenta al asignar la capacidad.
 
 
 
+[[minimum-storage-capacity-for-a-single-node-cluster]]
 === Capacidad mínima de almacenamiento para un clúster de un solo nodo
 
 El tamaño mínimo del grupo de almacenamiento asignado para el nodo en un clúster de un solo nodo es:
@@ -159,6 +168,7 @@ La asignación mínima para una implementación de producción consta de 1 TB pa
 
 
 
+[[minimum-storage-capacity-for-a-multi-node-cluster]]
 === Capacidad mínima de almacenamiento para un clúster de varios nodos
 
 El tamaño mínimo del grupo de almacenamiento asignado para cada nodo en un clúster de varios nodos es:
@@ -180,6 +190,7 @@ Por ejemplo, cuando se crea un agregado de 2 TB, se asignan 2 TB a dos instancia
 ====
 
 
+[[storage-capacity-and-multiple-storage-pools]]
 === Capacidad de almacenamiento y múltiples grupos de almacenamiento
 
 Puede configurar cada nodo de ONTAP Select para usar hasta 400 TB de almacenamiento al usar almacenamiento de conexión directa local, VMware vSAN o matrices de almacenamiento externas. Sin embargo, un solo pool de almacenamiento tiene un tamaño máximo de 64 TB al usar almacenamiento de conexión directa o matrices de almacenamiento externas. Por lo tanto, si planea usar más de 64 TB de almacenamiento en estas situaciones, debe asignar varios pools de almacenamiento de la siguiente manera:
@@ -193,12 +204,14 @@ NOTE: Se deja un búfer del 2% sin usar en cada pool de almacenamiento y no requ
 
 
 
+[[storage-capacity-and-vmware-vsan]]
 === Capacidad de almacenamiento y VMware vSAN
 
 Al usar VMware vSAN, un almacén de datos puede tener más de 64 TB. Sin embargo, inicialmente solo se pueden asignar hasta 64 TB al crear el clúster de ONTAP Select . Una vez creado el clúster, se puede asignar almacenamiento adicional desde el almacén de datos de vSAN existente. La capacidad del almacén de datos de vSAN que ONTAP Select puede consumir se basa en la política de almacenamiento de la máquina virtual establecida.
 
 
 
+[[best-practices]]
 === Mejores prácticas
 
 Debe tener en cuenta las siguientes recomendaciones con respecto al hardware del núcleo del hipervisor:
@@ -208,6 +221,7 @@ Debe tener en cuenta las siguientes recomendaciones con respecto al hardware del
 
 
 
+[[additional-disk-drive-requirements-based-on-the-platform-license]]
 == Requisitos de unidad de disco adicionales según la licencia de la plataforma
 
 Las unidades que elija están limitadas según la oferta de licencias de la plataforma.
@@ -235,6 +249,7 @@ NOTE: El RAID de software con unidades DAS locales es compatible con la licencia
 
 
 
+[[nvme-drives-with-software-raid]]
 == Unidades NVMe con RAID de software
 
 Puede configurar RAID por software para usar unidades SSD NVMe. Su entorno debe cumplir los siguientes requisitos:

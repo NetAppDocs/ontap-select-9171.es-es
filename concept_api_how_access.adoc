@@ -21,18 +21,21 @@ NOTE: La API REST incluida con ONTAP Select Deploy tiene asignado un número de 
 
 
 
+[[deploy-utility-native-user-interface]]
 == Implementar la interfaz de usuario nativa de la utilidad
 
 La principal forma de acceder a la API es a través de la interfaz web de ONTAP Select Deploy. El navegador realiza llamadas a la API y reformatea los datos según el diseño de la interfaz. También se accede a la API a través de la interfaz de línea de comandos de la utilidad Deploy.
 
 
 
+[[ontap-select-deploy-online-documentation-page]]
 == Página de documentación en línea de ONTAP Select Deploy
 
 La página de documentación en línea de ONTAP Select Deploy ofrece un punto de acceso alternativo al usar un navegador. Además de permitir la ejecución directa de llamadas a la API individuales, la página también incluye una descripción detallada de la API, incluyendo parámetros de entrada y otras opciones para cada llamada. Las llamadas a la API se organizan en varias áreas o categorías funcionales.
 
 
 
+[[custom-program]]
 == Programa personalizado
 
 Puede acceder a la API de implementación mediante diversos lenguajes de programación y herramientas. Las opciones más populares incluyen Python, Java y cURL. Un programa, script o herramienta que utiliza la API actúa como un cliente de servicios web REST. Usar un lenguaje de programación le permite comprender mejor la API y le brinda la oportunidad de automatizar las implementaciones de ONTAP Select .

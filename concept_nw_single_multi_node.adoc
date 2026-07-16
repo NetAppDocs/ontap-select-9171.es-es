@@ -18,6 +18,7 @@ ONTAP Select admite configuraciones de red de nodo único y de nodo múltiple.
 
 
 
+[[single-node-network-configuration]]
 == Configuración de red de nodo único
 
 Las configuraciones de ONTAP Select de nodo único no requieren la red interna de ONTAP , porque no hay tráfico de clúster, HA o espejo.
@@ -41,6 +42,7 @@ NOTE: Si bien dos adaptadores son suficientes para un clúster de un solo nodo, 
 
 
 
+[[lif-assignment]]
 === Asignación de LIF
 
 Como se explica en la sección de asignación de LIF multinodo de este documento, ONTAP Select utiliza espacios IP para separar el tráfico de red del clúster del tráfico de datos y de administración. La versión de nodo único de esta plataforma no incluye una red de clúster. Por lo tanto, no hay puertos en el espacio IP del clúster.
@@ -50,6 +52,7 @@ NOTE: Los LIF de administración de clústeres y nodos se crean automáticamente
 
 
 
+[[management-and-data-lifs-e0a-e0b-and-e0c]]
 === Gestión y datos de LIF (e0a, e0b y e0c)
 
 Los puertos ONTAP e0a, e0b y e0c se delegan como puertos candidatos para LIF que transportan los siguientes tipos de tráfico:
@@ -61,6 +64,7 @@ Los puertos ONTAP e0a, e0b y e0c se delegan como puertos candidatos para LIF que
 
 
 
+[[multinode-network-configuration]]
 == Configuración de red multinodo
 
 La configuración de red multinodo ONTAP Select consta de dos redes.
@@ -103,6 +107,7 @@ Tenga en cuenta que tanto los grupos de puertos de red externa como los de red i
 
 
 
+[[lif-assignment]]
 === Asignación de LIF
 
 Con la introducción de los espacios IP, los roles de puerto de ONTAP quedaron obsoletos. Al igual que las matrices FAS , los clústeres ONTAP Select contienen un espacio IP predeterminado y un espacio IP de clúster. Al colocar los puertos de red e0a, e0b y e0g en el espacio IP predeterminado y los puertos e0c y e0d en el espacio IP de clúster, estos puertos se han aislado y no pueden alojar LIFs no pertenecientes a su red. Los puertos restantes del clúster ONTAP Select se consumen mediante la asignación automática de interfaces que proporcionan servicios internos. No se exponen a través del shell de ONTAP , como ocurre con las interfaces de interconexión RSM y HA.
@@ -114,6 +119,7 @@ Los puertos de red y los LIF se explican en detalle en las siguientes secciones.
 
 
 
+[[management-and-data-lifs-e0a-e0b-and-e0g]]
 === Gestión y datos de LIF (e0a, e0b y e0g)
 
 Los puertos ONTAP e0a, e0b y e0g se delegan como puertos candidatos para LIF que transportan los siguientes tipos de tráfico:
@@ -128,6 +134,7 @@ NOTE: Los LIF de administración de clústeres y nodos se crean automáticamente
 
 
 
+[[cluster-network-lifs-e0c-e0d]]
 === LIF de red de clúster (e0c, e0d)
 
 Los puertos e0c y e0d de ONTAP se delegan como puertos locales para las interfaces del clúster. Dentro de cada nodo de clúster de ONTAP Select , se generan automáticamente dos interfaces de clúster durante la configuración de ONTAP mediante direcciones IP locales de enlace (169.254.xx).
@@ -144,6 +151,7 @@ NOTE: Para garantizar el máximo rendimiento del tráfico de red del clúster, e
 
 
 
+[[raid-syncmirror-traffic-e0e]]
 === Tráfico RAID SyncMirror (e0e)
 
 La replicación síncrona de bloques entre los nodos asociados de alta disponibilidad se realiza mediante una interfaz de red interna ubicada en el puerto de red e0e. Esta funcionalidad se realiza automáticamente mediante las interfaces de red configuradas por ONTAP durante la configuración del clúster y no requiere configuración por parte del administrador.
@@ -153,6 +161,7 @@ NOTE: El puerto e0e está reservado por ONTAP para el tráfico de replicación i
 
 
 
+[[ha-interconnect-e0f]]
 === Interconexión HA (e0f)
 
 Las cabinas FAS de NetApp utilizan hardware especializado para transferir información entre pares de alta disponibilidad (HA) en un clúster ONTAP . Sin embargo, los entornos definidos por software no suelen disponer de este tipo de equipo (como dispositivos InfiniBand o iWARP), por lo que se necesita una solución alternativa. Si bien se consideraron varias posibilidades, los requisitos de ONTAP para el transporte de interconexión exigían que esta funcionalidad se emulara en software. Como resultado, dentro de un clúster ONTAP Select , la funcionalidad de la interconexión de alta disponibilidad (tradicionalmente proporcionada por hardware) se ha integrado en el sistema operativo, utilizando Ethernet como mecanismo de transporte.

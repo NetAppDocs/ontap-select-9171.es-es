@@ -18,12 +18,14 @@ Si bien REST establece un conjunto común de tecnologías y mejores prácticas, 
 
 
 
+[[hypervisor-host-versus-ontap-select-node]]
 == Host de hipervisor versus ONTAP Select
 
 Un host de hipervisor es la plataforma de hardware principal que aloja una máquina virtual ONTAP Select . Cuando una máquina virtual de ONTAP Select se implementa y está activa en un host de hipervisor, se considera un nodo de ONTAP Select. Con la versión 3 de la API REST de Deploy, los objetos de host y nodo son independientes. Esto permite una relación de uno a muchos, donde uno o más nodos de ONTAP Select pueden ejecutarse en el mismo host de hipervisor.
 
 
 
+[[object-identifiers]]
 == Identificadores de objetos
 
 A cada instancia u objeto de recurso se le asigna un identificador único al crearse. Estos identificadores son únicos globalmente dentro de una instancia específica de ONTAP Select Deploy. Tras realizar una llamada a la API que crea una nueva instancia de objeto, el valor de id asociado se devuelve al llamador en el `location` encabezado de la respuesta HTTP. Puede extraer el identificador y usarlo en llamadas posteriores al hacer referencia a la instancia del recurso.
@@ -33,12 +35,14 @@ NOTE: El contenido y la estructura interna de los identificadores de objeto pued
 
 
 
+[[request-identifiers]]
 == Identificadores de solicitud
 
 A cada solicitud de API exitosa se le asigna un identificador único. El identificador se devuelve en el `request-id` encabezado de la respuesta HTTP asociada. Puede usar un identificador de solicitud para referirse colectivamente a las actividades de una única transacción de solicitud-respuesta de API específica. Por ejemplo, puede recuperar todos los mensajes de evento de una transacción según el ID de la solicitud.
 
 
 
+[[synchronous-and-asynchronous-calls]]
 == Llamadas sincrónicas y asincrónicas
 
 Hay dos formas principales en que un servidor ejecuta una solicitud HTTP recibida de un cliente:
@@ -49,6 +53,7 @@ Hay dos formas principales en que un servidor ejecuta una solicitud HTTP recibid
 
 
 
+[[confirm-the-completion-of-a-long-running-job]]
 == Confirmar la finalización de un trabajo de larga duración
 
 Generalmente, cualquier operación que tarde mucho tiempo en completarse se procesa asincrónicamente mediante una tarea en segundo plano en el servidor. Con la API REST de Deploy, cada tarea en segundo plano está anclada por un objeto Job que la rastrea y proporciona información, como su estado actual. Un objeto Job, con su identificador único, se devuelve en la respuesta HTTP tras crear una tarea en segundo plano.
@@ -63,6 +68,7 @@ Además de utilizar el objeto Trabajo, existen otras formas de determinar el éx
 
 
 
+[[security]]
 == Seguridad
 
 La API de implementación utiliza las siguientes tecnologías de seguridad:

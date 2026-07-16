@@ -18,12 +18,14 @@ Primero, familiarícese con los conceptos generales de red aplicables al entorno
 
 
 
+[[physical-networking]]
 == Redes físicas
 
 La red física admite la implementación de un clúster ONTAP Select principalmente al proporcionar la infraestructura de conmutación de capa 2 subyacente. La configuración de la red física incluye tanto el host del hipervisor como el entorno de red conmutada más amplio.
 
 
 
+[[host-nic-options]]
 === Opciones de NIC del host
 
 Cada host de hipervisor ONTAP Select debe configurarse con dos o cuatro puertos físicos. La configuración exacta que elija dependerá de varios factores, entre ellos:
@@ -36,6 +38,7 @@ Cada host de hipervisor ONTAP Select debe configurarse con dos o cuatro puertos 
 
 
 
+[[physical-switch-configuration]]
 === Configuración del conmutador físico
 
 Debe asegurarse de que la configuración de los conmutadores físicos sea compatible con la implementación de ONTAP Select . Los conmutadores físicos están integrados con los conmutadores virtuales basados en hipervisor. La configuración exacta que elija depende de varios factores. Las principales consideraciones incluyen las siguientes:
@@ -47,12 +50,14 @@ Debe asegurarse de que la configuración de los conmutadores físicos sea compat
 
 
 
+[[logical-networking]]
 == Redes lógicas
 
 ONTAP Select utiliza dos redes lógicas diferentes, separando el tráfico según su tipo. En concreto, el tráfico puede fluir entre los hosts dentro del clúster, así como hacia los clientes de almacenamiento y otras máquinas fuera del clúster. Los conmutadores virtuales administrados por los hipervisores contribuyen al soporte de la red lógica.
 
 
 
+[[internal-network]]
 === Red interna
 
 En una implementación de clúster multinodo, los nodos individuales de ONTAP Select se comunican mediante una red interna aislada. Esta red no está expuesta ni disponible fuera de los nodos del clúster de ONTAP Select .
@@ -82,6 +87,7 @@ La red interna tiene las siguientes características:
 
 
 
+[[external-network]]
 === Red externa
 
 La red externa procesa el tráfico entre los nodos de un clúster de ONTAP Select y los clientes de almacenamiento externo, así como las demás máquinas. La red externa forma parte de cada implementación de clúster y tiene las siguientes características:
@@ -111,6 +117,7 @@ La red externa está presente con clústeres de todos los tamaños.
 
 
 
+[[virtual-machine-networking-environment]]
 == Entorno de red de máquinas virtuales
 
 El host del hipervisor proporciona varias funciones de red.

@@ -26,6 +26,7 @@ El flujo de trabajo de creación de clúster difiere en las siguientes situacion
 
 
 
+[[1-register-vcenter-server-credential]]
 == 1. Registrar las credenciales del servidor vCenter
 
 Al implementar en un host ESXi administrado por un servidor vCenter, debe agregar una credencial antes de registrar el host. La utilidad de administración de implementación puede usar la credencial para autenticarse en vCenter.
@@ -69,6 +70,7 @@ Producción::
 
 
 
+[[2-register-a-hypervisor-host]]
 == 2. Registrar un host de hipervisor
 
 Debe agregar un host de hipervisor donde se ejecutará la máquina virtual que contiene el nodo ONTAP Select .
@@ -115,6 +117,7 @@ Producción::
 
 
 
+[[3-create-a-cluster]]
 == 3. Crear un clúster
 
 Cuando se crea un clúster de ONTAP Select , se registra la configuración básica del clúster y Deploy genera automáticamente los nombres de los nodos.
@@ -154,6 +157,7 @@ Producción::
 
 
 
+[[4-configure-the-cluster]]
 == 4. Configurar el clúster
 
 Hay varios atributos que debes proporcionar como parte de la configuración del clúster.
@@ -195,6 +199,7 @@ Producción:: Ninguno
 
 
 
+[[5-retrieve-the-node-name]]
 == 5. Recupere el nombre del nodo
 
 La utilidad de administración de implementación genera automáticamente los identificadores y nombres de los nodos al crear un clúster. Antes de configurar un nodo, debe recuperar el ID asignado.
@@ -225,6 +230,7 @@ Producción::
 
 
 
+[[6-configure-the-nodes]]
 == 6. Configurar los nodos
 
 Debe proporcionar la configuración básica del nodo, que es la primera de las tres llamadas API utilizadas para configurar un nodo.
@@ -263,6 +269,7 @@ Producción:: Ninguno
 
 
 
+[[7-retrieve-the-node-networks]]
 == 7. Recuperar las redes de nodos
 
 Debe identificar las redes de datos y administración que utiliza el nodo en el clúster de un solo nodo. La red interna no se utiliza con un clúster de un solo nodo.
@@ -293,6 +300,7 @@ Producción::
 
 
 
+[[8-configure-the-node-networking]]
 == 8. Configurar la red del nodo
 
 Debe configurar las redes de datos y administración. La red interna no se utiliza con un clúster de un solo nodo.
@@ -329,6 +337,7 @@ Producción:: Ninguno
 
 
 
+[[9-configure-the-node-storage-pool]]
 == 9. Configurar el grupo de almacenamiento del nodo
 
 El último paso para configurar un nodo es conectar un pool de almacenamiento. Puede determinar los pools de almacenamiento disponibles mediante el cliente web de vSphere o, opcionalmente, mediante la API REST de implementación.
@@ -367,6 +376,7 @@ Producción:: Ninguno
 
 
 
+[[10-deploy-the-cluster]]
 == 10. Implementar el clúster
 
 Una vez configurados el clúster y el nodo, puede implementar el clúster.

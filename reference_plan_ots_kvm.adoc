@@ -18,6 +18,7 @@ Puede configurar ONTAP Select en el hipervisor KVM con una matriz de almacenamie
 
 
 
+[[basic-requirements-and-restrictions]]
 == Requisitos básicos y restricciones
 
 Si utiliza una matriz externa para los grupos de almacenamiento de ONTAP Select , se aplican las siguientes restricciones de configuración:
@@ -33,6 +34,7 @@ CAUTION: La capacidad de almacenamiento que especifique debe estar dentro de los
 
 
 
+[[best-practices]]
 == Mejores prácticas
 
 Debes seguir las siguientes recomendaciones:

@@ -18,6 +18,7 @@ ONTAP Select Deploy es la utilidad de administración que se utiliza para implem
 
 
 
+[[core-functionality]]
 == Funcionalidad principal
 
 La utilidad de administración Deploy realiza las siguientes funciones principales:
@@ -33,18 +34,21 @@ La utilidad de administración Deploy realiza las siguientes funciones principal
 
 
 
+[[ways-you-can-access-the-deploy-utility]]
 == Formas de acceder a la utilidad de implementación
 
 Tiene varias opciones disponibles para acceder a la utilidad de administración de Deploy. Todas las interfaces externas son funcionalmente equivalentes. Debe seleccionar la opción de acceso que mejor se adapte a sus objetivos y requisitos de implementación. En todos los casos, debe iniciar sesión con la cuenta de administrador y una contraseña válida.
 
 
 
+[[web-graphical-user-interface]]
 === Interfaz gráfica de usuario web
 
 Puede acceder a la utilidad de implementación mediante un navegador web moderno. La interfaz de usuario web proporciona una interfaz intuitiva y fácil de usar, y en la mayoría de los casos será su interfaz principal cuando utilice la utilidad.
 
 
 
+[[command-line-interface]]
 === Interfaz de línea de comandos
 
 El shell de administración dispone de una interfaz de línea de comandos basada en texto. Puede acceder al shell de administración CLI de las siguientes maneras:
@@ -57,6 +61,7 @@ Normalmente se utiliza la consola de la máquina virtual durante el proceso de i
 
 
 
+[[rest-web-services-api]]
 === API de servicios web REST
 
 La API de servicios web REST expuesta a clientes externos ofrece otra opción al conectarse a la utilidad de implementación. Puede acceder a la API mediante cualquier lenguaje de programación o herramienta compatible con servicios web REST. Las opciones más comunes incluyen:
@@ -70,6 +75,7 @@ El uso de un lenguaje de programación o scripting brinda la oportunidad de auto
 
 
 
+[[ontap-select-online-documentation-web-page]]
 === Página web de documentación en línea de ONTAP Select
 
 Mostrar la página web de la documentación en línea en la utilidad de implementación es una forma alternativa de acceder a la API de servicios web REST. Sin embargo, en lugar de usar un lenguaje de programación, se accede a la API de administración a través de la página mediante un navegador. Se proporcionan las siguientes funciones:

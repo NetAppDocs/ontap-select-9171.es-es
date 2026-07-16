@@ -42,6 +42,7 @@ NOTE: El clúster ONTAP Select de dos nodos se compone de un par de alta disponi
 
 
 
+[[two-node-ha-versus-multi-node-ha]]
 == HA de dos nodos versus HA de múltiples nodos
 
 A diferencia de los arreglos FAS , los nodos ONTAP Select de un par de alta disponibilidad se comunican exclusivamente a través de la red IP. Esto significa que la red IP es un punto único de fallo (SPOF), y la protección contra particiones de red y escenarios de cerebro dividido se convierte en un aspecto importante del diseño. El clúster multinodo puede soportar fallos de un solo nodo porque el quórum del clúster se establece con los tres o más nodos supervivientes. El clúster de dos nodos se basa en el servicio de mediación alojado por la máquina virtual ONTAP Deploy para lograr el mismo resultado.
@@ -57,6 +58,7 @@ Se requiere una acción administrativa si se debe cambiar la ubicación original
 
 
 
+[[two-node-ha-versus-two-node-stretched-ha-metrocluster-sds]]
 == HA de dos nodos versus HA extendido de dos nodos (MetroCluster SDS)
 
 Es posible extender un clúster de alta disponibilidad (HA) de dos nodos, activo/activo, a distancias mayores y, potencialmente, ubicar cada nodo en un centro de datos diferente. La única diferencia entre un clúster de dos nodos y un clúster extendido de dos nodos (también conocido como MetroCluster SDS) es la distancia de conectividad de red entre los nodos.

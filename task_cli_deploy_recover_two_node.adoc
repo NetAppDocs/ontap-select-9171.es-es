@@ -18,6 +18,7 @@ Si la utilidad ONTAP Select Deploy falla o deja de estar disponible por algún m
 
 
 
+[[prepare-to-recover-the-deploy-utility]]
 == Prepárese para recuperar la utilidad Deploy
 
 Para garantizar el éxito, debe prepararse antes de intentar recuperar una instancia de la utilidad Deploy. Debes estar familiarizado con varios procedimientos administrativos y disponer de la información necesaria.
@@ -51,6 +52,8 @@ link:task_cli_migrate_deploy.html#step-3-restore-the-deploy-configuration-data-t
 
 
 
+[[restore-a-deploy-utility-instance-using-a-configuration-backup]]
+[[restore-deploy-backup]]
 == Restaurar una instancia de la utilidad de implementación mediante una copia de seguridad de la configuración
 
 Si tiene una copia de seguridad de la instancia de la utilidad de implementación fallida que contiene el clúster de dos nodos, puede restaurar los datos de configuración en la nueva instancia de la máquina virtual de implementación. A continuación, debe completar la recuperación configurando adicionalmente los dos nodos del clúster de ONTAP Select .
@@ -127,6 +130,8 @@ Si utiliza licencias de Capacity Pools, reinstale cada licencia de Capacity Pool
 
 
 
+[[reconfigure-and-recover-a-deploy-utility-instance]]
+[[restore-and-recover-deploy]]
 == Reconfigurar y recuperar una instancia de la utilidad de implementación
 
 Si no dispone de una copia de seguridad de la instancia de la utilidad Deploy que ha fallado y que contiene el clúster de dos nodos, configure el destino iSCSI del mediador y el buzón de correo en la nueva máquina virtual Deploy. A continuación, se completa la recuperación realizando una configuración adicional de los dos nodos en el clúster ONTAP Select .

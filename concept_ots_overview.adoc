@@ -26,6 +26,7 @@ El software SnapMirror le permite transferir datos entre el almacenamiento de ON
 
 
 
+[[software-defined-storage]]
 == Almacenamiento definido por software
 
 La implementación y prestación de servicios de TI mediante software permite a los administradores aprovisionar recursos con rapidez y agilidad, algo que antes era imposible. A medida que los centros de datos modernos adoptan una arquitectura de infraestructura definida por software (SDI), es posible separar los activos de TI más valiosos de la infraestructura física subyacente, lo que proporciona flexibilidad, escalabilidad y programabilidad.
@@ -36,18 +37,21 @@ ONTAP Select es la solución de NetApp para el mercado de SDS. ONTAP Select inco
 
 
 
+[[two-software-components]]
 == Dos componentes de software
 
 ONTAP Select se compone de dos componentes de software principales:
 
 
 
+[[ontap-select-node]]
 === Nodo de ONTAP Select
 
 Un clúster de ONTAP Select se compone de uno, dos, cuatro, seis u ocho nodos. Cada nodo del clúster se implementa como una máquina virtual independiente y ejecuta una versión especialmente diseñada del software ONTAP 9.
 
 
 
+[[ontap-select-deploy-administration-utility]]
 === Utilidad de administración de ONTAP Select Deploy
 
 La utilidad de administración Deploy se empaqueta e instala como una máquina virtual Linux independiente. Debe usarla para implementar clústeres de ONTAP Select en un entorno de producción. La utilidad Deploy incluye una versión actual de la imagen del nodo de ONTAP Select .
@@ -57,6 +61,7 @@ NOTE: La utilidad de administración Deploy no tiene un número de versión inde
 
 
 
+[[illustration-of-a-typical-deployment]]
 == Ilustración de una implementación típica
 
 La siguiente figura ilustra la utilidad de administración NetApp ONTAP Select Deploy, utilizada para implementar y dar soporte a un clúster ONTAP Select de cuatro nodos. La utilidad Deploy y los nodos ONTAP Select se ejecutan como máquinas virtuales independientes en hosts de hipervisor dedicados.
@@ -65,30 +70,35 @@ image:ots_architecture.png["Ilustra un clúster de cuatro nodos ONTAP Select cre
 
 
 
+[[compare-ontap-select-and-ontap-9]]
 == Comparar ONTAP Select y ONTAP 9
 
 Tanto ONTAP basado en hardware como ONTAP Select ofrecen soluciones de almacenamiento de clase empresarial. Sin embargo, debido a su diseño e implementación diferentes, cada una puede abordar distintos requisitos empresariales y escenarios de uso. Es recomendable familiarizarse con las principales diferencias entre las plataformas antes de planificar una implementación de ONTAP Select .
 
 
 
+[[different-ha-architecture]]
 === Diferentes arquitecturas de alta disponibilidad
 
 Según la cantidad de nodos que defina en un clúster, ONTAP Select ofrece capacidad de alta disponibilidad (HA). Por ejemplo, un clúster de cuatro nodos consta de dos pares de HA. La arquitectura de alta disponibilidad (HA) utilizada con ONTAP Select se basa en un modelo de almacenamiento no compartido. Es decir, un nodo de un par de HA no puede acceder directamente al almacenamiento del otro nodo. Este diseño puede afectar ciertas características operativas de ONTAP Select .
 
 
 
+[[capacity-licensing]]
 === Licencias de capacidad
 
 ONTAP Select introduce un modelo de licencias basado en el consumo. Al implementar un clúster de ONTAP Select en un entorno de producción, debe adquirir una licencia con capacidad de almacenamiento para cada nodo o grupo de capacidad compartido. Con la utilidad de implementación, debe aplicar los archivos de licencia que establecen la capacidad de almacenamiento para los nodos del clúster.
 
 
 
+[[ontap-feature-licensing]]
 === Licencias de funciones de ONTAP
 
 Cada nodo de un clúster de ONTAP Select recibe automáticamente licencias para usar varias funciones de ONTAP . No es necesario instalar ni aplicar manualmente estas licencias.
 
 
 
+[[ontap-features-not-supported-in-ontap-select]]
 === Funciones de ONTAP no compatibles con ONTAP Select
 
 Varias funciones de ONTAP no son compatibles con ONTAP Select. En la mayoría de los casos, estas funciones requieren hardware especial que no está disponible en el entorno virtualizado de ONTAP Select .

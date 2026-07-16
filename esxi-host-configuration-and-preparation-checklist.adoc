@@ -21,6 +21,7 @@ NOTE: La utilidad de administración de ONTAP Select Deploy no realiza la config
 
 
 
+[[step-1-prepare-the-esxi-hypervisor-host]]
 == Paso 1: preparar el host del hipervisor ESXi
 
 Verifique la configuración del host ESXi y los puertos del firewall.
@@ -63,6 +64,7 @@ Para obtener más información, consulte lalink:https://techdocs.broadcom.com/us
 
 
 
+[[step-2-review-the-ontap-select-cluster-configuration]]
 == Paso 2: Revise la configuración del clúster ONTAP Select
 
 Puede implementar ONTAP Select como un clúster multinodo o de un solo nodo. En muchos casos, es preferible un clúster multinodo debido a la capacidad de almacenamiento adicional y la alta disponibilidad (HA).
